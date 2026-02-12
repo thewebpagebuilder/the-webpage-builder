@@ -139,7 +139,7 @@
             filter: blur(0);
         }
 
-        /* Variable Stagger Delays */
+        /* Variable Stagger Delays - Default (Desktop) */
         .stagger-child:nth-child(1) {
             transition-delay: 0.1s;
         }
@@ -162,6 +162,46 @@
 
         .stagger-child:nth-child(6) {
             transition-delay: 0.6s;
+        }
+
+        /* Mobile overrides for FASTER loading */
+        @media (max-width: 768px) {
+            .stagger-child:nth-child(1) {
+                transition-delay: 0s;
+            }
+
+            .stagger-child:nth-child(2) {
+                transition-delay: 0.05s;
+            }
+
+            .stagger-child:nth-child(3) {
+                transition-delay: 0.1s;
+            }
+
+            .stagger-child:nth-child(4) {
+                transition-delay: 0.15s;
+            }
+
+            .stagger-child:nth-child(5) {
+                transition-delay: 0.2s;
+            }
+
+            .stagger-child:nth-child(6) {
+                transition-delay: 0.25s;
+            }
+
+            /* Reduce distance for slide reveals on mobile to make them feel snappier */
+            .reveal-slide,
+            .anim-slide-right,
+            .anim-slide-left {
+                transform: translateY(20px);
+                /* Vertical only for safety */
+            }
+
+            .reveal-extreme {
+                transition: opacity 0.5s ease-out;
+                /* Faster fade */
+            }
         }
 
         /* Counter Animation Class */
@@ -537,13 +577,13 @@
 
     <!-- NAV -->
     <nav class="fixed top-0 w-full z-50 glass border-b border-white/5 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center h-20">
-            <div class="text-2xl font-bold tracking-tight text-white flex items-center gap-3">
-                <div class="w-12 h-12 flex items-center justify-center overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-2 flex justify-between items-center h-14 md:h-20">
+            <div class="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2 md:gap-3">
+                <div class="w-8 h-8 md:w-12 md:h-12 flex items-center justify-center overflow-hidden relative">
                     <!-- Adjusted size for mobile -->
                     <img src="./logo.png" alt="Logo" class="w-full h-full object-contain scale-125">
                 </div>
-                <span class="text-lg md:text-2xl">The Webpage Builder</span> <!-- Responsive text size -->
+                <span class="text-base md:text-2xl">The Webpage Builder</span> <!-- Responsive text size -->
             </div>
 
             <!-- Desktop Menu -->
@@ -599,7 +639,8 @@
     </script>
 
     <!-- HERO -->
-    <section id="home" class="min-h-screen flex flex-col items-center justify-center relative pt-32 overflow-hidden">
+    <section id="home"
+        class="min-h-screen flex flex-col items-center justify-center relative pt-24 md:pt-32 overflow-hidden px-4 md:px-0">
         <!-- Background Glows -->
         <div
             class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse">
@@ -616,11 +657,12 @@
                 </span>
             </div>
             <h1
-                class="reveal-extreme text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black mb-8 leading-tight tracking-tighter mix-blend-lighten break-words">
+                class="reveal-extreme text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black mb-6 md:mb-8 leading-tight tracking-tighter mix-blend-lighten break-words">
                 Build <span class="gradient-brand">Impossible</span><br>
                 Websites Faster.
             </h1>
-            <p class="reveal-extreme text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+            <p
+                class="reveal-extreme text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed font-light">
                 Build, manage, and host websites with WebPage Builder mobile app.
                 Experience a new era of web creation with AI-driven tools.
             </p>
@@ -643,8 +685,8 @@
     </section>
 
     <!-- STATS (Updated & Animated) -->
-    <section class="py-20 border-y border-white/5 bg-white/5 relative">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center stagger-parent reveal-extreme"
+    <section class="py-12 md:py-20 border-y border-white/5 bg-white/5 relative">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center stagger-parent reveal-extreme"
             id="stats-section">
             <div class="stagger-child">
                 <div class="text-4xl md:text-5xl font-black gradient-brand mb-2"><span class="counter"
@@ -669,10 +711,10 @@
     </section>
 
     <!-- SERVICES (Full List) -->
-    <section id="services" class="py-32 relative">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-24 anim-fade-up">
-                <h2 class="text-4xl md:text-6xl font-black mb-6 break-words">Our <span
+    <section id="services" class="py-20 md:py-32 relative">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="text-center mb-16 md:mb-24 anim-fade-up">
+                <h2 class="text-3xl md:text-6xl font-black mb-4 md:mb-6 break-words">Our <span
                         class="gradient-text">Services</span></h2>
                 <p class="text-gray-400 text-lg max-w-xl mx-auto">
                     Full-cycle web development and digital solutions.
@@ -798,9 +840,9 @@
 
     <!-- WHY CHOOSE US (Refactored: Centered Workflow Animation) -->
     <section class="py-32 bg-[#050505] overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center text-center">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 flex flex-col items-center text-center">
 
-            <h2 class="text-4xl md:text-5xl font-bold mb-12 anim-fade-up">Why Choose <span
+            <h2 class="text-3xl md:text-5xl font-bold mb-8 md:mb-12 anim-fade-up">Why Choose <span
                     class="gradient-brand">Us?</span></h2>
 
             <!-- WORKFLOW ANIMATION -->
@@ -1064,12 +1106,13 @@
 
 
     <!-- PORTFOLIO (Expanded Grid) -->
-    <section id="portfolio" class="py-32">
-        <div class="max-w-7xl mx-auto px-6">
+    <section id="portfolio" class="py-20 md:py-32">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
             <div class="mb-24 flex flex-col md:flex-row justify-between items-end gap-6 anim-slide-left">
                 <div>
-                    <span class="text-blue-500 font-bold tracking-wide uppercase text-sm mb-4 block">Our Work</span>
-                    <h2 class="text-4xl md:text-5xl font-black">Featured <span class="gradient-text">Projects</span>
+                    <span class="text-blue-500 font-bold tracking-wide uppercase text-sm mb-2 md:mb-4 block">Our
+                        Work</span>
+                    <h2 class="text-3xl md:text-5xl font-black">Featured <span class="gradient-text">Projects</span>
                     </h2>
                 </div>
             </div>
@@ -1188,9 +1231,9 @@
     </section>
 
     <!-- PRICING (Updated Lists) -->
-    <section id="pricing" class="py-32 bg-white/5">
-        <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-4xl md:text-5xl font-black text-center mb-20 anim-zoom-spin">Transparent <span
+    <section id="pricing" class="py-20 md:py-32 bg-white/5">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <h2 class="text-3xl md:text-5xl font-black text-center mb-12 md:mb-20 anim-zoom-spin">Transparent <span
                     class="gradient-brand">Pricing</span></h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 stagger-parent reveal-extreme">
@@ -1273,9 +1316,9 @@
     </section>
 
     <!-- TESTIMONIALS (Infinite Marquee) -->
-    <section class="py-32 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 mb-16">
-            <h2 class="text-4xl md:text-5xl font-black text-center anim-fade-up">Client <span
+    <section class="py-20 md:py-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-16">
+            <h2 class="text-3xl md:text-5xl font-black text-center anim-fade-up">Client <span
                     class="gradient-brand">Stories</span></h2>
         </div>
 
@@ -1506,10 +1549,10 @@
     </section>
 
     <!-- CONTACT FORM (Added Phone) -->
-    <section id="contact" class="py-32 bg-white/5">
-        <div class="max-w-3xl mx-auto px-6">
-            <div class="text-center mb-16 reveal-slide">
-                <h2 class="text-4xl font-bold mb-4 break-words">Get In Touch</h2>
+    <section id="contact" class="py-20 md:py-32 bg-white/5">
+        <div class="max-w-3xl mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16 reveal-slide">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 break-words">Get In Touch</h2>
                 <p class="text-gray-400">Let's discuss your next project</p>
             </div>
 
@@ -1518,18 +1561,18 @@
                     <div>
                         <label class="block text-sm font-bold text-white tracking-wide mb-2">Full Name</label>
                         <input type="text" id="contactName" required
-                            class="w-full bg-white/10 border border-white/30 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-400 transition text-white placeholder-gray-400">
+                            class="w-full bg-white/10 border border-white/30 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-400 transition text-white placeholder-gray-400 text-base">
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-white tracking-wide mb-2">Email Address</label>
                         <input type="email" id="contactEmail" required
-                            class="w-full bg-white/10 border border-white/30 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-400 transition text-white placeholder-gray-400">
+                            class="w-full bg-white/10 border border-white/30 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-400 transition text-white placeholder-gray-400 text-base">
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-white tracking-wide mb-2">Phone Number</label>
                         <div class="flex gap-2">
                             <select id="countryCode"
-                                class="bg-white/10 border border-white/30 rounded-xl px-2 py-3 focus:outline-none focus:border-blue-400 transition text-white w-24">
+                                class="bg-white/10 border border-white/30 rounded-xl px-2 py-3 focus:outline-none focus:border-blue-400 transition text-white w-24 text-base">
                                 <option value="+91">+91 (IN)</option>
                                 <option value="+1">+1 (US)</option>
                                 <option value="+44">+44 (UK)</option>
@@ -1538,20 +1581,20 @@
                                 <option value="+971">+971 (AE)</option>
                             </select>
                             <input type="tel" id="contactPhone" maxlength="10" placeholder="XXXXXXXXXX"
-                                class="flex-1 bg-white/10 border border-white/30 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-400 transition text-white placeholder-gray-400">
+                                class="flex-1 bg-white/10 border border-white/30 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-400 transition text-white placeholder-gray-400 text-base">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-white tracking-wide mb-2">Company Name
                             (Optional)</label>
                         <input type="text" id="contactCompany"
-                            class="w-full bg-white/10 border border-white/30 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-400 transition text-white placeholder-gray-400">
+                            class="w-full bg-white/10 border border-white/30 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-400 transition text-white placeholder-gray-400 text-base">
                     </div>
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-white tracking-wide mb-2">Message</label>
                     <textarea rows="4" id="contactMessage" required
-                        class="w-full bg-white/10 border border-white/30 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-400 transition text-white placeholder-gray-400"></textarea>
+                        class="w-full bg-white/10 border border-white/30 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-400 transition text-white placeholder-gray-400 text-base"></textarea>
                 </div>
                 <button type="submit" class="w-full btn-glow py-4 text-lg">Submit</button>
             </form>
@@ -1591,8 +1634,8 @@
                 // Helper to generate coordinates from text
                 // Responsive Font Size logic
                 const getResponsiveFontSize = () => {
-                    if (window.innerWidth < 480) return 60; // Much smaller for mobile
-                    if (window.innerWidth < 768) return 90;
+                    if (window.innerWidth < 480) return 40; // Much smaller for mobile to fit screen
+                    if (window.innerWidth < 768) return 60;
                     return 140;
                 };
 
@@ -1639,7 +1682,8 @@
                 // Add buffer (e.g., 20% extra for effects)
                 // REDUCE COUNT FOR MOBILE
                 const isMobile = window.innerWidth < 768;
-                const particleMultiplier = isMobile ? 0.5 : 1.2; // 50% count on mobile, 120% on desktop
+                // Drastically reduce for mobile to clear up the "desktop feel" and improve perf
+                const particleMultiplier = isMobile ? 0.2 : 1.2;
                 const particleCount = Math.floor(maxPoints * particleMultiplier);
 
                 // Prepare Attributes
@@ -1899,8 +1943,8 @@
 
             // Adjust for mobile to ensure things load
             if (window.innerWidth < 768) {
-                observerOptions.threshold = 0;
-                observerOptions.rootMargin = '0px 0px 0px 0px'; // Trigger immediately when in view
+                observerOptions.threshold = 0; // Trigger immediately
+                observerOptions.rootMargin = '0px 0px 100px 0px'; // Trigger BEFORE it even hits the bottom (look-ahead)
             }
 
             const observer = new IntersectionObserver((entries) => {
