@@ -1,0 +1,6 @@
+[build]
+  command = "npx @tailwindcss/cli -i ./src/input.css -o ./assets/styles.css"
+  publish = "."
+
+[dev]
+  command = "npx @tailwindcss/cli -i ./src/input.css -o ./assets/styles.css --watch"
