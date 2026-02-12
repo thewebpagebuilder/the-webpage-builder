@@ -1,5 +1,5 @@
 // Service Worker for WebPage Builder Mobile App
-const CACHE_NAME = 'webpage-builder-v2.0';
+const CACHE_NAME = 'webpage-builder-v2.1'; // Bumped version
 const urlsToCache = [
   '/',
   '/index.html',
@@ -16,6 +16,9 @@ const urlsToCache = [
 
 // Install Service Worker
 self.addEventListener('install', event => {
+  // Force this SW to become the active one immediately
+  self.skipWaiting();
+
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
@@ -27,6 +30,9 @@ self.addEventListener('install', event => {
 
 // Activate Service Worker
 self.addEventListener('activate', event => {
+  // Claim clients immediately so the page is controlled by the new SW without reload
+  event.waitUntil(clients.claim());
+
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(

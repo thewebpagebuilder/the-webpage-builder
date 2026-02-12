@@ -3,25 +3,78 @@
 
 <head>
     <meta charset="UTF-8">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7738429166939305"
+        crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Webpage Builder - Build Impossible Websites Faster</title>
+    <title>The Webpage Builder - Web, App & Software Development Agency</title>
     <meta name="description"
-        content="Build, manage, and host websites with The Webpage Builder mobile app. Experience a new era of web creation with AI-driven tools.">
+        content="Build professional websites, custom software, mobile apps, and UI/UX designs with The Webpage Builder. Full-stack digital development agency.">
+    <meta name="keywords"
+        content="website builder, AI website builder, mobile website builder, web development, software development, mobile app development, UI/UX design, hosting, domain management">
     <meta name="google-site-verification" content="gg2sO6igz3DyVcWe8bVFmrL-KtBQ2W8eMNxJFDkzGbY" />
+    <link rel="canonical" href="https://thewebpagebuilder.in/">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://thewebpagebuilder.com/">
-    <meta property="og:title" content="The Webpage Builder - Build Impossible Websites Faster">
+    <meta property="og:url" content="https://thewebpagebuilder.in/">
+    <meta property="og:title" content="The Webpage Builder - Web, App & Software Development Agency">
     <meta property="og:description"
-        content="Build, manage, and host websites with The Webpage Builder mobile app. Experience a new era of web creation with AI-driven tools.">
-    <meta property="og:image" content="https://thewebpagebuilder.com/assets/project_launch.png">
+        content="Build professional websites, custom software, mobile apps, and UI/UX designs with The Webpage Builder. Full-stack digital development agency.">
+    <meta property="og:image" content="https://thewebpagebuilder.in/assets/project_launch.png">
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://thewebpagebuilder.com/">
-    <meta property="twitter:title" content="The Webpage Builder - Build Impossible Websites Faster">
+    <meta property="twitter:url" content="https://thewebpagebuilder.in/">
+    <meta property="twitter:title" content="The Webpage Builder - Web, App & Software Development Agency">
     <meta property="twitter:description"
-        content="Build, manage, and host websites with The Webpage Builder mobile app. Experience a new era of web creation with AI-driven tools.">
-    <meta property="twitter:image" content="https://thewebpagebuilder.com/assets/project_launch.png">
+        content="Build professional websites, custom software, mobile apps, and UI/UX designs with The Webpage Builder. Full-stack digital development agency.">
+    <meta property="twitter:image" content="https://thewebpagebuilder.in/assets/project_launch.png">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://thewebpagebuilder.in/#organization",
+          "name": "The Webpage Builder",
+          "url": "https://thewebpagebuilder.in/",
+          "logo": "https://thewebpagebuilder.in/logo.png",
+          "sameAs": [
+            "https://www.instagram.com/thewebpagebuilder/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer support",
+            "email": "thewebpagebuilder@gmail.com"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://thewebpagebuilder.in/#website",
+          "url": "https://thewebpagebuilder.in/",
+          "name": "The Webpage Builder",
+          "description": "Build Impossible Websites Faster with AI",
+          "publisher": {
+            "@id": "https://thewebpagebuilder.in/#organization"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "The Webpage Builder App",
+          "applicationCategory": "DesignApplication",
+          "operatingSystem": "Android, iOS",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "INR"
+          },
+          "description": "A mobile-first website builder that allows users to create, manage, and host websites directly from their phone using AI."
+        }
+      ]
+    }
+    </script>
 
     <link rel="icon" type="image/png" href="./logo.png">
     <link href="./assets/styles.css" rel="stylesheet">
@@ -580,43 +633,45 @@
         <div class="max-w-7xl mx-auto px-4 md:px-6 py-2 flex justify-between items-center h-14 md:h-20">
             <div class="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2 md:gap-3">
                 <div class="w-8 h-8 md:w-12 md:h-12 flex items-center justify-center overflow-hidden relative">
-                    <!-- Adjusted size for mobile -->
-                    <img src="./logo.png" alt="Logo" class="w-full h-full object-contain scale-125">
+                    <div class="w-8 h-8 md:w-12 md:h-12 flex items-center justify-center overflow-hidden relative">
+                        <!-- Adjusted size for mobile -->
+                        <img src="./logo.png" alt="The Webpage Builder Logo"
+                            class="w-full h-full object-contain scale-125">
+                    </div>
+                    <span class="text-base md:text-2xl">The Webpage Builder</span> <!-- Responsive text size -->
                 </div>
-                <span class="text-base md:text-2xl">The Webpage Builder</span> <!-- Responsive text size -->
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex gap-8 text-sm font-medium items-center">
+                    <a href="#home" class="hover:text-blue-400 transition">Home</a>
+                    <a href="#services" class="hover:text-blue-400 transition">Services</a>
+                    <a href="#portfolio" class="hover:text-blue-400 transition">Samples</a>
+                    <a href="#pricing" class="hover:text-blue-400 transition">Pricing</a>
+                    <a href="#contact" class="hover:text-blue-400 transition">Contact</a>
+                    <a href="#contact" class="btn-glow text-sm ml-4">Get Started</a>
+                </div>
+
+                <!-- Mobile Hamburger -->
+                <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none p-2">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
             </div>
 
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex gap-8 text-sm font-medium items-center">
-                <a href="#home" class="hover:text-blue-400 transition">Home</a>
-                <a href="#services" class="hover:text-blue-400 transition">Services</a>
-                <a href="#portfolio" class="hover:text-blue-400 transition">Samples</a>
-                <a href="#pricing" class="hover:text-blue-400 transition">Pricing</a>
-                <a href="#contact" class="hover:text-blue-400 transition">Contact</a>
-                <a href="#contact" class="btn-glow text-sm ml-4">Get Started</a>
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu"
+                class="hidden md:hidden absolute top-20 left-0 w-full glass border-b border-white/5 p-6 flex flex-col gap-6 shadow-2xl">
+                <a href="#home" class="text-lg font-medium hover:text-blue-400 transition"
+                    onclick="toggleMobileMenu()">Home</a>
+                <a href="#services" class="text-lg font-medium hover:text-blue-400 transition"
+                    onclick="toggleMobileMenu()">Services</a>
+                <a href="#portfolio" class="text-lg font-medium hover:text-blue-400 transition"
+                    onclick="toggleMobileMenu()">Samples</a>
+                <a href="#pricing" class="text-lg font-medium hover:text-blue-400 transition"
+                    onclick="toggleMobileMenu()">Pricing</a>
+                <a href="#contact" class="text-lg font-medium hover:text-blue-400 transition"
+                    onclick="toggleMobileMenu()">Contact</a>
+                <a href="#contact" class="btn-glow text-center py-3" onclick="toggleMobileMenu()">Get Started</a>
             </div>
-
-            <!-- Mobile Hamburger -->
-            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none p-2">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
-        </div>
-
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu"
-            class="hidden md:hidden absolute top-20 left-0 w-full glass border-b border-white/5 p-6 flex flex-col gap-6 shadow-2xl">
-            <a href="#home" class="text-lg font-medium hover:text-blue-400 transition"
-                onclick="toggleMobileMenu()">Home</a>
-            <a href="#services" class="text-lg font-medium hover:text-blue-400 transition"
-                onclick="toggleMobileMenu()">Services</a>
-            <a href="#portfolio" class="text-lg font-medium hover:text-blue-400 transition"
-                onclick="toggleMobileMenu()">Samples</a>
-            <a href="#pricing" class="text-lg font-medium hover:text-blue-400 transition"
-                onclick="toggleMobileMenu()">Pricing</a>
-            <a href="#contact" class="text-lg font-medium hover:text-blue-400 transition"
-                onclick="toggleMobileMenu()">Contact</a>
-            <a href="#contact" class="btn-glow text-center py-3" onclick="toggleMobileMenu()">Get Started</a>
-        </div>
     </nav>
 
     <script>
@@ -653,18 +708,19 @@
             <div class="reveal-extreme">
                 <span
                     class="inline-block py-1 px-3 rounded-full bg-white/5 border border-white/10 text-xs text-blue-400 mb-6 tracking-wide uppercase font-semibold">
-                    Professional Web Solutions
+                    Full-Stack Digital Development Agency
                 </span>
             </div>
             <h1
                 class="reveal-extreme text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black mb-6 md:mb-8 leading-tight tracking-tighter mix-blend-lighten break-words">
-                Build <span class="gradient-brand">Impossible</span><br>
-                Websites Faster.
+                Build <span class="gradient-brand">Digital Solutions</span><br>
+                That Scale.
             </h1>
             <p
-                class="reveal-extreme text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed font-light">
-                Build, manage, and host websites with WebPage Builder mobile app.
-                Experience a new era of web creation with AI-driven tools.
+                class="reveal-extreme text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8 md:mb-10 leading-relaxed font-light">
+                From AI-powered <strong>Websites</strong> to custom <strong>Software</strong>, <strong>Mobile
+                    Apps</strong>, and <strong>UI/UX Design</strong>.
+                We build the technology that powers your business.
             </p>
             <div class="reveal-extreme flex justify-center gap-4 mb-20">
                 <a href="#contact"
@@ -717,125 +773,91 @@
                 <h2 class="text-3xl md:text-6xl font-black mb-4 md:mb-6 break-words">Our <span
                         class="gradient-text">Services</span></h2>
                 <p class="text-gray-400 text-lg max-w-xl mx-auto">
-                    Full-cycle web development and digital solutions.
+                    We deliver end-to-end digital products: Websites, Apps, Software & Design.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-parent reveal-extreme">
 
-                <!-- 1. Website Building -->
+                <!-- 1. Web Development -->
                 <div class="stagger-child p-8 rounded-3xl glass card-hover group cursor-pointer">
                     <div
                         class="w-14 h-14 bg-cyan-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-layer-group text-2xl text-cyan-400"></i>
+                        <i class="fas fa-globe text-2xl text-cyan-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Website Building</h3>
+                    <h3 class="text-xl font-bold mb-3">Web Development</h3>
                     <p class="text-gray-400 leading-relaxed text-sm">
-                        Create stunning, responsive websites from scratch. Our expert developers build custom sites
-                        tailored to your brand and business goals.
+                        Custom websites and high-performance web applications. From simple landing pages to complex
+                        enterprise portals.
                     </p>
                 </div>
 
-                <!-- 2. Website Management -->
+                <!-- 2. Mobile App Development -->
                 <div class="stagger-child p-8 rounded-3xl glass card-hover group cursor-pointer">
                     <div
                         class="w-14 h-14 bg-indigo-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-tools text-2xl text-indigo-400"></i>
+                        <i class="fas fa-mobile-alt text-2xl text-indigo-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Website Management</h3>
+                    <h3 class="text-xl font-bold mb-3">App Development</h3>
                     <p class="text-gray-400 leading-relaxed text-sm">
-                        Keep your website running smoothly with regular updates, maintenance, and technical support. We
-                        handle all the backend work.
+                        Native and cross-platform mobile apps for iOS and Android. We build seamless mobile experiences
+                        that users love.
                     </p>
                 </div>
 
-                <!-- 3. Hosting Services -->
-                <div class="stagger-child p-8 rounded-3xl glass card-hover group cursor-pointer">
-                    <div
-                        class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-server text-2xl text-emerald-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Hosting Services</h3>
-                    <p class="text-gray-400 leading-relaxed text-sm">
-                        Reliable, fast, and secure hosting with uptime monitoring. Your website needs the best
-                        infrastructure to perform.
-                    </p>
-                </div>
-
-                <!-- 4. SEO Optimization -->
-                <div class="stagger-child p-8 rounded-3xl glass card-hover group cursor-pointer">
-                    <div
-                        class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-search-dollar text-2xl text-blue-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">SEO Optimization</h3>
-                    <p class="text-gray-400 leading-relaxed text-sm">
-                        Boost your online visibility with on-page SEO, speed improvements, and best practices for
-                        ranking.
-                    </p>
-                </div>
-
-                <!-- 5. Mobile Design -->
+                <!-- 3. Custom Software -->
                 <div class="stagger-child p-8 rounded-3xl glass card-hover group cursor-pointer">
                     <div
                         class="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-mobile-alt text-2xl text-purple-400"></i>
+                        <i class="fas fa-code text-2xl text-purple-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Mobile Design</h3>
+                    <h3 class="text-xl font-bold mb-3">Custom Software</h3>
                     <p class="text-gray-400 leading-relaxed text-sm">
-                        Fully responsive design that looks perfect on all devices—phones, tablets, and desktops.
+                        Tailored software solutions to automate your business processes. CRM, ERP, and bespoke internal
+                        tools.
                     </p>
                 </div>
 
-                <!-- 6. Security & SSL -->
-                <div class="stagger-child p-8 rounded-3xl glass card-hover group cursor-pointer">
-                    <div
-                        class="w-14 h-14 bg-green-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-lock text-2xl text-green-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Security & SSL</h3>
-                    <p class="text-gray-400 leading-relaxed text-sm">
-                        SSL, backups, malware protection, and best-practice hardening to keep your site safe.
-                    </p>
-                </div>
-
-                <!-- 7. Analytics & Reporting -->
+                <!-- 4. UI/UX Design -->
                 <div class="stagger-child p-8 rounded-3xl glass card-hover group cursor-pointer">
                     <div
                         class="w-14 h-14 bg-pink-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-chart-line text-2xl text-pink-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Analytics & Reporting</h3>
-                    <p class="text-gray-400 leading-relaxed text-sm">
-                        Track visitors and conversions with dashboards and monthly performance summaries.
-                    </p>
-                </div>
-
-                <!-- 8. 24/7 Support -->
-                <div class="stagger-child p-8 rounded-3xl glass card-hover group cursor-pointer">
-                    <div
-                        class="w-14 h-14 bg-orange-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-headset text-2xl text-orange-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">24/7 Support</h3>
-                    <p class="text-gray-400 leading-relaxed text-sm">
-                        Round-the-clock customer support for urgent issues and quick help when you need it.
-                    </p>
-                </div>
-
-                <!-- 9. UI/UX Design -->
-                <div class="stagger-child p-8 rounded-3xl glass card-hover group cursor-pointer">
-                    <div
-                        class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-paint-brush text-2xl text-blue-400"></i>
+                        <i class="fas fa-paint-brush text-2xl text-pink-400"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">UI/UX Design</h3>
                     <p class="text-gray-400 leading-relaxed text-sm">
-                        Beautiful, user-friendly interfaces designed to increase trust and drive conversions.
+                        User-centric design that drives engagement. We craft intuitive interfaces and beautiful user
+                        experiences.
                     </p>
                 </div>
+
+                <!-- 5. AI Website Builder -->
+                <div class="stagger-child p-8 rounded-3xl glass card-hover group cursor-pointer">
+                    <div
+                        class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-robot text-2xl text-emerald-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI Website Builder</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Our flagship mobile app lets you build and manage websites instantly using Artificial
+                        Intelligence.
+                    </p>
+                </div>
+
+                <!-- 6. Growth & SEO -->
+                <div class="stagger-child p-8 rounded-3xl glass card-hover group cursor-pointer">
+                    <div
+                        class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-chart-line text-2xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Growth & SEO</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Data-driven marketing strategies and SEO optimization to help your digital products reach the
+                        right audience.
+                    </p>
+                </div>
+
             </div>
-        </div>
     </section>
 
     <!-- WHY CHOOSE US (Refactored: Centered Workflow Animation) -->
