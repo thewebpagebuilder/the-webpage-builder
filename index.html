@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- v2.2 -->
 
 <head>
     <meta charset="UTF-8">
@@ -631,31 +632,28 @@
     <!-- NAV -->
     <nav class="fixed top-0 w-full z-50 glass border-b border-white/5 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 md:px-6 py-2 flex justify-between items-center h-14 md:h-20">
+            <!-- 1. Brand -->
             <div class="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2 md:gap-3">
                 <div class="w-8 h-8 md:w-12 md:h-12 flex items-center justify-center overflow-hidden relative">
-                    <div class="w-8 h-8 md:w-12 md:h-12 flex items-center justify-center overflow-hidden relative">
-                        <!-- Adjusted size for mobile -->
-                        <img src="./logo.png" alt="The Webpage Builder Logo"
-                            class="w-full h-full object-contain scale-125">
-                    </div>
-                    <span class="text-base md:text-2xl">The Webpage Builder</span> <!-- Responsive text size -->
+                    <img src="./logo.png" alt="The Webpage Builder Logo" class="w-full h-full object-contain scale-125">
                 </div>
-
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex gap-8 text-sm font-medium items-center">
-                    <a href="#home" class="hover:text-blue-400 transition">Home</a>
-                    <a href="#services" class="hover:text-blue-400 transition">Services</a>
-                    <a href="#portfolio" class="hover:text-blue-400 transition">Samples</a>
-                    <a href="#pricing" class="hover:text-blue-400 transition">Pricing</a>
-                    <a href="#contact" class="hover:text-blue-400 transition">Contact</a>
-                    <a href="#contact" class="btn-glow text-sm ml-4">Get Started</a>
-                </div>
-
-                <!-- Mobile Hamburger -->
-                <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none p-2">
-                    <i class="fas fa-bars text-2xl"></i>
-                </button>
+                <span class="text-base md:text-2xl">The Webpage Builder</span>
             </div>
+
+            <!-- 2. Desktop Menu -->
+            <div class="hidden md:flex gap-8 text-sm font-medium items-center">
+                <a href="#home" class="hover:text-blue-400 transition">Home</a>
+                <a href="#services" class="hover:text-blue-400 transition">Services</a>
+                <a href="#portfolio" class="hover:text-blue-400 transition">Samples</a>
+                <a href="#pricing" class="hover:text-blue-400 transition">Pricing</a>
+                <a href="#contact" class="hover:text-blue-400 transition">Contact</a>
+                <a href="#contact" class="btn-glow text-sm ml-4">Get Started</a>
+            </div>
+
+            <!-- 3. Mobile Hamburger -->
+            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none p-2">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
 
             <!-- Mobile Menu Dropdown -->
             <div id="mobile-menu"

@@ -1,5 +1,5 @@
 // Service Worker for WebPage Builder Mobile App
-const CACHE_NAME = 'webpage-builder-v2.1'; // Bumped version
+const CACHE_NAME = 'webpage-builder-v2.2'; // Bumped version
 const urlsToCache = [
   '/',
   '/index.html',
