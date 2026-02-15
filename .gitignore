@@ -4,3 +4,7 @@ node_modules/
 dist/
 .env
 .DS_Store
+# Sensitive files
+ngrok_recovery_codes.txt
+twilio_2FA_recovery_code.txt
+push_to_github.bat
