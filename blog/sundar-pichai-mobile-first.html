@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7738429166939305"
+        crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google's Mobile-First Shift: Insights from Sundar Pichai - The Webpage Builder</title>
+    <meta name="description"
+        content="Why building for mobile is no longer optional. Lessons from Google's CEO on the evolution of user behavior and the mobile-first index.">
+    <link rel="icon" type="image/png" href="../logo.png">
+    <link href="../assets/styles.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+
+        :root {
+            --bg: #030303;
+            --surface: #0a0a0a;
+            --border: #1f1f1f;
+            --primary: #22c55e;
+            --text-main: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        article p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        article h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        article ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        article li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-green-500/30">
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/5 bg-black/50 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+            <a href="../index.html" class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <img src="../logo.png" alt="Logo" class="w-8 h-8 object-contain">
+                <span>The Webpage Builder</span>
+            </a>
+            <div class="hidden md:flex gap-8 text-sm font-medium items-center">
+                <a href="../index.html" class="hover:text-green-400 transition">Home</a>
+                <a href="index.html" class="text-green-400 font-bold">&larr; Back to Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-12 px-4 text-center relative overflow-hidden">
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-green-600/10 rounded-full blur-[120px] pointer-events-none">
+        </div>
+        <div class="max-w-3xl mx-auto relative z-10">
+            <div
+                class="inline-block py-1 px-3 rounded-full bg-green-500/10 border border-green-500/20 text-xs text-green-400 mb-6 font-semibold uppercase tracking-wider">
+                Mobile Development</div>
+            <h1 class="text-3xl md:text-5xl font-black mb-6 leading-tight">Google's Mobile-First Shift: Insights from
+                Sundar Pichai</h1>
+            <div class="flex items-center justify-center gap-4 text-sm text-gray-500">
+                <span class="flex items-center gap-2"><i class="far fa-calendar"></i> Feb 22, 2026</span>
+                <span>•</span>
+                <span class="flex items-center gap-2"><i class="far fa-clock"></i> 6 min read</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 md:px-6 pb-20">
+        <article class="text-lg">
+            <p class="lead text-xl text-white font-medium mb-8">
+                In 2016, Sundar Pichai announced that Google was moving from a "Mobile First" to an "AI First" world.
+                But for web developers, the mobile revolution is far from over—it's the baseline.
+            </p>
+
+            <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?q=80&w=2000&auto=format&fit=crop"
+                alt="Mobile Phone"
+                class="w-full rounded-2xl mb-12 border border-white/10 opacity-80 hover:opacity-100 transition duration-500">
+
+            <h2>The Core Web Vitals Reality Check</h2>
+            <p>
+                Google now indexes the mobile version of your site first. If your desktop site is perfect but your
+                mobile site is slow, you don't exist to Google. Pichai's Google introduced "Core Web Vitals" to measure
+                user experience:
+            </p>
+            <ul>
+                <li><strong>LCP (Largest Contentful Paint):</strong> How fast does it load?</li>
+                <li><strong>FID (First Input Delay):</strong> How fast does it become interactive?</li>
+                <li><strong>CLS (Cumulative Layout Shift):</strong> Does it jump around while loading?</li>
+            </ul>
+
+            <h2>Designing for Thumbs, Not Cursors</h2>
+            <p>
+                We used to design for a precise mouse cursor. Now, we design for a clumsy thumb. This changes
+                everything—button sizes, spacing, and interaction patterns. A "hover state" doesn't exist on mobile.
+            </p>
+            <p>
+                At <strong>The Webpage Builder</strong>, we start our design process on a 375px wide screen (iPhone SE)
+                and scale up. This forces us to prioritize content. If it doesn't fit on a phone, is it really
+                necessary?
+            </p>
+
+            <h2>The Next Billion Users</h2>
+            <p>
+                Pichai often talks about the "Next Billion Users"—people coming online for the first time in India,
+                Brazil, and Nigeria. They are mobile-only. They will likely never own a desktop computer. To ignore
+                mobile is to ignore the fastest-growing market on earth.
+            </p>
+
+            <h2>Conclusion</h2>
+            <p>
+                If your website isn't fast, fluid, and beautiful on a $200 Android phone on a 4G connection, it's
+                broken. Mobile-first isn't a feature; it's the requirement for entry into the modern economy.
+            </p>
+
+            <div class="mt-12 p-8 glass rounded-2xl border-l-4 border-green-500">
+                <h3 class="text-white font-bold text-lg mb-2">Is your site mobile-ready?</h3>
+                <p class="mb-4 text-sm">We build responsive sites that score 100/100 on Google's mobile tests.</p>
+                <a href="../index.html#contact"
+                    class="inline-block px-6 py-3 rounded-lg bg-green-600 hover:bg-green-500 text-white font-semibold transition">Test
+                    Your Site</a>
+            </div>
+        </article>
+    </main>
+    <footer class="py-12 border-t border-white/5 text-center text-gray-500 text-sm">
+        <p>&copy; 2026 The Webpage Builder. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

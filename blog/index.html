@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7738429166939305"
+        crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - The Webpage Builder</title>
+    <meta name="description" content="Insights on Web Development, AI, and Tech Trends from The Webpage Builder.">
+
+    <link rel="icon" type="image/png" href="../logo.png">
+    <link href="../assets/styles.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+
+        :root {
+            --bg: #030303;
+            --surface: #0a0a0a;
+            --border: #1f1f1f;
+            --primary: #3b82f6;
+            --accent: #8b5cf6;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #a5a5a5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-brand {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Animation classes */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="selection:bg-blue-500/30">
+
+    <!-- NAV -->
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/5 bg-black/50 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+            <a href="../index.html" class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <img src="../logo.png" alt="Logo" class="w-8 h-8 object-contain">
+                <span>The Webpage Builder</span>
+            </a>
+
+            <div class="hidden md:flex gap-8 text-sm font-medium items-center">
+                <a href="../index.html" class="hover:text-blue-400 transition">Home</a>
+                <a href="../index.html#services" class="hover:text-blue-400 transition">Services</a>
+                <a href="#" class="text-blue-400">Blog</a>
+                <a href="../index.html#contact"
+                    class="px-5 py-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white transition shadow-lg shadow-blue-500/20">Get
+                    Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER -->
+    <header class="pt-40 pb-20 px-4 text-center relative overflow-hidden">
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none">
+        </div>
+
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h1 class="text-4xl md:text-6xl font-black mb-6 reveal-up">
+                Insights & <span class="gradient-brand">Tech Trends</span>
+            </h1>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto reveal-up" style="transition-delay: 0.1s;">
+                Deep dives into Web Development, AI, and the future of technology.
+            </p>
+        </div>
+    </header>
+
+    <!-- BLOG GRID -->
+    <section class="max-w-7xl mx-auto px-4 md:px-6 pb-32">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- Post 1 -->
+            <article class="glass rounded-3xl overflow-hidden card-hover reveal-up" style="transition-delay: 0.2s;">
+                <div class="h-48 bg-gradient-to-br from-blue-900/20 to-purple-900/20 flex items-center justify-center">
+                    <i class="fas fa-robot text-5xl text-blue-500/50"></i>
+                </div>
+                <div class="p-8">
+                    <div class="text-xs font-bold text-blue-400 mb-2 uppercase tracking-wider">AI & Design</div>
+                    <h2 class="text-xl font-bold mb-3 leading-tight">
+                        <a href="sam-altman-ai-web.html" class="hover:text-blue-400 transition">Sam Altman on AI: The
+                            Future of Automated Web Design</a>
+                    </h2>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-4">
+                        Explore how artificial intelligence is reshaping the landscape of web development and what it
+                        means for the future of digital creativity.
+                    </p>
+                    <a href="sam-altman-ai-web.html" class="text-white text-sm font-semibold hover:underline">Read
+                        Article &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Post 2 -->
+            <article class="glass rounded-3xl overflow-hidden card-hover reveal-up" style="transition-delay: 0.3s;">
+                <div class="h-48 bg-gradient-to-br from-orange-900/20 to-red-900/20 flex items-center justify-center">
+                    <i class="fas fa-rocket text-5xl text-orange-500/50"></i>
+                </div>
+                <div class="p-8">
+                    <div class="text-xs font-bold text-orange-400 mb-2 uppercase tracking-wider">Startup Strategy</div>
+                    <h2 class="text-xl font-bold mb-3 leading-tight">
+                        <a href="paul-graham-mvp.html" class="hover:text-orange-400 transition">The Paul Graham Guide to
+                            Launching Your MVP Fast</a>
+                    </h2>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-4">
+                        Learn the essential strategies for building and launching a Minimum Viable Product that users
+                        actually want, inspired by Y Combinator's founder.
+                    </p>
+                    <a href="paul-graham-mvp.html" class="text-white text-sm font-semibold hover:underline">Read Article
+                        &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Post 3 -->
+            <article class="glass rounded-3xl overflow-hidden card-hover reveal-up" style="transition-delay: 0.4s;">
+                <div class="h-48 bg-gradient-to-br from-cyan-900/20 to-blue-900/20 flex items-center justify-center">
+                    <i class="fas fa-cloud text-5xl text-cyan-500/50"></i>
+                </div>
+                <div class="p-8">
+                    <div class="text-xs font-bold text-cyan-400 mb-2 uppercase tracking-wider">Cloud Tech</div>
+                    <h2 class="text-xl font-bold mb-3 leading-tight">
+                        <a href="satya-nadella-cloud.html" class="hover:text-cyan-400 transition">Satya Nadella's
+                            Vision: Cloud-First Strategies</a>
+                    </h2>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-4">
+                        How Microsoft's CEO transformed the company with a cloud-first approach and what small
+                        businesses can learn from this pivot.
+                    </p>
+                    <a href="satya-nadella-cloud.html" class="text-white text-sm font-semibold hover:underline">Read
+                        Article &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Post 4 -->
+            <article class="glass rounded-3xl overflow-hidden card-hover reveal-up" style="transition-delay: 0.5s;">
+                <div
+                    class="h-48 bg-gradient-to-br from-gray-800 to-black flex items-center justify-center border-b border-white/5">
+                    <i class="fas fa-brain text-5xl text-gray-500"></i>
+                </div>
+                <div class="p-8">
+                    <div class="text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Engineering</div>
+                    <h2 class="text-xl font-bold mb-3 leading-tight">
+                        <a href="elon-musk-first-principles.html" class="hover:text-blue-400 transition">Elon Musk:
+                            First Principles in Software Engineering</a>
+                    </h2>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-4">
+                        Boiling things down to their fundamental truths: How to apply Musk's reasoning framework to
+                        solve complex coding problems.
+                    </p>
+                    <a href="elon-musk-first-principles.html"
+                        class="text-white text-sm font-semibold hover:underline">Read Article &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Post 5 -->
+            <article class="glass rounded-3xl overflow-hidden card-hover reveal-up" style="transition-delay: 0.6s;">
+                <div class="h-48 bg-gradient-to-br from-purple-900/20 to-pink-900/20 flex items-center justify-center">
+                    <i class="fas fa-bullhorn text-5xl text-purple-500/50"></i>
+                </div>
+                <div class="p-8">
+                    <div class="text-xs font-bold text-purple-400 mb-2 uppercase tracking-wider">Growth</div>
+                    <h2 class="text-xl font-bold mb-3 leading-tight">
+                        <a href="naval-ravikant-leverage.html" class="hover:text-purple-400 transition">Naval Ravikant
+                            on Code & Media: The Ultimate Leverage</a>
+                    </h2>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-4">
+                        Code and media are permissionless leverage. Understand how to use them to build wealth and
+                        influence in the digital age.
+                    </p>
+                    <a href="naval-ravikant-leverage.html" class="text-white text-sm font-semibold hover:underline">Read
+                        Article &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Post 6 -->
+            <article class="glass rounded-3xl overflow-hidden card-hover reveal-up" style="transition-delay: 0.7s;">
+                <div
+                    class="h-48 bg-gradient-to-br from-green-900/20 to-emerald-900/20 flex items-center justify-center">
+                    <i class="fas fa-mobile-alt text-5xl text-green-500/50"></i>
+                </div>
+                <div class="p-8">
+                    <div class="text-xs font-bold text-green-400 mb-2 uppercase tracking-wider">Mobile Dev</div>
+                    <h2 class="text-xl font-bold mb-3 leading-tight">
+                        <a href="sundar-pichai-mobile-first.html" class="hover:text-green-400 transition">Google's
+                            Mobile-Shift: Insights from Sundar Pichai</a>
+                    </h2>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-4">
+                        Why building for mobile is no longer optional. Lessons from Google's CEO on the evolution of
+                        user behavior.
+                    </p>
+                    <a href="sundar-pichai-mobile-first.html"
+                        class="text-white text-sm font-semibold hover:underline">Read Article &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Post 7 -->
+            <article class="glass rounded-3xl overflow-hidden card-hover reveal-up" style="transition-delay: 0.8s;">
+                <div
+                    class="h-48 bg-gradient-to-br from-slate-800 to-gray-800 flex items-center justify-center border-b border-white/5">
+                    <i class="fas fa-shield-alt text-5xl text-slate-400"></i>
+                </div>
+                <div class="p-8">
+                    <div class="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Security</div>
+                    <h2 class="text-xl font-bold mb-3 leading-tight">
+                        <a href="tim-cook-privacy.html" class="hover:text-blue-400 transition">Tim Cook on Privacy: Why
+                            Secure Apps Win</a>
+                    </h2>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-4">
+                        Privacy is a fundamental human right. How prioritizing user security can become your biggest
+                        competitive advantage.
+                    </p>
+                    <a href="tim-cook-privacy.html" class="text-white text-sm font-semibold hover:underline">Read
+                        Article &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Post 8 -->
+            <article class="glass rounded-3xl overflow-hidden card-hover reveal-up" style="transition-delay: 0.9s;">
+                <div class="h-48 bg-gradient-to-br from-indigo-900/20 to-blue-900/20 flex items-center justify-center">
+                    <i class="fas fa-vr-cardboard text-5xl text-indigo-500/50"></i>
+                </div>
+                <div class="p-8">
+                    <div class="text-xs font-bold text-indigo-400 mb-2 uppercase tracking-wider">Immersive Web</div>
+                    <h2 class="text-xl font-bold mb-3 leading-tight">
+                        <a href="mark-zuckerberg-metaverse-web.html" class="hover:text-indigo-400 transition">From
+                            Social to Spatial: The Immersive Web</a>
+                    </h2>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-4">
+                        Mark Zuckerberg's vision for the Metaverse and how web technologies like WebXR are bridging the
+                        gap between 2D and 3D.
+                    </p>
+                    <a href="mark-zuckerberg-metaverse-web.html"
+                        class="text-white text-sm font-semibold hover:underline">Read Article &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Post 9 -->
+            <article class="glass rounded-3xl overflow-hidden card-hover reveal-up" style="transition-delay: 1.0s;">
+                <div class="h-48 bg-gradient-to-br from-lime-900/20 to-green-900/20 flex items-center justify-center">
+                    <i class="fas fa-microchip text-5xl text-lime-500/50"></i>
+                </div>
+                <div class="p-8">
+                    <div class="text-xs font-bold text-lime-400 mb-2 uppercase tracking-wider">Hardware & Web</div>
+                    <h2 class="text-xl font-bold mb-3 leading-tight">
+                        <a href="jensen-huang-gpu-compute.html" class="hover:text-lime-400 transition">Jensen Huang: GPU
+                            Computing & The Web</a>
+                    </h2>
+                    <p class="text-gray-400 text-sm line-clamp-3 mb-4">
+                        How NVIDIA's advancements in GPU computing are accelerating web rendering, AI inference in the
+                        browser, and visual fidelity.
+                    </p>
+                    <a href="jensen-huang-gpu-compute.html"
+                        class="text-white text-sm font-semibold hover:underline">Read Article &rarr;</a>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 border-t border-white/5 text-center text-gray-500 text-sm">
+        <p>&copy; 2026 The Webpage Builder. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Reveal animation on load
+        window.addEventListener('load', () => {
+            const reveals = document.querySelectorAll('.reveal-up');
+            reveals.forEach(el => el.classList.add('active'));
+        });
+    </script>
+</body>
+
+</html>
