@@ -676,40 +676,26 @@
                 </div>
                 <div>
                     <div style="font-weight:1000;font-size:1.25rem;color:#111827;">Admin Dashboard</div>
-                    <div style="color:#6b7280;font-weight:700;font-size:.95rem;">Enter your PIN to continue</div>
+                    <div style="color:#6b7280;font-weight:700;font-size:.95rem;">Enter admin credentials to continue</div>
                 </div>
-            </div>
-
-            <div id="setupHint"
-                style="display:none;margin:.25rem 0 1rem 0;padding:.85rem 1rem;border-radius:.75rem;background:#eff6ff;color:#1d4ed8;font-weight:800;">
-                First-time setup: create a new PIN.
             </div>
 
             <div style="display:grid;gap:.75rem;">
-                <label style="font-weight:900;color:#111827;">PIN</label>
-                <input id="pinInput" inputmode="numeric" autocomplete="one-time-code" type="password"
-                    placeholder="Enter PIN"
+                <label style="font-weight:900;color:#111827;">Username</label>
+                <input id="usernameInput" type="text" placeholder="Enter username"
                     style="padding:.85rem 1rem;border:2px solid #e5e7eb;border-radius:.75rem;font-size:1rem;" />
 
-                <div id="confirmWrap" style="display:none;">
-                    <label style="font-weight:900;color:#111827;">Confirm PIN</label>
-                    <input id="pinConfirmInput" inputmode="numeric" type="password" placeholder="Confirm PIN"
-                        style="margin-top:.45rem;padding:.85rem 1rem;border:2px solid #e5e7eb;border-radius:.75rem;font-size:1rem;width:100%;" />
-                </div>
+                <label style="font-weight:900;color:#111827;">Password</label>
+                <input id="passwordInput" type="password" placeholder="Enter password"
+                    style="padding:.85rem 1rem;border:2px solid #e5e7eb;border-radius:.75rem;font-size:1rem;" />
 
                 <button id="unlockBtn" class="btn btn-primary"
                     style="justify-content:center;padding:.9rem 1rem;border-radius:.75rem;">
-                    <i class="fas fa-unlock"></i> Unlock
-                </button>
-
-                <button id="resetPinBtn" class="btn btn-secondary"
-                    style="justify-content:center;padding:.85rem 1rem;border-radius:.75rem;">
-                    <i class="fas fa-rotate"></i> Reset / Change PIN
+                    <i class="fas fa-unlock"></i> Login
                 </button>
 
                 <div style="font-size:.9rem;color:#6b7280;line-height:1.5;">
-                    Note: This is a basic, browser-only lock (no server). For strong security, add backend
-                    authentication.
+                    Note: This is a basic, browser-only lock.
                 </div>
             </div>
         </div>
@@ -962,21 +948,16 @@
         </div>
 
         <script>
-            // --- Simple PIN gate (client-side) ---
-            const LOCK_KEY = 'wpb_admin_pin';
+            // --- Specific Username/Password Lock (client-side) ---
+            const AUTH_KEY = 'wpb_admin_auth';
+            
+            // Hardcoded credentials for the dashboard
+            const ADMIN_USER = 'admin';
+            const ADMIN_PASS = 'admin123';
 
-            async function sha256(text) {
-                const data = new TextEncoder().encode(text);
-                const hash = await crypto.subtle.digest('SHA-256', data);
-                return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-            }
-
-            function showLock(setupMode = false) {
+            function showLock() {
                 document.getElementById('lockScreen').style.display = 'flex';
                 document.getElementById('dashboardApp').style.display = 'none';
-                document.getElementById('setupHint').style.display = setupMode ? 'block' : 'none';
-                document.getElementById('confirmWrap').style.display = setupMode ? 'block' : 'none';
-                document.getElementById('unlockBtn').innerHTML = setupMode ? '<i class="fas fa-save"></i> Save PIN' : '<i class="fas fa-unlock"></i> Unlock';
             }
 
             function showApp() {
@@ -984,75 +965,47 @@
                 document.getElementById('dashboardApp').style.display = 'block';
             }
 
-            async function initLock() {
-                const saved = localStorage.getItem(LOCK_KEY);
-                if (!saved) {
-                    showLock(true);
+            function initLock() {
+                const authenticated = sessionStorage.getItem(AUTH_KEY);
+                if (authenticated === 'true') {
+                    showApp();
+                    // Initialize Dashboard Data
+                    fetchAllData();
+                    setupEventListeners();
+                    setInterval(fetchAllData, 10000);
                 } else {
-                    showLock(false);
+                    showLock();
                 }
             }
 
             document.addEventListener('DOMContentLoaded', () => {
                 const unlockBtn = document.getElementById('unlockBtn');
-                const resetPinBtn = document.getElementById('resetPinBtn');
-                const pinInput = document.getElementById('pinInput');
-                const pinConfirmInput = document.getElementById('pinConfirmInput');
+                const usernameInput = document.getElementById('usernameInput');
+                const passwordInput = document.getElementById('passwordInput');
 
                 unlockBtn.addEventListener('click', async () => {
-                    const saved = localStorage.getItem(LOCK_KEY);
-                    const pin = (pinInput.value || '').trim();
-                    if (!pin) {
-                        alert('Please enter your PIN.');
+                    const user = (usernameInput.value || '').trim();
+                    const pass = (passwordInput.value || '').trim();
+                    
+                    if (!user || !pass) {
+                        alert('Please enter both username and password.');
                         return;
                     }
 
-                    // Setup mode
-                    if (!saved) {
-                        const confirm = (pinConfirmInput.value || '').trim();
-                        if (!confirm) {
-                            alert('Please confirm your PIN.');
-                            return;
-                        }
-                        if (pin !== confirm) {
-                            alert('PINs do not match.');
-                            return;
-                        }
-                        const hashed = await sha256(pin);
-                        localStorage.setItem(LOCK_KEY, hashed);
-                        pinInput.value = '';
-                        pinConfirmInput.value = '';
+                    if (user === ADMIN_USER && pass === ADMIN_PASS) {
+                        sessionStorage.setItem(AUTH_KEY, 'true');
+                        usernameInput.value = '';
+                        passwordInput.value = '';
                         showApp();
+                        
                         // Initialize Dashboard Data
                         await fetchAllData();
                         setupEventListeners();
                         // Set auto-refresh
                         setInterval(fetchAllData, 10000);
-                        return;
+                    } else {
+                        alert('Incorrect username or password.');
                     }
-
-                    // Unlock mode
-                    const hashed = await sha256(pin);
-                    if (hashed !== saved) {
-                        alert('Incorrect PIN.');
-                        return;
-                    }
-                    pinInput.value = '';
-                    showApp();
-                    // Initialize Dashboard Data
-                    await fetchAllData();
-                    setupEventListeners();
-                    // Set auto-refresh
-                    setInterval(fetchAllData, 10000);
-                });
-
-                resetPinBtn.addEventListener('click', async () => {
-                    const ok = confirm('Reset/change PIN? You will need to set a new one.');
-                    if (!ok) return;
-                    localStorage.removeItem(LOCK_KEY);
-                    pinInput.value = '';
-                    pinConfirmInput.value = '';
-                    showLock(true);
                 });
 
                 initLock();

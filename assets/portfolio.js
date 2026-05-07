@@ -290,23 +290,48 @@ document.addEventListener("DOMContentLoaded", (event) => {
         });
     }
 
-    // Contact form simulation
+    // Contact form to Supabase Leads
     const form = document.querySelector('.premium-form');
     if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btnSpan = form.querySelector('.submit-btn span');
             const originalText = btnSpan.textContent;
             
             btnSpan.textContent = "Processing...";
-            
-            setTimeout(() => {
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const project = document.getElementById('project').value;
+
+            try {
+                if (window.supabaseApp) {
+                    const { error } = await window.supabaseApp
+                        .from('leads')
+                        .insert([
+                            {
+                                name: name,
+                                email: email,
+                                interest: project,
+                                status: 'New'
+                            }
+                        ]);
+                        
+                    if (error) throw error;
+                } else {
+                    console.warn('Supabase not connected. Simulating success.');
+                }
+
                 btnSpan.textContent = "Impact Delivered.";
                 form.reset();
-                setTimeout(() => {
-                    btnSpan.textContent = originalText;
-                }, 3000);
-            }, 1000);
+            } catch (err) {
+                console.error('Error submitting form:', err);
+                btnSpan.textContent = "Error. Try Again.";
+            }
+
+            setTimeout(() => {
+                btnSpan.textContent = originalText;
+            }, 3000);
         });
     }
     
