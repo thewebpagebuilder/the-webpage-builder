@@ -1,4 +1,21 @@
+# Robots.txt file for The Webpage Builder (https://thewebpagebuilder.in)
+
 User-agent: *
 Allow: /
+Allow: /services
+Allow: /portfolio
+Allow: /about
+Allow: /blog
+Allow: /contact
+Allow: /privacy
+Allow: /terms
 
+# Disallow admin portal pages from search crawling
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/login
+Disallow: /admin/setup
+Disallow: /admin/reset-password
+
+# Link to sitemap
 Sitemap: https://thewebpagebuilder.in/sitemap.xml
