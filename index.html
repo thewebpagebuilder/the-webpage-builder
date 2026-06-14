@@ -27,11 +27,17 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/logo.webp" />
     
-    <!-- Fonts -->
+    <!-- Preconnect Hints for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+    
+    <!-- Non-blocking Google Fonts -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    </noscript>
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
@@ -58,11 +64,11 @@
       }
     }
     </script>
-    <script type="module" crossorigin src="/assets/index-CRkxCOfa.js"></script>
+    <script type="module" crossorigin src="/assets/index-DLnT2kVO.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-Ck6kxpN2.js">
     <link rel="modulepreload" crossorigin href="/assets/framer-BCOyXpjj.js">
     <link rel="modulepreload" crossorigin href="/assets/three-CPBOCEZ8.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-3yUybHKL.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-CSedM1bL.css">
   </head>
   <body class="bg-zinc-950 text-zinc-50 antialiased font-sans">
     <div id="root"></div>
