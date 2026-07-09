@@ -1,0 +1,22 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/crm/invoice/[id]/route": "/api/crm/invoice/[id]",
+  "/api/health/route": "/api/health",
+  "/crm/attendance/page": "/crm/attendance",
+  "/crm/consultations/page": "/crm/consultations",
+  "/crm/employees/page": "/crm/employees",
+  "/crm/inventory/page": "/crm/inventory",
+  "/crm/login/page": "/crm/login",
+  "/crm/notifications/page": "/crm/notifications",
+  "/crm/orders/page": "/crm/orders",
+  "/crm/page": "/crm",
+  "/crm/payroll/page": "/crm/payroll",
+  "/crm/products/page": "/crm/products",
+  "/gowns/page": "/gowns",
+  "/kurtis/page": "/kurtis",
+  "/lehengas/page": "/lehengas",
+  "/page": "/",
+  "/shop/[id]/page": "/shop/[id]",
+  "/shop/page": "/shop"
+}

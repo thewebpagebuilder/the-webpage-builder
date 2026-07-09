@@ -1,0 +1,3 @@
+module.exports=[87859,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(1658);a.n(d("[project]/OneDrive/Desktop/project/the webpage builder/The Webpage Builder/demo/luxury-3d-fashion-website/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},67516,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(1658);a.n(d("[project]/OneDrive/Desktop/project/the webpage builder/The Webpage Builder/demo/luxury-3d-fashion-website/node_modules/next/dist/client/components/builtin/global-error.js"))},57688,a=>{"use strict";a.i(87859);var b=a.i(67516);a.n(b)},27322,a=>{a.n(a.i(57688))}];
+
+//# sourceMappingURL=07l8_next_dist_client_components_builtin_global-error_0r9dzc3.js.map

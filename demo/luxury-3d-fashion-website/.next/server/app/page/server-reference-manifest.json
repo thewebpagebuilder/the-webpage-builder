@@ -1,0 +1,17 @@
+{
+  "node": {
+    "407471cd4613f63ee79d485c5a28ae8fd932282aca": {
+      "workers": {
+        "app/page": {
+          "moduleId": 48721,
+          "async": true,
+          "exportedName": "bookVideoCall",
+          "filename": "OneDrive/Desktop/project/the webpage builder/The Webpage Builder/demo/luxury-3d-fashion-website/src/app/actions.ts"
+        }
+      },
+      "exportedName": "bookVideoCall",
+      "filename": "OneDrive/Desktop/project/the webpage builder/The Webpage Builder/demo/luxury-3d-fashion-website/src/app/actions.ts"
+    }
+  },
+  "edge": {}
+}

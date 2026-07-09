@@ -1,0 +1,17 @@
+{
+  "node": {
+    "70cedb6309b75d742e4bf98138a386417899c58a33": {
+      "workers": {
+        "app/shop/page": {
+          "moduleId": 40932,
+          "async": true,
+          "exportedName": "getProducts",
+          "filename": "OneDrive/Desktop/project/the webpage builder/The Webpage Builder/demo/luxury-3d-fashion-website/src/app/actions.ts"
+        }
+      },
+      "exportedName": "getProducts",
+      "filename": "OneDrive/Desktop/project/the webpage builder/The Webpage Builder/demo/luxury-3d-fashion-website/src/app/actions.ts"
+    }
+  },
+  "edge": {}
+}

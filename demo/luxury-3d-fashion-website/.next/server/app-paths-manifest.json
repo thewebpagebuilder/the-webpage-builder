@@ -1,0 +1,22 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/crm/invoice/[id]/route": "app/api/crm/invoice/[id]/route.js",
+  "/api/health/route": "app/api/health/route.js",
+  "/crm/attendance/page": "app/crm/attendance/page.js",
+  "/crm/consultations/page": "app/crm/consultations/page.js",
+  "/crm/employees/page": "app/crm/employees/page.js",
+  "/crm/inventory/page": "app/crm/inventory/page.js",
+  "/crm/login/page": "app/crm/login/page.js",
+  "/crm/notifications/page": "app/crm/notifications/page.js",
+  "/crm/orders/page": "app/crm/orders/page.js",
+  "/crm/page": "app/crm/page.js",
+  "/crm/payroll/page": "app/crm/payroll/page.js",
+  "/crm/products/page": "app/crm/products/page.js",
+  "/gowns/page": "app/gowns/page.js",
+  "/kurtis/page": "app/kurtis/page.js",
+  "/lehengas/page": "app/lehengas/page.js",
+  "/page": "app/page.js",
+  "/shop/[id]/page": "app/shop/[id]/page.js",
+  "/shop/page": "app/shop/page.js"
+}

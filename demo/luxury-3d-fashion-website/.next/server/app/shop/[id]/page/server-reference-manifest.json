@@ -1,0 +1,41 @@
+{
+  "node": {
+    "407471cd4613f63ee79d485c5a28ae8fd932282aca": {
+      "workers": {
+        "app/shop/[id]/page": {
+          "moduleId": 37008,
+          "async": true,
+          "exportedName": "bookVideoCall",
+          "filename": "OneDrive/Desktop/project/the webpage builder/The Webpage Builder/demo/luxury-3d-fashion-website/src/app/actions.ts"
+        }
+      },
+      "exportedName": "bookVideoCall",
+      "filename": "OneDrive/Desktop/project/the webpage builder/The Webpage Builder/demo/luxury-3d-fashion-website/src/app/actions.ts"
+    },
+    "402cba63e044baea8b531d113c0a69721b1f7b3c65": {
+      "workers": {
+        "app/shop/[id]/page": {
+          "moduleId": 37008,
+          "async": true,
+          "exportedName": "placeCustomOrder",
+          "filename": "OneDrive/Desktop/project/the webpage builder/The Webpage Builder/demo/luxury-3d-fashion-website/src/app/actions.ts"
+        }
+      },
+      "exportedName": "placeCustomOrder",
+      "filename": "OneDrive/Desktop/project/the webpage builder/The Webpage Builder/demo/luxury-3d-fashion-website/src/app/actions.ts"
+    },
+    "405c1e87c7a819a5d5224b9eb55ac1f6558aac5750": {
+      "workers": {
+        "app/shop/[id]/page": {
+          "moduleId": 37008,
+          "async": true,
+          "exportedName": "addReview",
+          "filename": "OneDrive/Desktop/project/the webpage builder/The Webpage Builder/demo/luxury-3d-fashion-website/src/app/actions.ts"
+        }
+      },
+      "exportedName": "addReview",
+      "filename": "OneDrive/Desktop/project/the webpage builder/The Webpage Builder/demo/luxury-3d-fashion-website/src/app/actions.ts"
+    }
+  },
+  "edge": {}
+}
