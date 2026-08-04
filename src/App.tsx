@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation, Outlet } from "react-router-dom";
 import { useEffect, lazy, Suspense } from "react";
+import { Analytics } from '@vercel/analytics/react';
 import { SmoothScroll } from "./components/layout/SmoothScroll";
 import { Navbar } from "./components/layout/Navbar";
 import { Footer } from "./components/layout/Footer";
@@ -117,6 +118,7 @@ export default function App() {
           </Route>
         </Routes>
       </Suspense>
+      <Analytics />
     </BrowserRouter>
   );
 }
