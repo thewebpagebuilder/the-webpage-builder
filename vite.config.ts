@@ -9,6 +9,19 @@ import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Fix for Windows MIME type issue (forces correct JS MIME types locally)
+const fixMimeTypesPlugin = () => ({
+  name: 'fix-mime-types',
+  configureServer(server: any) {
+    server.middlewares.use((req: any, res: any, next: any) => {
+      if (req.url && (req.url.endsWith('.tsx') || req.url.endsWith('.ts') || req.url.endsWith('.jsx') || req.url.endsWith('.js'))) {
+        res.setHeader('Content-Type', 'application/javascript');
+      }
+      next();
+    });
+  }
+});
+
 // Plugin to copy index.html to 404.html for GitHub Pages SPA routing
 const copy404Plugin = () => ({
   name: 'copy-404',
@@ -24,7 +37,7 @@ const copy404Plugin = () => ({
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), copy404Plugin()],
+  plugins: [react(), tailwindcss(), copy404Plugin(), fixMimeTypesPlugin()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

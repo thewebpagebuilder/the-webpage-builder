@@ -1,3 +1,4 @@
+import { SEO } from "../components/seo/SEO";
 import { motion } from "framer-motion";
 import { WhyChooseUs } from "../components/sections/WhyChooseUs";
 import { TechStack } from "../components/sections/TechStack";
@@ -40,7 +41,8 @@ const VALUES = [
 export function AboutPage() {
   return (
     <>
-      {/* Page Hero */}
+      
+      <SEO title="About | The Webpage Builder" description="The Webpage Builder - About. Premium 3D web development and custom AI software agency." url="https://thewebpagebuilder.in/about" />{/* Page Hero */}
       <section className="pt-32 sm:pt-40 pb-16 sm:pb-24 bg-zinc-950 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-[150px] pointer-events-none" />
         <div className="container px-5 sm:px-6 mx-auto relative">

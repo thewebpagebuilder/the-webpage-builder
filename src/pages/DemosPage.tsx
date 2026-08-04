@@ -1,3 +1,4 @@
+import { SEO } from "../components/seo/SEO";
 import { motion } from "framer-motion";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -30,7 +31,8 @@ const DEMOS = [
 export function DemosPage() {
   return (
     <div className="pt-24 pb-20 sm:pt-32 sm:pb-32">
-      <div className="container px-5 sm:px-6 mx-auto">
+      
+      <SEO title="Demos | The Webpage Builder" description="The Webpage Builder - Demos. Premium 3D web development and custom AI software agency." url="https://thewebpagebuilder.in/demos" /><div className="container px-5 sm:px-6 mx-auto">
         <PageHeader 
           title="Demo Projects" 
           subtitle="Explore our standalone demonstration projects and sample websites built with various modern frameworks."

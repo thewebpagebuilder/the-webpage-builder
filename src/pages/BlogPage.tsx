@@ -1,3 +1,4 @@
+import { SEO } from "../components/seo/SEO";
 import { motion } from "framer-motion";
 import { Contact } from "../components/sections/Contact";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
@@ -65,7 +66,8 @@ export function BlogPage() {
 
   return (
     <>
-      {/* Page Hero */}
+      
+      <SEO title="Blog | The Webpage Builder" description="The Webpage Builder - Blog. Premium 3D web development and custom AI software agency." url="https://thewebpagebuilder.in/blog" />{/* Page Hero */}
       <section className="pt-32 sm:pt-40 pb-16 sm:pb-24 bg-zinc-950 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-[150px] pointer-events-none" />
         <div className="container px-5 sm:px-6 mx-auto relative">

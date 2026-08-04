@@ -1,3 +1,4 @@
+import { SEO } from "../components/seo/SEO";
 import { motion } from "framer-motion";
 import { Services } from "../components/sections/Services";
 import { Process } from "../components/sections/Process";
@@ -12,7 +13,8 @@ import { scrollToSection } from "../lib/scroll";
 export function ServicesPage() {
   return (
     <>
-      {/* Page Hero */}
+      
+      <SEO title="Services | The Webpage Builder" description="The Webpage Builder - Services. Premium 3D web development and custom AI software agency." url="https://thewebpagebuilder.in/services" />{/* Page Hero */}
       <section className="pt-32 sm:pt-40 pb-16 sm:pb-24 bg-zinc-950 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-[150px] pointer-events-none" />
         <div className="container px-5 sm:px-6 mx-auto relative">
