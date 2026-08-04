@@ -39,13 +39,20 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
     </noscript>
     <!-- JSON-LD Structured Data -->
+    <!-- Organization & Professional Service Schema (GEO) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
+      "@type": ["Organization", "ProfessionalService"],
       "name": "The Webpage Builder",
       "url": "https://thewebpagebuilder.in",
+      "logo": "https://thewebpagebuilder.in/logo.webp",
+      "image": "https://thewebpagebuilder.in/logo.webp",
       "description": "Global agency specializing in premium 3D web experiences, Three.js, React applications, and enterprise AI software.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "IN"
+      },
       "founder": {
         "@type": "Person",
         "name": "The Webpage Builder Team"
@@ -62,6 +69,40 @@
         "price": "0",
         "priceCurrency": "INR"
       }
+    }
+    </script>
+
+    <!-- FAQ Schema for Answer Engine Optimization (AEO) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What services does The Webpage Builder provide?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We specialize in premium 3D web development, Three.js experiences, custom AI software solutions, and high-performance React enterprise applications."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is The Webpage Builder located?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We are based in India but operate as a global agency, delivering world-class digital experiences and scalable technology to clients worldwide."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer consultations for custom web development?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, we offer a free 30-minute strategy call to discuss your project requirements and how our 3D web and AI solutions can scale your business."
+          }
+        }
+      ]
     }
     </script>
   </head>

@@ -10,10 +10,12 @@ import { Testimonials } from "../components/sections/Testimonials";
 import { TechStack } from "../components/sections/TechStack";
 import { FAQ } from "../components/sections/FAQ";
 import { Contact } from "../components/sections/Contact";
+import { SEO } from "../components/seo/SEO";
 
 export function HomePage() {
   return (
     <>
+      <SEO />
       <Hero />
       <ClientLogos />
       <FeaturedWork />

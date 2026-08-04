@@ -3,10 +3,16 @@ import { Contact } from "../components/sections/Contact";
 import { FAQ } from "../components/sections/FAQ";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { openMail } from "../lib/scroll";
+import { SEO } from "../components/seo/SEO";
 
 export function ContactPage() {
   return (
     <>
+      <SEO 
+        title="Contact Us | The Webpage Builder" 
+        description="Get in touch with The Webpage Builder. Book a free 30-minute strategy call to discuss your custom 3D web development and AI software needs."
+        url="https://thewebpagebuilder.in/contact"
+      />
       {/* Page Hero */}
       <section className="pt-32 sm:pt-40 pb-16 sm:pb-24 bg-zinc-950 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-[150px] pointer-events-none" />
