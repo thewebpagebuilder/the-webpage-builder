@@ -35,7 +35,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           three: ['three', '@react-three/fiber', '@react-three/drei'],
-          gsap: ['gsap'],
           react: ['react', 'react-dom', 'react-router-dom'],
           framer: ['framer-motion']
         }
