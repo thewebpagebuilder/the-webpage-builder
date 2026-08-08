@@ -6,6 +6,7 @@ interface SEOProps {
   type?: string;
   name?: string;
   url?: string;
+  keywords?: string;
 }
 
 export function SEO({
@@ -13,13 +14,15 @@ export function SEO({
   description = 'Global agency specializing in premium 3D web experiences, Three.js, React applications, and enterprise AI software. We engineer digital solutions that scale worldwide. Book a strategy call.',
   type = 'website',
   name = 'The Webpage Builder',
-  url = 'https://thewebpagebuilder.in'
+  url = 'https://thewebpagebuilder.in',
+  keywords = 'premium 3D web development, custom AI software agency, React development company, Three.js agency, enterprise web apps, top web development agency'
 }: SEOProps) {
   return (
     <Helmet>
       {/* Standard metadata tags */}
       <title>{title}</title>
       <meta name='description' content={description} />
+      <meta name='keywords' content={keywords} />
       <link rel="canonical" href={url} />
       
       {/* OpenGraph tags */}
