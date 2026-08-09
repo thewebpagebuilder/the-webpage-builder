@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { isAuthenticated, isUsingDefaults } from "@/lib/auth";
 
 interface ProtectedRouteProps {
@@ -31,6 +32,8 @@ export function ProtectedRoute({ children, requireSetup = true }: ProtectedRoute
     };
   }, []);
 
+  const router = useRouter();
+
   // Avoid flicker — render nothing until we've checked
   if (!checked) {
     return (
@@ -41,11 +44,13 @@ export function ProtectedRoute({ children, requireSetup = true }: ProtectedRoute
   }
 
   if (!authed) {
-    return (() => { window.location.href = "/admin/login"; return null; })();
+    router.replace("/admin/login");
+    return null;
   }
 
   if (requireSetup && needsSetup) {
-    return (() => { window.location.href = "/admin/setup"; return null; })();
+    router.replace("/admin/setup");
+    return null;
   }
 
   return <>{children}</>;
