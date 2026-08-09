@@ -6,7 +6,7 @@
  */
 
 export function trackPageView(path: string) {
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV === "development") {
     console.log(
       `%c[Analytics] PageView%c: ${path}`,
       "color: #10b981; font-weight: bold; background-color: rgba(16, 185, 129, 0.08); padding: 2px 6px; border-radius: 4px;",
@@ -26,7 +26,7 @@ export function trackPageView(path: string) {
 }
 
 export function trackEvent(eventName: string, properties?: Record<string, any>) {
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV === "development") {
     console.log(
       `%c[Analytics] Event%c: ${eventName}`,
       "color: #3b82f6; font-weight: bold; background-color: rgba(59, 130, 246, 0.08); padding: 2px 6px; border-radius: 4px;",
