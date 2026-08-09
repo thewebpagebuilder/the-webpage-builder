@@ -1,3 +1,4 @@
+"use client";
 import { supabase } from "./supabase";
 
 export type LeadStatus = "new" | "contacted" | "confirmed" | "declined" | "done";

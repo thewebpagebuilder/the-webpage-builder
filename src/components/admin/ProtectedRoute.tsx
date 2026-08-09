@@ -1,6 +1,6 @@
+"use client";
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
-import { isAuthenticated, isUsingDefaults } from "../../lib/auth";
+import { isAuthenticated, isUsingDefaults } from "@/lib/auth";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -41,11 +41,11 @@ export function ProtectedRoute({ children, requireSetup = true }: ProtectedRoute
   }
 
   if (!authed) {
-    return <Navigate to="/admin/login" replace />;
+    return (() => { window.location.href = "/admin/login"; return null; })();
   }
 
   if (requireSetup && needsSetup) {
-    return <Navigate to="/admin/setup" replace />;
+    return (() => { window.location.href = "/admin/setup"; return null; })();
   }
 
   return <>{children}</>;

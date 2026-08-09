@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Premium 3D Web Development & Custom AI Software Agency | The Webpage Builder</title>
+    <meta name="description" content="Global agency specializing in premium 3D web experiences, Three.js, React applications, and enterprise AI software. We engineer digital solutions that scale worldwide. Book a strategy call." />
+    <meta name="keywords" content="premium 3D web development, custom AI software agency, React development company, Three.js agency, global custom software, enterprise web apps, high-performance UI/UX" />
+    <meta name="author" content="The Webpage Builder" />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Premium 3D Web Development & Custom AI Software" />
+    <meta property="og:description" content="Engineering world-class digital experiences with React, Three.js, and AI. Global custom software agency delivering scalable technology." />
+    <meta property="og:url" content="https://thewebpagebuilder.in" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Premium 3D Web Development & Custom AI Software" />
+    <meta name="twitter:description" content="Engineering world-class digital experiences with React, Three.js, and AI. Global custom software agency." />
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://thewebpagebuilder.in" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/logo.webp" />
+    
+    <!-- Preconnect Hints for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+    
+    <!-- Non-blocking Google Fonts -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    </noscript>
+    <!-- JSON-LD Structured Data -->
+    <!-- Organization & Professional Service Schema (GEO) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["Organization", "ProfessionalService"],
+      "name": "The Webpage Builder",
+      "url": "https://thewebpagebuilder.in",
+      "logo": "https://thewebpagebuilder.in/logo.webp",
+      "image": "https://thewebpagebuilder.in/logo.webp",
+      "description": "Global agency specializing in premium 3D web experiences, Three.js, React applications, and enterprise AI software.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "IN"
+      },
+      "founder": {
+        "@type": "Person",
+        "name": "The Webpage Builder Team"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "350",
+        "bestRating": "5"
+      },
+      "offers": {
+        "@type": "Offer",
+        "description": "Free 30-minute strategy call",
+        "price": "0",
+        "priceCurrency": "INR"
+      }
+    }
+    </script>
+
+    <!-- FAQ Schema for Answer Engine Optimization (AEO) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What services does The Webpage Builder provide?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We specialize in premium 3D web development, Three.js experiences, custom AI software solutions, and high-performance React enterprise applications."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is The Webpage Builder located?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We are based in India but operate as a global agency, delivering world-class digital experiences and scalable technology to clients worldwide."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer consultations for custom web development?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, we offer a free 30-minute strategy call to discuss your project requirements and how our 3D web and AI solutions can scale your business."
+          }
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body class="bg-zinc-950 text-zinc-50 antialiased font-sans">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

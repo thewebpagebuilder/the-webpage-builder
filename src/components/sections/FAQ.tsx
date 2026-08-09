@@ -1,7 +1,8 @@
+"use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
-import { scrollToSection } from "../../lib/scroll";
+import { scrollToSection } from "@/lib/scroll";
 
 const FAQS = [
   {

@@ -1,17 +1,19 @@
+"use client";
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 import { ArrowRight, Menu, X } from "lucide-react";
-import { scrollToSection } from "../../lib/scroll";
+import { scrollToSection } from "@/lib/scroll";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const location = useLocation();
-  const isHome = location.pathname === "/";
+  const location = usePathname();
+  const isHome = location === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,7 +85,7 @@ export function Navbar() {
       >
         <div className="container px-5 sm:px-6 mx-auto flex items-center justify-between">
           <Link
-            to="/"
+            href="/"
             onClick={scrollToTop}
             className="text-base sm:text-lg font-bold tracking-tighter text-white flex items-center gap-2 relative z-10"
           >
@@ -97,7 +99,7 @@ export function Navbar() {
             {navLinks.map((link) => (
               <Link
                 key={link.to}
-                to={link.to}
+                href={link.to}
                 onClick={isHome && link.id ? handleSectionClick(link.id) : undefined}
                 className="text-sm text-zinc-400 hover:text-white transition-colors"
               >
@@ -108,7 +110,7 @@ export function Navbar() {
 
           <div className="flex items-center gap-2 sm:gap-3 relative z-10">
             <Link
-              to="/contact"
+              href="/contact"
               className="hidden sm:flex h-10 px-5 md:px-6 rounded-full items-center gap-2 text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95 bg-white text-black hover:bg-zinc-200"
             >
               Book a Call
@@ -116,7 +118,7 @@ export function Navbar() {
             </Link>
             {/* Mobile CTA - simplified */}
             <Link
-              to="/contact"
+              href="/contact"
               className="sm:hidden h-9 px-4 rounded-full bg-white text-black text-xs font-semibold flex items-center gap-1.5 hover:bg-zinc-200 transition-colors"
             >
               Contact
@@ -165,7 +167,7 @@ export function Navbar() {
                     transition={{ delay: 0.1 + i * 0.05 }}
                   >
                     <Link
-                      to={link.to}
+                      href={link.to}
                       onClick={handleLinkClick}
                       className="text-3xl sm:text-4xl font-bold text-white hover:text-zinc-400 transition-colors py-3 border-b border-zinc-900 block"
                     >
@@ -179,7 +181,7 @@ export function Navbar() {
                   transition={{ delay: 0.3 }}
                 >
                   <Link
-                    to="/contact"
+                    href="/contact"
                     onClick={handleLinkClick}
                     className="text-3xl sm:text-4xl font-bold text-zinc-400 hover:text-zinc-400 transition-colors py-3 border-b border-zinc-900 block"
                   >
@@ -195,7 +197,7 @@ export function Navbar() {
                 className="mt-auto space-y-4"
               >
                 <Link
-                  to="/contact"
+                  href="/contact"
                   onClick={handleLinkClick}
                   className="h-14 rounded-full bg-white text-black font-medium flex items-center justify-center gap-2 hover:bg-zinc-200 transition-colors text-base"
                 >

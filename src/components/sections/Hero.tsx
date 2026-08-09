@@ -1,8 +1,9 @@
+"use client";
 import { motion } from "framer-motion";
 import { Hero3D } from "../3d/Hero3D";
 import { AnimatedCounter } from "../ui/AnimatedCounter";
 import { Marquee } from "../ui/Marquee";
-import { scrollToSection } from "../../lib/scroll";
+import { scrollToSection } from "@/lib/scroll";
 
 export function Hero() {
   return (

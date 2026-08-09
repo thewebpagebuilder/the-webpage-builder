@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "framer-motion";
 import { Globe, Smartphone, Cpu, PenTool, Sparkles, Search } from "lucide-react";
 

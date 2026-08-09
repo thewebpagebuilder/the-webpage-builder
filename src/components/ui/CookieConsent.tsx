@@ -1,7 +1,8 @@
+"use client";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
@@ -55,7 +56,7 @@ export function CookieConsent() {
           {/* Description */}
           <p className="text-xs text-zinc-400 font-light leading-relaxed">
             We use cookies to analyze website traffic, customize templates, and improve your navigation experience. Read our{" "}
-            <Link to="/privacy" className="text-white hover:underline">
+            <Link href="/privacy" className="text-white hover:underline">
               Privacy Policy
             </Link>{" "}
             to learn more.

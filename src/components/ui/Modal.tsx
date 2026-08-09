@@ -1,8 +1,9 @@
+"use client";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CheckCircle2, ArrowRight, Sparkles, Mail, User, Globe, MessageSquare, Building2, Phone, FileText, Calculator } from "lucide-react";
-import { saveLead } from "../../lib/leads";
-import { trackEvent } from "../../utils/analytics";
+import { saveLead } from "@/lib/leads";
+import { trackEvent } from "@/utils/analytics";
 
 interface FormField {
   name: string;

@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Calculator, FileText, Clock, CheckCircle2 } from "lucide-react";

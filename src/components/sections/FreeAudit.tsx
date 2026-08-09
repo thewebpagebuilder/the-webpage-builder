@@ -1,8 +1,9 @@
+"use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Zap, Search, BarChart3, Shield } from "lucide-react";
 import { LeadFormModal } from "../ui/Modal";
-import { scrollToSection } from "../../lib/scroll";
+import { scrollToSection } from "@/lib/scroll";
 
 const AUDIT_ITEMS = [
   { icon: Search, text: "Full website performance & SEO audit" },

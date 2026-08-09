@@ -1,8 +1,9 @@
+"use client";
 import { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, ChevronDown, ExternalLink, Zap } from "lucide-react";
 import { AnimatedCounter } from "./AnimatedCounter";
-import { useIsTouchDevice } from "../../hooks/useMediaQuery";
+import { useIsTouchDevice } from "@/hooks/useMediaQuery";
 
 export interface ProjectMetric {
   value: number;

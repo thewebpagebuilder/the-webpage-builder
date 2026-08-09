@@ -1,5 +1,6 @@
+"use client";
 import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -18,7 +19,7 @@ export function Footer() {
             </p>
           </div>
           <Link
-            to="/contact"
+            href="/contact"
             className="h-10 sm:h-11 px-6 sm:px-8 rounded-full bg-white text-black text-xs sm:text-sm font-semibold flex items-center gap-2 hover:bg-zinc-200 transition-all hover:scale-105 active:scale-95 flex-shrink-0"
           >
             Book a Call
@@ -42,7 +43,7 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
               <Link
-                to="/contact"
+                href="/contact"
                 className="text-xs sm:text-sm text-zinc-400 hover:text-white transition-colors underline underline-offset-4 decoration-zinc-700 hover:decoration-white"
               >
                 Book a Free Call
@@ -62,11 +63,11 @@ export function Footer() {
               Navigate
             </h4>
             <ul className="space-y-2.5 sm:space-y-3">
-              <li><Link to="/portfolio" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Portfolio</Link></li>
-              <li><Link to="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Services</Link></li>
-              <li><Link to="/about" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">About</Link></li>
-              <li><Link to="/blog" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Blog</Link></li>
-              <li><Link to="/contact" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Contact</Link></li>
+              <li><Link href="/portfolio" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Portfolio</Link></li>
+              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Services</Link></li>
+              <li><Link href="/about" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">About</Link></li>
+              <li><Link href="/blog" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Blog</Link></li>
+              <li><Link href="/contact" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Contact</Link></li>
             </ul>
           </div>
 
@@ -75,12 +76,12 @@ export function Footer() {
               Services
             </h4>
             <ul className="space-y-2.5 sm:space-y-3">
-              <li><Link to="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Web Development</Link></li>
-              <li><Link to="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Mobile Apps</Link></li>
-              <li><Link to="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Custom Software</Link></li>
-              <li><Link to="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">UI/UX Design</Link></li>
-              <li><Link to="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">AI Solutions</Link></li>
-              <li><Link to="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">SEO & Growth</Link></li>
+              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Web Development</Link></li>
+              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Mobile Apps</Link></li>
+              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Custom Software</Link></li>
+              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">UI/UX Design</Link></li>
+              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">AI Solutions</Link></li>
+              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">SEO & Growth</Link></li>
             </ul>
           </div>
         </div>
@@ -93,9 +94,9 @@ export function Footer() {
             </p>
             <span className="text-zinc-800 text-xs hidden md:inline">·</span>
             <div className="flex items-center gap-3">
-              <Link to="/privacy" className="text-zinc-400 hover:text-white transition-colors text-[10px] sm:text-xs">Privacy</Link>
+              <Link href="/privacy" className="text-zinc-400 hover:text-white transition-colors text-[10px] sm:text-xs">Privacy</Link>
               <span className="text-zinc-800 text-xs">·</span>
-              <Link to="/terms" className="text-zinc-400 hover:text-white transition-colors text-[10px] sm:text-xs">Terms</Link>
+              <Link href="/terms" className="text-zinc-400 hover:text-white transition-colors text-[10px] sm:text-xs">Terms</Link>
               <span className="text-zinc-800 text-xs">·</span>
               <a href="mailto:thewebpagebuilder@gmail.com?subject=Bug%20Report&body=Describe%20the%20bug%20and%20steps%2520to%2520reproduce%3A" className="text-zinc-400 hover:text-white transition-colors text-[10px] sm:text-xs">Report a Bug</a>
             </div>

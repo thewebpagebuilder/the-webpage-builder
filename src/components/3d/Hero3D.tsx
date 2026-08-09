@@ -1,8 +1,9 @@
+"use client";
 import { useRef, useState, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { MeshDistortMaterial, Environment, Float } from "@react-three/drei";
 import * as THREE from "three";
-import { useIsMobile } from "../../hooks/useMediaQuery";
+import { useIsMobile } from "@/hooks/useMediaQuery";
 
 function ShiftingLights() {
   const light1Ref = useRef<THREE.PointLight>(null);

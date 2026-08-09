@@ -1,3 +1,4 @@
+"use client";
 /**
  * Smoothly scroll to an element by ID, accounting for the fixed navbar.
  * Falls back gracefully if Lenis is available via window.

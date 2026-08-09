@@ -1,5 +1,6 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
-import { useIsTouchDevice } from "../../hooks/useMediaQuery";
+import { useIsTouchDevice } from "@/hooks/useMediaQuery";
 
 export function CustomCursor() {
   const outerRef = useRef<HTMLDivElement>(null);

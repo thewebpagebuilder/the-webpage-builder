@@ -1,12 +1,13 @@
+"use client";
 import { useState, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight, CheckCircle2, Clock, Calendar, Sparkles, Phone, Mail,
   ChevronLeft, ChevronRight, User, Globe, MessageSquare
 } from "lucide-react";
-import { openMail } from "../../lib/scroll";
-import { saveLead } from "../../lib/leads";
-import { trackEvent } from "../../utils/analytics";
+import { openMail } from "@/lib/scroll";
+import { saveLead } from "@/lib/leads";
+import { trackEvent } from "@/utils/analytics";
 
 const TIME_SLOTS = [
   "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",

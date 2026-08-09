@@ -1,5 +1,6 @@
+"use client";
 import { motion } from "framer-motion";
-import { scrollToSection } from "../../lib/scroll";
+import { scrollToSection } from "@/lib/scroll";
 
 const STEPS = [
   {
