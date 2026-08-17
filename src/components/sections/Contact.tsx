@@ -70,14 +70,14 @@ export function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedDate || !selectedTime) return;
-    if (!formData.name || !formData.email) return;
+    if (!formData.name || !formData.email || !formData.phone) return;
     setSubmitting(true);
     
     try {
       await saveLead({
         name: formData.name || "",
         email: formData.email || "",
-        phone: formData.phone || "",
+        phone: formData.phone ? `${formData.phoneCountryCode || "+91"} ${formData.phone}` : "",
         website: formData.website || "",
         message: formData.message || "",
         source: "call",
@@ -393,6 +393,16 @@ export function Contact() {
                         onChange={(v) => handleField("email", v)}
                         required
                       />
+                      <PhoneFieldInput
+                        icon={Phone}
+                        name="phone"
+                        placeholder="98765 43210 *"
+                        value={formData.phone || ""}
+                        countryCode={formData.phoneCountryCode || "+91"}
+                        onChange={(v) => handleField("phone", v)}
+                        onCountryCodeChange={(v) => handleField("phoneCountryCode", v)}
+                        required
+                      />
                       <FieldInput
                         icon={Globe}
                         name="website"
@@ -417,7 +427,7 @@ export function Contact() {
 
                   <button
                     type="submit"
-                    disabled={!selectedDate || !selectedTime || !formData.name || !formData.email || submitting}
+                    disabled={!selectedDate || !selectedTime || !formData.name || !formData.email || !formData.phone || submitting}
                     className="w-full h-12 rounded-full bg-white text-black text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 hover:bg-zinc-200 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     {submitting ? (
@@ -503,6 +513,58 @@ function FieldInput({ icon: Icon, name, type, placeholder, value, onChange, requ
         required={required}
         className={`w-full h-11 sm:h-12 ${Icon ? "pl-10 sm:pl-11" : "pl-3.5 sm:pl-4"} pr-3.5 sm:pr-4 rounded-lg sm:rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs sm:text-sm placeholder:text-zinc-400 focus:outline-none focus:border-zinc-600 transition-colors`}
       />
+    </div>
+  );
+}
+
+interface PhoneFieldInputProps {
+  icon?: React.ComponentType<{ size?: number; className?: string }>;
+  name: string;
+  placeholder: string;
+  value: string;
+  countryCode: string;
+  onChange: (value: string) => void;
+  onCountryCodeChange: (value: string) => void;
+  required?: boolean;
+}
+
+function PhoneFieldInput({ icon: Icon, name, placeholder, value, countryCode, onChange, onCountryCodeChange, required }: PhoneFieldInputProps) {
+  return (
+    <div className="flex gap-2">
+      <div className="relative w-[30%] sm:w-28 flex-shrink-0">
+        <select
+          name={`${name}CountryCode`}
+          value={countryCode}
+          onChange={(e) => onCountryCodeChange(e.target.value)}
+          className="w-full h-11 sm:h-12 pl-2 sm:pl-3 pr-6 sm:pr-8 rounded-lg sm:rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs sm:text-sm focus:outline-none focus:border-zinc-600 transition-colors appearance-none cursor-pointer"
+        >
+          <option value="+1">+1 (US)</option>
+          <option value="+44">+44 (UK)</option>
+          <option value="+91">+91 (IN)</option>
+          <option value="+61">+61 (AU)</option>
+          <option value="+971">+971 (AE)</option>
+        </select>
+        <svg
+          className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none w-3 h-3 sm:w-4 sm:h-4"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+      <div className="relative flex-1">
+        {Icon && (
+          <Icon size={14} className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none sm:w-4 sm:h-4" />
+        )}
+        <input
+          type="tel"
+          name={name}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          required={required}
+          className={`w-full h-11 sm:h-12 ${Icon ? "pl-10 sm:pl-11" : "pl-3.5 sm:pl-4"} pr-3.5 sm:pr-4 rounded-lg sm:rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs sm:text-sm placeholder:text-zinc-400 focus:outline-none focus:border-zinc-600 transition-colors`}
+        />
+      </div>
     </div>
   );
 }

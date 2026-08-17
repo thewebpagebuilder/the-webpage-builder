@@ -32,14 +32,14 @@ const DEMO_FIELDS: FormField[] = [
   { name: "name", label: "Your name", type: "text", placeholder: "John Doe", required: true, icon: User },
   { name: "email", label: "Work email", type: "email", placeholder: "you@company.com", required: true, icon: Mail },
   { name: "company", label: "Company name", type: "text", placeholder: "Your Company", required: true, icon: Building2 },
-  { name: "phone", label: "Phone number (optional)", type: "tel", placeholder: "+91 98765 43210", required: false, icon: Phone },
+  { name: "phone", label: "Phone number", type: "tel", placeholder: "98765 43210", required: true, icon: Phone },
   { name: "vision", label: "Briefly describe your project vision", type: "textarea", placeholder: "Tell us what you want to build. We treat this as strictly confidential.", required: true, icon: MessageSquare },
 ];
 
 const QUOTATION_FIELDS: FormField[] = [
   { name: "name", label: "Your name", type: "text", placeholder: "John Doe", required: true, icon: User },
   { name: "email", label: "Work email", type: "email", placeholder: "you@company.com", required: true, icon: Mail },
-  { name: "phone", label: "Phone number", type: "tel", placeholder: "+91 98765 43210", required: true, icon: Phone },
+  { name: "phone", label: "Phone number", type: "tel", placeholder: "98765 43210", required: true, icon: Phone },
   { name: "company", label: "Company name (optional)", type: "text", placeholder: "Your Company", required: false, icon: Building2 },
   {
     name: "projectType", label: "Project type", type: "select", placeholder: "Select project type", required: true, icon: FileText,
@@ -124,7 +124,7 @@ export function LeadFormModal({ open, onClose, variant }: LeadFormModalProps) {
     const leadData: any = {
       name: formData.name || "",
       email: formData.email || "",
-      phone: formData.phone || "",
+      phone: formData.phone ? `${formData.phoneCountryCode || "+91"} ${formData.phone}` : "",
       company: formData.company || "",
       website: formData.website || "",
       message: formData.challenge || formData.vision || formData.requirements || formData.message || "",
@@ -320,6 +320,43 @@ export function LeadFormModal({ open, onClose, variant }: LeadFormModalProps) {
                             >
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                             </svg>
+                          </div>
+                        ) : field.type === "tel" ? (
+                          <div className="flex gap-2">
+                            <div className="relative w-[30%] sm:w-28 flex-shrink-0">
+                               <select
+                                 name={`${field.name}CountryCode`}
+                                 value={formData[`${field.name}CountryCode`] || "+91"}
+                                 onChange={(e) => handleChange(`${field.name}CountryCode`, e.target.value)}
+                                 className="w-full h-11 sm:h-12 pl-2 sm:pl-3 pr-6 sm:pr-8 rounded-lg sm:rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs sm:text-sm focus:outline-none focus:border-zinc-600 transition-colors appearance-none cursor-pointer"
+                               >
+                                 <option value="+1">+1 (US)</option>
+                                 <option value="+44">+44 (UK)</option>
+                                 <option value="+91">+91 (IN)</option>
+                                 <option value="+61">+61 (AU)</option>
+                                 <option value="+971">+971 (AE)</option>
+                               </select>
+                               <svg
+                                 className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none w-3 h-3 sm:w-4 sm:h-4"
+                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                               >
+                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                               </svg>
+                            </div>
+                            <div className="relative flex-1">
+                              {Icon && (
+                                <Icon size={14} className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none sm:w-4 sm:h-4" />
+                              )}
+                              <input
+                                type="tel"
+                                name={field.name}
+                                value={formData[field.name] || ""}
+                                onChange={(e) => handleChange(field.name, e.target.value)}
+                                placeholder={field.placeholder}
+                                required={field.required}
+                                className={`w-full h-11 sm:h-12 ${Icon ? "pl-10 sm:pl-11" : "pl-3.5 sm:pl-4"} pr-3.5 sm:pr-4 rounded-lg sm:rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs sm:text-sm placeholder:text-zinc-400 focus:outline-none focus:border-zinc-600 transition-colors`}
+                              />
+                            </div>
                           </div>
                         ) : (
                           <div className="relative">
