@@ -247,6 +247,15 @@ export default function AdminDashboard() {
             <p className="text-zinc-400 text-[10px] sm:text-xs hidden sm:block">Lead & Financial Manager (Supabase Connected)</p>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <Link
+              href="/admin/invoice/custom"
+              target="_blank"
+              className="h-9 sm:h-10 px-3 sm:px-4 rounded-full bg-emerald-600 border border-emerald-500 text-white text-xs sm:text-sm font-medium hover:bg-emerald-700 transition-colors flex items-center gap-1.5 sm:gap-2"
+            >
+              <FileText size={14} className="sm:w-4 sm:h-4" />
+              <span className="hidden md:inline">Custom Invoice</span>
+            </Link>
+
             <button
               onClick={handleExportCurrentView}
               className="h-9 sm:h-10 px-3 sm:px-4 rounded-full bg-zinc-900 border border-zinc-800 text-white text-xs sm:text-sm font-medium hover:bg-zinc-800 transition-colors flex items-center gap-1.5 sm:gap-2"
