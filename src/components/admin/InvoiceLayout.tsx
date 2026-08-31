@@ -1,8 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import { formatCurrency, parseBudget } from "@/lib/leads";
-import { Printer, ArrowLeft } from "lucide-react";
+import { Printer, ArrowLeft, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
+
+export interface InvoiceItem {
+  id: string;
+  description: string;
+  amount: string;
+}
 
 export interface InvoiceData {
   invoiceNo: string;
@@ -14,8 +20,7 @@ export interface InvoiceData {
   billedToPhone: string;
   projectType: string;
   paymentRef: string;
-  description: string;
-  amount: string; // string so it can be edited easily
+  items: InvoiceItem[];
   gstApplicable: boolean;
 }
 
@@ -27,62 +32,64 @@ interface InvoiceLayoutProps {
 export default function InvoiceLayout({ initialData, backUrl = "/admin" }: InvoiceLayoutProps) {
   const [data, setData] = useState<InvoiceData>(initialData);
 
-  // Sync if initialData changes (e.g. loads from API)
   useEffect(() => {
     setData(initialData);
   }, [initialData]);
 
-  const handleChange = (field: keyof InvoiceData, value: string | boolean) => {
+  const handleChange = (field: keyof InvoiceData, value: any) => {
     setData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const parsedAmount = parseBudget(data.amount) || parseFloat(data.amount.replace(/[^0-9.]/g, "")) || 0;
-  const gstAmount = data.gstApplicable ? parsedAmount * 0.18 : 0;
-  const totalAmount = parsedAmount + gstAmount;
+  const handleItemChange = (index: number, field: keyof InvoiceItem, value: string) => {
+    const newItems = [...data.items];
+    newItems[index] = { ...newItems[index], [field]: value };
+    handleChange("items", newItems);
+  };
+
+  const addItem = () => {
+    handleChange("items", [...data.items, { id: Math.random().toString(), description: "", amount: "0" }]);
+  };
+
+  const removeItem = (index: number) => {
+    const newItems = data.items.filter((_, i) => i !== index);
+    handleChange("items", newItems);
+  };
+
+  const parsedSubtotal = data.items.reduce((sum, item) => {
+    const val = parseBudget(item.amount) || parseFloat(item.amount.replace(/[^0-9.]/g, "")) || 0;
+    return sum + val;
+  }, 0);
+  
+  const gstAmount = data.gstApplicable ? parsedSubtotal * 0.18 : 0;
+  const totalAmount = parsedSubtotal + gstAmount;
 
   return (
-    <div className="min-h-screen bg-zinc-100 text-black font-sans py-10 print:py-0 print:bg-white">
-      {/* Top action bar - hidden in print */}
-      <div className="max-w-4xl mx-auto mb-8 px-8 flex items-center justify-between print:hidden">
+    <div className="min-h-screen bg-zinc-100 text-black font-sans py-10 print:py-0 print:bg-white flex flex-col items-center">
+      
+      {/* Top Back Button */}
+      <div className="w-full max-w-4xl px-8 mb-4 print:hidden self-start">
         <Link
           href={backUrl}
-          className="flex items-center gap-2 text-zinc-500 hover:text-zinc-900 transition-colors"
+          className="flex items-center gap-2 text-zinc-500 hover:text-zinc-900 transition-colors w-fit"
         >
           <ArrowLeft size={16} />
           Back
         </Link>
-        <div className="flex items-center gap-4">
-          <label className="flex items-center gap-2 text-sm text-zinc-600 font-medium cursor-pointer">
-            <input
-              type="checkbox"
-              checked={data.gstApplicable}
-              onChange={(e) => handleChange("gstApplicable", e.target.checked)}
-              className="rounded border-zinc-300 text-blue-600 focus:ring-blue-500"
-            />
-            GST Applicable
-          </label>
-          <button
-            onClick={() => window.print()}
-            className="h-10 px-6 rounded-full bg-blue-600 text-white font-medium flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-sm"
-          >
-            <Printer size={16} />
-            Print / Save PDF
-          </button>
-        </div>
       </div>
 
-      <div className="max-w-4xl mx-auto text-center text-sm text-zinc-500 mb-4 print:hidden">
+      <div className="text-center text-sm text-zinc-500 mb-4 print:hidden w-full">
         💡 You can click on the text fields below to edit them before printing.
       </div>
 
       {/* A4 Paper Container */}
-      <div className="max-w-4xl mx-auto bg-white min-h-[1122px] p-12 sm:p-16 shadow-xl print:shadow-none print:p-0 print:w-full print:max-w-none">
+      <div className="w-full max-w-4xl bg-white min-h-[1122px] p-12 sm:p-16 shadow-xl print:shadow-none print:p-0 print:w-full print:max-w-none relative mb-12">
         
         {/* Header */}
         <div className="flex justify-between items-start border-b border-zinc-200 pb-8 mb-8">
           <div>
             <div className="w-48 mb-4">
-              <img src="/logo.webp" alt="The Webpage Builder Logo" className="w-full h-auto" />
+              {/* Pointing to the new logo */}
+              <img src="/invoice-logo.png" alt="The Webpage Builder Logo" className="w-full h-auto object-contain max-h-24" onError={(e) => { e.currentTarget.src = "/logo.webp"; }} />
             </div>
             <h1 className="text-xl font-bold tracking-tight text-zinc-900">THE WEBPAGE BUILDER</h1>
             {data.gstApplicable && (
@@ -171,45 +178,67 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
         </div>
 
         {/* Invoice Items */}
-        <table className="w-full text-left mb-12">
-          <thead>
-            <tr className="border-y border-zinc-200">
-              <th className="py-4 font-bold text-zinc-900 text-sm">Description</th>
-              <th className="py-4 font-bold text-zinc-900 text-sm text-right">Amount (₹)</th>
-            </tr>
-          </thead>
-          <tbody className="border-b border-zinc-200">
-            <tr>
-              <td className="py-6 text-zinc-700 align-top">
-                <input 
-                  value={data.projectType}
-                  onChange={(e) => handleChange("projectType", e.target.value)}
-                  className="block w-full font-medium focus:outline-none focus:bg-zinc-50 print:bg-transparent border border-transparent hover:border-zinc-200 rounded print:border-none px-2 -ml-2 transition-colors"
-                />
-                <textarea 
-                  value={data.description}
-                  onChange={(e) => handleChange("description", e.target.value)}
-                  className="block w-full mt-1 text-sm text-zinc-500 focus:outline-none focus:bg-zinc-50 print:bg-transparent border border-transparent hover:border-zinc-200 rounded print:border-none resize-none overflow-hidden px-2 -ml-2 transition-colors"
-                  rows={2}
-                />
-              </td>
-              <td className="py-6 align-top">
-                <input 
-                  value={data.amount}
-                  onChange={(e) => handleChange("amount", e.target.value)}
-                  className="block w-full text-right font-medium text-zinc-900 focus:outline-none focus:bg-zinc-50 print:bg-transparent border border-transparent hover:border-zinc-200 rounded print:border-none px-2 -mr-2 transition-colors"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="mb-12">
+          <table className="w-full text-left mb-2">
+            <thead>
+              <tr className="border-y border-zinc-200">
+                <th className="py-4 font-bold text-zinc-900 text-sm w-12">Sr.</th>
+                <th className="py-4 font-bold text-zinc-900 text-sm">Description</th>
+                <th className="py-4 font-bold text-zinc-900 text-sm text-right w-32">Amount (₹)</th>
+                <th className="py-4 w-10 print:hidden"></th>
+              </tr>
+            </thead>
+            <tbody className="border-b border-zinc-200">
+              {data.items.map((item, index) => (
+                <tr key={item.id} className="group">
+                  <td className="py-4 align-top text-zinc-600 font-medium">
+                    {index + 1}.
+                  </td>
+                  <td className="py-4 align-top text-zinc-700">
+                    <textarea 
+                      value={item.description}
+                      placeholder="Item description..."
+                      onChange={(e) => handleItemChange(index, "description", e.target.value)}
+                      className="block w-full text-sm focus:outline-none focus:bg-zinc-50 print:bg-transparent border border-transparent hover:border-zinc-200 rounded print:border-none overflow-hidden resize-none px-2 -ml-2 transition-colors"
+                      style={{ fieldSizing: "content" } as any} // Modern CSS to auto-grow
+                      rows={1}
+                    />
+                  </td>
+                  <td className="py-4 align-top">
+                    <input 
+                      value={item.amount}
+                      onChange={(e) => handleItemChange(index, "amount", e.target.value)}
+                      className="block w-full text-right font-medium text-zinc-900 focus:outline-none focus:bg-zinc-50 print:bg-transparent border border-transparent hover:border-zinc-200 rounded print:border-none px-2 -mr-2 transition-colors"
+                    />
+                  </td>
+                  <td className="py-4 align-top text-right print:hidden">
+                    <button 
+                      onClick={() => removeItem(index)}
+                      className="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity p-1"
+                      title="Remove item"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          
+          <button 
+            onClick={addItem}
+            className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors print:hidden"
+          >
+            <Plus size={16} /> Add Line Item
+          </button>
+        </div>
 
         {/* Totals */}
         <div className="flex justify-end mb-16">
-          <div className="w-64 space-y-3">
+          <div className="w-72 space-y-3">
             <div className="flex justify-between text-zinc-600">
               <span>Subtotal</span>
-              <span>{formatCurrency(parsedAmount)}</span>
+              <span>{formatCurrency(parsedSubtotal)}</span>
             </div>
             {data.gstApplicable && (
               <div className="flex justify-between text-zinc-600">
@@ -229,12 +258,12 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
           <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-4">Payment Information (Bank Transfer)</h3>
           <div className="grid grid-cols-2 gap-8 text-sm">
             <div>
-              <p className="mb-1"><span className="text-zinc-500 inline-block w-24">Bank Name:</span> <span className="font-semibold text-zinc-900">HDFC</span></p>
-              <p className="mb-1"><span className="text-zinc-500 inline-block w-24">Account Name:</span> <span className="font-semibold text-zinc-900">THE WEBPAGE BUILDER</span></p>
+              <p className="mb-2 flex whitespace-nowrap"><span className="text-zinc-500 w-24 flex-shrink-0">Bank Name:</span> <span className="font-semibold text-zinc-900 truncate">HDFC</span></p>
+              <p className="mb-2 flex whitespace-nowrap"><span className="text-zinc-500 w-24 flex-shrink-0">Account Name:</span> <span className="font-semibold text-zinc-900 truncate">THE WEBPAGE BUILDER</span></p>
             </div>
             <div>
-              <p className="mb-1"><span className="text-zinc-500 inline-block w-24">Account No:</span> <span className="font-semibold text-zinc-900">50200124273451</span></p>
-              <p className="mb-1"><span className="text-zinc-500 inline-block w-24">IFSC Code:</span> <span className="font-semibold text-zinc-900">HDFC0000074</span></p>
+              <p className="mb-2 flex whitespace-nowrap"><span className="text-zinc-500 w-24 flex-shrink-0">Account No:</span> <span className="font-semibold text-zinc-900 truncate">50200124273451</span></p>
+              <p className="mb-2 flex whitespace-nowrap"><span className="text-zinc-500 w-24 flex-shrink-0">IFSC Code:</span> <span className="font-semibold text-zinc-900 truncate">HDFC0000074</span></p>
             </div>
           </div>
         </div>
@@ -244,8 +273,28 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
           <p>Thank you for your business!</p>
           <p>If you have any questions concerning this invoice, contact us.</p>
         </div>
-
       </div>
+
+      {/* Floating Action Bar at the Bottom for easy access */}
+      <div className="w-full max-w-4xl bg-white border border-zinc-200 rounded-2xl shadow-xl p-4 flex items-center justify-between print:hidden sticky bottom-6 z-50">
+        <label className="flex items-center gap-2 text-sm text-zinc-700 font-semibold cursor-pointer ml-2">
+          <input
+            type="checkbox"
+            checked={data.gstApplicable}
+            onChange={(e) => handleChange("gstApplicable", e.target.checked)}
+            className="w-5 h-5 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+          />
+          GST Applicable
+        </label>
+        <button
+          onClick={() => window.print()}
+          className="h-12 px-8 rounded-xl bg-blue-600 text-white font-bold flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-md"
+        >
+          <Printer size={18} />
+          Print / Save PDF
+        </button>
+      </div>
+      
     </div>
   );
 }

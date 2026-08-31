@@ -55,8 +55,13 @@ export default function InvoicePage() {
     billedToPhone: lead.phone || "",
     projectType: lead.projectType || "Professional Services",
     paymentRef: lead.paymentReference || "N/A",
-    description: "Design and development services for the requested project.",
-    amount: (parseBudget(lead.budget || "0")).toString(),
+    items: [
+      {
+        id: "1",
+        description: "Design and development services for the requested project.",
+        amount: (parseBudget(lead.budget || "0")).toString()
+      }
+    ],
     gstApplicable: lead.gstApplicable || false,
   };
 

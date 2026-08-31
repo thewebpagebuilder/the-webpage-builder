@@ -12,8 +12,13 @@ export default function CustomInvoicePage() {
     billedToPhone: "",
     projectType: "Sales Commission",
     paymentRef: "",
-    description: "Commission for recent sales and referrals.",
-    amount: "0",
+    items: [
+      {
+        id: "1",
+        description: "Commission for recent sales and referrals.",
+        amount: "0"
+      }
+    ],
     gstApplicable: false,
   };
 
