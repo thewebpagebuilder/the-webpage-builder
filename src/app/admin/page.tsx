@@ -886,6 +886,8 @@ interface LeadDetailDrawerProps {
 function LeadDetailDrawer({ lead, onClose, onStatusChange, onDelete, onUpdate }: LeadDetailDrawerProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [paymentForm, setPaymentForm] = useState({ ref: lead.paymentReference || "", gst: lead.gstApplicable || false });
   const [formData, setFormData] = useState({
     name: lead.name || "",
     email: lead.email || "",
@@ -912,7 +914,9 @@ function LeadDetailDrawer({ lead, onClose, onStatusChange, onDelete, onUpdate }:
       message: lead.message || lead.vision || lead.challenge || lead.requirements || "",
       notes: lead.notes || "",
     });
+    setPaymentForm({ ref: lead.paymentReference || "", gst: lead.gstApplicable || false });
     setIsEditing(false);
+    setShowPaymentForm(false);
   }, [lead]);
 
   const handleSave = async () => {
@@ -1191,6 +1195,80 @@ function LeadDetailDrawer({ lead, onClose, onStatusChange, onDelete, onUpdate }:
                 <p className="text-zinc-400 text-sm leading-relaxed whitespace-pre-wrap italic font-sans">
                   {lead.notes}
                 </p>
+              </DetailGroup>
+            )}
+
+            {/* Payment & Invoice */}
+            {lead.status === "done" && (
+              <DetailGroup title="Payment & Invoice">
+                {lead.paymentReference ? (
+                  <>
+                    <DetailRow label="Payment Ref" value={lead.paymentReference} mono highlight="emerald" />
+                    <DetailRow label="GST Applicable" value={lead.gstApplicable ? "Yes" : "No"} />
+                    {lead.paymentDate && <DetailRow label="Paid On" value={new Date(lead.paymentDate).toLocaleDateString()} />}
+                    <div className="mt-3">
+                      <Link
+                        href={`/admin/invoice/${lead.id}`}
+                        target="_blank"
+                        className="h-9 px-4 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <FileText size={14} />
+                        View / Print Invoice
+                      </Link>
+                    </div>
+                  </>
+                ) : showPaymentForm ? (
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-[10px] uppercase tracking-widest text-zinc-400 font-medium mb-1.5">Payment Reference</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. TXN123456"
+                        value={paymentForm.ref}
+                        onChange={(e) => setPaymentForm({ ...paymentForm, ref: e.target.value })}
+                        className="w-full h-9 px-3 rounded-lg bg-zinc-900 border border-zinc-800 text-white text-xs focus:outline-none focus:border-zinc-600 transition-colors"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="gst-checkbox"
+                        checked={paymentForm.gst}
+                        onChange={(e) => setPaymentForm({ ...paymentForm, gst: e.target.checked })}
+                        className="rounded border-zinc-800 bg-zinc-900 text-emerald-500 focus:ring-emerald-500/20"
+                      />
+                      <label htmlFor="gst-checkbox" className="text-xs text-zinc-300">GST Applicable</label>
+                    </div>
+                    <div className="flex gap-2 pt-2">
+                      <button
+                        onClick={async () => {
+                          setSubmitting(true);
+                          await onUpdate(lead.id, { paymentReference: paymentForm.ref, gstApplicable: paymentForm.gst, paymentDate: new Date().toISOString() });
+                          setShowPaymentForm(false);
+                          setSubmitting(false);
+                        }}
+                        disabled={submitting || !paymentForm.ref}
+                        className="flex-1 h-8 rounded-md bg-white text-black text-[11px] font-semibold flex items-center justify-center disabled:opacity-50 hover:bg-zinc-200"
+                      >
+                        Confirm
+                      </button>
+                      <button
+                        onClick={() => setShowPaymentForm(false)}
+                        className="flex-1 h-8 rounded-md bg-zinc-800 text-zinc-300 text-[11px] font-semibold flex items-center justify-center hover:bg-zinc-700"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setShowPaymentForm(true)}
+                    className="w-full h-9 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <DollarSign size={14} />
+                    Confirm Payment
+                  </button>
+                )}
               </DetailGroup>
             )}
 

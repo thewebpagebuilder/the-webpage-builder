@@ -25,6 +25,10 @@ export interface Lead {
   createdAt: string;
   updatedAt: string;
   notes?: string;
+  paymentReference?: string;
+  paymentDate?: string;
+  invoiceGenerated?: boolean;
+  gstApplicable?: boolean;
 }
 
 export async function getLeads(): Promise<Lead[]> {

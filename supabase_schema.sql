@@ -27,7 +27,10 @@ ALTER TABLE public.leads ADD COLUMN IF NOT EXISTS "scheduledTime" TEXT;
 ALTER TABLE public.leads ADD COLUMN IF NOT EXISTS "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL;
 ALTER TABLE public.leads ADD COLUMN IF NOT EXISTS "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL;
 ALTER TABLE public.leads ADD COLUMN IF NOT EXISTS notes TEXT;
-
+ALTER TABLE public.leads ADD COLUMN IF NOT EXISTS "paymentReference" TEXT;
+ALTER TABLE public.leads ADD COLUMN IF NOT EXISTS "paymentDate" TIMESTAMP WITH TIME ZONE;
+ALTER TABLE public.leads ADD COLUMN IF NOT EXISTS "invoiceGenerated" BOOLEAN DEFAULT false;
+ALTER TABLE public.leads ADD COLUMN IF NOT EXISTS "gstApplicable" BOOLEAN DEFAULT false;
 -- 3. Enable Row Level Security (RLS) on the table
 ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
 
