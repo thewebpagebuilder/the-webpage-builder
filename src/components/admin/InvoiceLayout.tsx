@@ -14,15 +14,21 @@ export interface InvoiceData {
   invoiceNo: string;
   date: string;
   paidOn?: string;
+  invoiceType: "billed" | "paid";
   billedToName: string;
   billedToCompany: string;
   billedToEmail: string;
   billedToPhone: string;
+  recipientGst?: string;
   projectType: string;
   paymentRef: string;
   items: InvoiceItem[];
   gstApplicable: boolean;
   currency: string;
+  recipientBankName?: string;
+  recipientAccountName?: string;
+  recipientAccountNo?: string;
+  recipientIfsc?: string;
 }
 
 interface InvoiceLayoutProps {
@@ -73,7 +79,6 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
     }).format(amount);
   };
 
-  // Determine currency symbol for the column header
   const getCurrencySymbol = () => {
     const formatter = new Intl.NumberFormat("en-US", { style: "currency", currency: data.currency });
     const parts = formatter.formatToParts(1);
@@ -115,7 +120,7 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
               <img src="/invoice-logo.png" alt="The Webpage Builder Logo" className="w-full h-auto object-contain max-h-24" onError={(e) => { e.currentTarget.src = "/logo.webp"; }} />
             </div>
             <h1 className="text-xl font-bold tracking-tight text-zinc-900">THE WEBPAGE BUILDER</h1>
-            {data.gstApplicable && (
+            {data.gstApplicable && data.invoiceType === "billed" && (
               <p className="text-zinc-500 text-sm mt-1">GSTIN: 26AJMPL7829F1ZU</p>
             )}
           </div>
@@ -151,10 +156,20 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
         {/* Client & Project Info */}
         <div className="grid grid-cols-2 gap-12 mb-12">
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3 border-b border-zinc-100 pb-2">Billed To</h3>
+            <div className="mb-3 border-b border-zinc-100 pb-2">
+              <select
+                value={data.invoiceType}
+                onChange={(e) => handleChange("invoiceType", e.target.value)}
+                className="text-xs font-bold uppercase tracking-widest text-zinc-400 bg-transparent focus:outline-none cursor-pointer hover:text-zinc-600 transition-colors print:appearance-none print:text-zinc-400 p-0 -ml-1"
+              >
+                <option value="billed">BILLED TO</option>
+                <option value="paid">PAID TO</option>
+              </select>
+            </div>
+            
             <input 
               value={data.billedToName}
-              placeholder="Client Name"
+              placeholder={data.invoiceType === "billed" ? "Client Name" : "Recipient Name"}
               onChange={(e) => handleChange("billedToName", e.target.value)}
               className="block w-full font-semibold text-zinc-900 focus:outline-none focus:bg-zinc-50 print:bg-transparent border border-transparent hover:border-zinc-200 rounded print:border-none placeholder:font-normal placeholder:text-zinc-300 px-2 -ml-2 transition-colors"
             />
@@ -176,6 +191,14 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
               onChange={(e) => handleChange("billedToPhone", e.target.value)}
               className="block w-full mt-1 text-zinc-600 focus:outline-none focus:bg-zinc-50 print:bg-transparent border border-transparent hover:border-zinc-200 rounded print:border-none placeholder:text-zinc-300 px-2 -ml-2 transition-colors"
             />
+            {data.invoiceType === "paid" && (
+              <input 
+                value={data.recipientGst || ""}
+                placeholder="Recipient GST Number"
+                onChange={(e) => handleChange("recipientGst", e.target.value)}
+                className="block w-full mt-1 text-zinc-600 focus:outline-none focus:bg-zinc-50 print:bg-transparent border border-transparent hover:border-zinc-200 rounded print:border-none placeholder:text-zinc-300 px-2 -ml-2 transition-colors"
+              />
+            )}
           </div>
           <div>
             <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3 border-b border-zinc-100 pb-2">Project Details</h3>
@@ -279,16 +302,62 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
         {/* Bank Details */}
         <div className="mt-auto border-t border-zinc-200 pt-8">
           <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-4">Payment Information (Bank Transfer)</h3>
-          <div className="grid grid-cols-2 gap-8 text-sm">
-            <div>
-              <p className="mb-2 flex whitespace-nowrap"><span className="text-zinc-500 w-24 flex-shrink-0">Bank Name:</span> <span className="font-semibold text-zinc-900 truncate">HDFC</span></p>
-              <p className="mb-2 flex whitespace-nowrap"><span className="text-zinc-500 w-24 flex-shrink-0">Account Name:</span> <span className="font-semibold text-zinc-900 truncate">THE WEBPAGE BUILDER</span></p>
+          
+          {data.invoiceType === "billed" ? (
+            <div className="grid grid-cols-2 gap-8 text-sm">
+              <div>
+                <p className="mb-2 flex whitespace-nowrap"><span className="text-zinc-500 w-24 flex-shrink-0">Bank Name:</span> <span className="font-semibold text-zinc-900 truncate">HDFC</span></p>
+                <p className="mb-2 flex whitespace-nowrap"><span className="text-zinc-500 w-24 flex-shrink-0">Account Name:</span> <span className="font-semibold text-zinc-900 truncate">THE WEBPAGE BUILDER</span></p>
+              </div>
+              <div>
+                <p className="mb-2 flex whitespace-nowrap"><span className="text-zinc-500 w-24 flex-shrink-0">Account No:</span> <span className="font-semibold text-zinc-900 truncate">50200124273451</span></p>
+                <p className="mb-2 flex whitespace-nowrap"><span className="text-zinc-500 w-24 flex-shrink-0">IFSC Code:</span> <span className="font-semibold text-zinc-900 truncate">HDFC0000074</span></p>
+              </div>
             </div>
-            <div>
-              <p className="mb-2 flex whitespace-nowrap"><span className="text-zinc-500 w-24 flex-shrink-0">Account No:</span> <span className="font-semibold text-zinc-900 truncate">50200124273451</span></p>
-              <p className="mb-2 flex whitespace-nowrap"><span className="text-zinc-500 w-24 flex-shrink-0">IFSC Code:</span> <span className="font-semibold text-zinc-900 truncate">HDFC0000074</span></p>
+          ) : (
+            <div className="grid grid-cols-2 gap-8 text-sm">
+              <div>
+                <div className="mb-2 flex whitespace-nowrap items-center">
+                  <span className="text-zinc-500 w-24 flex-shrink-0">Bank Name:</span> 
+                  <input 
+                    value={data.recipientBankName || ""}
+                    placeholder="e.g. SBI"
+                    onChange={(e) => handleChange("recipientBankName", e.target.value)}
+                    className="font-semibold text-zinc-900 focus:outline-none focus:bg-zinc-50 print:bg-transparent border border-transparent hover:border-zinc-200 rounded print:border-none px-1 -ml-1 w-full"
+                  />
+                </div>
+                <div className="mb-2 flex whitespace-nowrap items-center">
+                  <span className="text-zinc-500 w-24 flex-shrink-0">Account Name:</span> 
+                  <input 
+                    value={data.recipientAccountName || ""}
+                    placeholder="Recipient Name"
+                    onChange={(e) => handleChange("recipientAccountName", e.target.value)}
+                    className="font-semibold text-zinc-900 focus:outline-none focus:bg-zinc-50 print:bg-transparent border border-transparent hover:border-zinc-200 rounded print:border-none px-1 -ml-1 w-full"
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="mb-2 flex whitespace-nowrap items-center">
+                  <span className="text-zinc-500 w-24 flex-shrink-0">Account No:</span> 
+                  <input 
+                    value={data.recipientAccountNo || ""}
+                    placeholder="Account Number"
+                    onChange={(e) => handleChange("recipientAccountNo", e.target.value)}
+                    className="font-semibold text-zinc-900 focus:outline-none focus:bg-zinc-50 print:bg-transparent border border-transparent hover:border-zinc-200 rounded print:border-none px-1 -ml-1 w-full"
+                  />
+                </div>
+                <div className="mb-2 flex whitespace-nowrap items-center">
+                  <span className="text-zinc-500 w-24 flex-shrink-0">IFSC Code:</span> 
+                  <input 
+                    value={data.recipientIfsc || ""}
+                    placeholder="IFSC Code"
+                    onChange={(e) => handleChange("recipientIfsc", e.target.value)}
+                    className="font-semibold text-zinc-900 focus:outline-none focus:bg-zinc-50 print:bg-transparent border border-transparent hover:border-zinc-200 rounded print:border-none px-1 -ml-1 w-full"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Footer */}

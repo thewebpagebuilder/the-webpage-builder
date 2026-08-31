@@ -49,6 +49,7 @@ export default function InvoicePage() {
     invoiceNo: `INV-${lead.id}`,
     date: new Date().toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' }),
     paidOn: lead.paymentDate ? `PAID ON ${new Date(lead.paymentDate).toLocaleDateString()}` : "",
+    invoiceType: "billed",
     billedToName: lead.name,
     billedToCompany: lead.company || "",
     billedToEmail: lead.email,

@@ -6,6 +6,7 @@ export default function CustomInvoicePage() {
     invoiceNo: `INV-CUSTOM-${Math.floor(Math.random() * 10000)}`,
     date: new Date().toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' }),
     paidOn: "",
+    invoiceType: "billed",
     billedToName: "",
     billedToCompany: "",
     billedToEmail: "",
