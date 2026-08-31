@@ -83,6 +83,12 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
 
   return (
     <div className="min-h-screen bg-zinc-100 text-black font-sans py-10 print:py-0 print:bg-white flex flex-col items-center">
+      <style type="text/css" media="print">
+        {`
+          @page { size: auto; margin: 0mm; }
+          body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        `}
+      </style>
       
       {/* Top Back Button */}
       <div className="w-full max-w-4xl px-8 mb-4 print:hidden self-start">
