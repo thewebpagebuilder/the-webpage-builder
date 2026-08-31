@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { formatCurrency, parseBudget } from "@/lib/leads";
+import { parseBudget } from "@/lib/leads";
 import { Printer, ArrowLeft, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 
@@ -22,6 +22,7 @@ export interface InvoiceData {
   paymentRef: string;
   items: InvoiceItem[];
   gstApplicable: boolean;
+  currency: string;
 }
 
 interface InvoiceLayoutProps {
@@ -63,6 +64,23 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
   const gstAmount = data.gstApplicable ? parsedSubtotal * 0.18 : 0;
   const totalAmount = parsedSubtotal + gstAmount;
 
+  const formatInvoiceCurrency = (amount: number) => {
+    return new Intl.NumberFormat(data.currency === "INR" ? "en-IN" : "en-US", {
+      style: "currency",
+      currency: data.currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  };
+
+  // Determine currency symbol for the column header
+  const getCurrencySymbol = () => {
+    const formatter = new Intl.NumberFormat("en-US", { style: "currency", currency: data.currency });
+    const parts = formatter.formatToParts(1);
+    const symbolPart = parts.find(part => part.type === "currency");
+    return symbolPart ? symbolPart.value : data.currency;
+  };
+
   return (
     <div className="min-h-screen bg-zinc-100 text-black font-sans py-10 print:py-0 print:bg-white flex flex-col items-center">
       
@@ -88,7 +106,6 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
         <div className="flex justify-between items-start border-b border-zinc-200 pb-8 mb-8">
           <div>
             <div className="w-48 mb-4">
-              {/* Pointing to the new logo */}
               <img src="/invoice-logo.png" alt="The Webpage Builder Logo" className="w-full h-auto object-contain max-h-24" onError={(e) => { e.currentTarget.src = "/logo.webp"; }} />
             </div>
             <h1 className="text-xl font-bold tracking-tight text-zinc-900">THE WEBPAGE BUILDER</h1>
@@ -184,7 +201,7 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
               <tr className="border-y border-zinc-200">
                 <th className="py-4 font-bold text-zinc-900 text-sm w-12">Sr.</th>
                 <th className="py-4 font-bold text-zinc-900 text-sm">Description</th>
-                <th className="py-4 font-bold text-zinc-900 text-sm text-right w-32">Amount (₹)</th>
+                <th className="py-4 font-bold text-zinc-900 text-sm text-right w-32">Amount ({getCurrencySymbol()})</th>
                 <th className="py-4 w-10 print:hidden"></th>
               </tr>
             </thead>
@@ -235,20 +252,20 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
 
         {/* Totals */}
         <div className="flex justify-end mb-16">
-          <div className="w-72 space-y-3">
+          <div className="w-80 space-y-3">
             <div className="flex justify-between text-zinc-600">
               <span>Subtotal</span>
-              <span>{formatCurrency(parsedSubtotal)}</span>
+              <span>{formatInvoiceCurrency(parsedSubtotal)}</span>
             </div>
             {data.gstApplicable && (
               <div className="flex justify-between text-zinc-600">
                 <span>GST (18%)</span>
-                <span>{formatCurrency(gstAmount)}</span>
+                <span>{formatInvoiceCurrency(gstAmount)}</span>
               </div>
             )}
             <div className="flex justify-between text-lg font-bold text-zinc-900 border-t border-zinc-200 pt-3">
               <span>Total</span>
-              <span>{formatCurrency(totalAmount)}</span>
+              <span>{formatInvoiceCurrency(totalAmount)}</span>
             </div>
           </div>
         </div>
@@ -277,15 +294,33 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
 
       {/* Floating Action Bar at the Bottom for easy access */}
       <div className="w-full max-w-4xl bg-white border border-zinc-200 rounded-2xl shadow-xl p-4 flex items-center justify-between print:hidden sticky bottom-6 z-50">
-        <label className="flex items-center gap-2 text-sm text-zinc-700 font-semibold cursor-pointer ml-2">
-          <input
-            type="checkbox"
-            checked={data.gstApplicable}
-            onChange={(e) => handleChange("gstApplicable", e.target.checked)}
-            className="w-5 h-5 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-          />
-          GST Applicable
-        </label>
+        <div className="flex items-center gap-6 ml-2">
+          <label className="flex items-center gap-2 text-sm text-zinc-700 font-semibold cursor-pointer">
+            <input
+              type="checkbox"
+              checked={data.gstApplicable}
+              onChange={(e) => handleChange("gstApplicable", e.target.checked)}
+              className="w-5 h-5 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+            />
+            GST Applicable
+          </label>
+
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold text-zinc-700">Currency:</span>
+            <select
+              value={data.currency}
+              onChange={(e) => handleChange("currency", e.target.value)}
+              className="bg-zinc-50 border border-zinc-200 text-zinc-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1.5 font-medium"
+            >
+              <option value="INR">INR (₹)</option>
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="AUD">AUD (A$)</option>
+            </select>
+          </div>
+        </div>
+
         <button
           onClick={() => window.print()}
           className="h-12 px-8 rounded-xl bg-blue-600 text-white font-bold flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-md"

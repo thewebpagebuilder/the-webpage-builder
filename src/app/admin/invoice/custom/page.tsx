@@ -20,6 +20,7 @@ export default function CustomInvoicePage() {
       }
     ],
     gstApplicable: false,
+    currency: "INR",
   };
 
   return <InvoiceLayout initialData={initialData} />;

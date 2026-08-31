@@ -63,6 +63,7 @@ export default function InvoicePage() {
       }
     ],
     gstApplicable: lead.gstApplicable || false,
+    currency: "INR",
   };
 
   return <InvoiceLayout initialData={initialData} />;
