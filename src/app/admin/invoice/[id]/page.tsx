@@ -5,7 +5,6 @@ import { getLeads, type Lead } from "@/lib/leads";
 import { formatCurrency, parseBudget } from "@/lib/leads";
 import { Printer, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function InvoicePage() {
   const { id } = useParams();
