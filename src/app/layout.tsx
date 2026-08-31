@@ -26,15 +26,19 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`${inter.className} bg-zinc-950 text-zinc-50 antialiased font-sans selection:bg-white selection:text-black relative min-h-screen`}>
         <SmoothScroll>
-          <WhatsAppButton />
-          <CustomCursor />
-          <CookieConsent />
-          <Navbar />
-          <StickyMobileCTA />
+          <div className="print:hidden">
+            <WhatsAppButton />
+            <CustomCursor />
+            <CookieConsent />
+            <Navbar />
+            <StickyMobileCTA />
+          </div>
           <main>
             {children}
           </main>
-          <Footer />
+          <div className="print:hidden">
+            <Footer />
+          </div>
         </SmoothScroll>
       </body>
     </html>
