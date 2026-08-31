@@ -106,7 +106,7 @@ export default function InvoiceLayout({ initialData, backUrl = "/admin" }: Invoi
       </div>
 
       {/* A4 Paper Container */}
-      <div className="w-full max-w-4xl bg-white min-h-[1122px] p-12 sm:p-16 shadow-xl print:shadow-none print:p-0 print:w-full print:max-w-none relative mb-12">
+      <div className="w-full max-w-4xl bg-white min-h-[1122px] p-8 sm:p-16 shadow-xl print:shadow-none print:p-12 print:min-h-0 print:w-full print:max-w-none relative mb-12">
         
         {/* Header */}
         <div className="flex justify-between items-start border-b border-zinc-200 pb-8 mb-8">
