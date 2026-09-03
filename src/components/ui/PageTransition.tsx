@@ -1,6 +1,6 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+
 import { AnimatePresence, motion } from "framer-motion";
 
 // Curtain wipe page transition — slides in from bottom on navigate out, slides up to reveal new page

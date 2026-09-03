@@ -31,11 +31,10 @@ function sphericalToCartesian(phi: number, theta: number, radius: number): [numb
 }
 
 // Single orbiting tech node
-function TechNode({ phi, theta, color, label, time }: {
+function TechNode({ phi, theta, color, time }: {
   phi: number;
   theta: number;
   color: string;
-  label: string;
   time: number;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);

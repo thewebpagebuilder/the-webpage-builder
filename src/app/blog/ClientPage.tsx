@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Contact } from "@/components/sections/Contact";
-import { Calendar, Clock, ArrowRight, Tag } from "lucide-react";
+import { Calendar, Clock, ArrowRight } from "lucide-react";
 
 const CATEGORY_COLORS: Record<string, string> = {
   Engineering: "hsl(168 76% 42%)",
