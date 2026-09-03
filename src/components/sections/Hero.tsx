@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Hero3D } from "../3d/Hero3D";
 import { AnimatedCounter } from "../ui/AnimatedCounter";
 import { Marquee } from "../ui/Marquee";
+import { Magnetic } from "../ui/Magnetic";
 import { scrollToSection } from "@/lib/scroll";
 
 export function Hero() {
@@ -16,81 +17,134 @@ export function Hero() {
       <Hero3D />
 
       <div className="container relative z-10 px-5 sm:px-6 mx-auto flex-1 flex items-center justify-center py-16 sm:py-20">
-        <div className="max-w-5xl mx-auto text-center w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <span className="inline-block py-1.5 px-3 sm:px-4 rounded-full bg-zinc-900/80 border border-zinc-800 text-zinc-300 text-xs sm:text-sm font-medium tracking-wide mb-6 sm:mb-8 backdrop-blur-sm">
-              THE WEBPAGE BUILDER
-            </span>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tighter mb-6 sm:mb-8 bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-zinc-500 leading-[1.05]">
-              THE PREMIUM WEB APP <br className="hidden sm:block" /> AND SOFTWARE DEVELOPMENT AGENCY
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-zinc-400 font-light max-w-2xl mx-auto mb-3 sm:mb-4 leading-relaxed px-2 sm:px-0">
-              Engineering enterprise React applications, WebGL experiences, and scalable solutions.
-            </p>
-            <h2 className="text-sm sm:text-base md:text-lg lg:text-xl text-zinc-400 font-light max-w-2xl mx-auto mb-10 sm:mb-14 px-2 sm:px-0">
-              We build the technology that scales your business worldwide.
-            </h2>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4 sm:px-0"
-          >
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="h-12 px-7 sm:px-8 rounded-full bg-white text-black text-sm sm:text-base font-medium hover:bg-zinc-200 transition-all duration-200 hover:scale-105 active:scale-95 w-full sm:w-auto"
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <motion.div
+              className="lg:col-span-8"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+                },
+              }}
             >
-              Start a Project
-            </button>
-            <button
-              onClick={() => scrollToSection("work")}
-              className="h-12 px-7 sm:px-8 rounded-full bg-zinc-900/80 border border-zinc-800 text-white text-sm sm:text-base font-medium hover:bg-zinc-800 transition-colors w-full sm:w-auto backdrop-blur-sm"
-            >
-              View Our Work
-            </button>
-          </motion.div>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 50 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] } },
+                }}
+                className="overflow-hidden mb-6"
+              >
+                <span className="inline-block py-2 px-4 border border-border text-foreground text-xs sm:text-sm font-bold uppercase tracking-[0.2em]">
+                  The Webpage Builder
+                </span>
+              </motion.div>
+              
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem] font-bold tracking-tighter mb-8 text-foreground leading-[0.95] uppercase">
+                <motion.span
+                  variants={{
+                    hidden: { opacity: 0, y: 100 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.21, 0.47, 0.32, 0.98] } },
+                  }}
+                  className="block"
+                >
+                  Engineering
+                </motion.span>
+                <motion.span
+                  variants={{
+                    hidden: { opacity: 0, y: 100 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.21, 0.47, 0.32, 0.98] } },
+                  }}
+                  className="block text-primary"
+                >
+                  Digital Futures
+                </motion.span>
+              </h1>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="mt-16 sm:mt-20 md:mt-28 grid grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 border-t border-zinc-800/50 pt-8 sm:pt-12"
-          >
-            <div className="text-left md:text-center">
-              <AnimatedCounter
-                target={500}
-                suffix="+"
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white"
-                label="Projects Completed"
-                duration={2}
-              />
-            </div>
-            <div className="text-left md:text-center">
-              <AnimatedCounter
-                target={350}
-                suffix="+"
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white"
-                label="Happy Clients"
-                duration={2.2}
-              />
-            </div>
-            <div className="text-left md:text-center col-span-2 md:col-span-1">
+              <motion.p
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+                }}
+                className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-light max-w-2xl mb-12 leading-relaxed"
+              >
+                We are a premium digital agency crafting hyper-optimized, interactive web experiences and enterprise software.
+              </motion.p>
+
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+                }}
+                className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
+              >
+                <Magnetic>
+                  <button
+                    onClick={() => scrollToSection("contact")}
+                    className="group relative h-14 px-8 bg-foreground text-background text-sm font-bold tracking-wider uppercase overflow-hidden"
+                  >
+                    <span className="relative z-10 flex items-center gap-2">
+                      Start a Project
+                      <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    </span>
+                    <div className="absolute inset-0 bg-primary translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
+                  </button>
+                </Magnetic>
+                <Magnetic>
+                  <button
+                    onClick={() => scrollToSection("work")}
+                    className="group relative h-14 px-8 bg-transparent border border-foreground text-foreground text-sm font-bold tracking-wider uppercase overflow-hidden hover:text-background transition-colors duration-300"
+                  >
+                    <span className="relative z-10">View Our Work</span>
+                    <div className="absolute inset-0 bg-foreground translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
+                  </button>
+                </Magnetic>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, delay: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
+              className="lg:col-span-4 grid grid-cols-2 gap-4 lg:gap-8 border-l border-border pl-0 lg:pl-8 mt-12 lg:mt-0"
+            >
               <div className="flex flex-col">
-                <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tabular-nums">
+                <AnimatedCounter
+                  target={500}
+                  suffix="+"
+                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-2"
+                  label=""
+                  duration={2}
+                />
+                <span className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
+                  Projects Completed
+                </span>
+              </div>
+              <div className="flex flex-col">
+                <AnimatedCounter
+                  target={350}
+                  suffix="+"
+                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-2"
+                  label=""
+                  duration={2.2}
+                />
+                <span className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
+                  Happy Clients
+                </span>
+              </div>
+              <div className="flex flex-col col-span-2 mt-4 lg:mt-8 pt-4 lg:pt-8 border-t border-border">
+                <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground tabular-nums mb-2">
                   24/7
                 </span>
-                <span className="text-zinc-400 text-[10px] sm:text-xs font-medium tracking-wider uppercase mt-1">
+                <span className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
                   Global Support
                 </span>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </div>
 

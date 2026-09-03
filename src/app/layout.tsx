@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} bg-zinc-950 text-zinc-50 antialiased font-sans selection:bg-white selection:text-black relative min-h-screen`}>
+      <body className={`${inter.className} bg-background text-foreground antialiased font-sans selection:bg-primary selection:text-primary-foreground relative min-h-screen`}>
         <SmoothScroll>
           <div className="print:hidden">
             <WhatsAppButton />
