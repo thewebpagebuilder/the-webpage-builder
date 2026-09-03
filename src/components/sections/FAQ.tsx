@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import { scrollToSection } from "@/lib/scroll";
+import { Magnetic } from "../ui/Magnetic";
 
 const FAQS = [
   {
@@ -47,7 +48,7 @@ export function FAQ() {
   };
 
   return (
-    <section className="py-20 sm:py-24 md:py-32 bg-zinc-950 border-t border-zinc-900 relative" id="faq">
+    <section className="py-20 sm:py-24 md:py-32 bg-background border-t border-border relative" id="faq">
       <div className="container px-5 sm:px-6 mx-auto max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -56,16 +57,16 @@ export function FAQ() {
           transition={{ duration: 0.7 }}
           className="mb-10 sm:mb-12 md:mb-16 text-center"
         >
-          <span className="text-zinc-400 font-mono text-xs sm:text-sm block mb-3 sm:mb-4">/ Common Questions</span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-3 sm:mb-4 px-2">
-            Everything you need to know.
+          <span className="text-muted-foreground font-mono text-xs sm:text-sm block mb-3 sm:mb-4">/ Common Questions</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground mb-3 sm:mb-4 px-2">
+            Everything you need to <span className="text-primary">know.</span>
           </h2>
-          <p className="text-zinc-400 text-base sm:text-lg font-light max-w-xl mx-auto px-2">
+          <p className="text-muted-foreground text-base sm:text-lg font-light max-w-xl mx-auto px-2">
             We've answered the questions every potential client asks. If yours isn't here, just reach out.
           </p>
         </motion.div>
 
-        <div className="space-y-0 divide-y divide-zinc-800/50">
+        <div className="space-y-0 divide-y divide-border">
           {FAQS.map((faq, index) => (
             <motion.div
               key={index}
@@ -78,10 +79,10 @@ export function FAQ() {
                 onClick={() => toggle(index)}
                 className="w-full flex items-start justify-between py-5 sm:py-6 text-left group cursor-pointer gap-4"
               >
-                <span className={`text-sm sm:text-base md:text-lg font-medium pr-2 transition-colors ${openIndex === index ? "text-white" : "text-zinc-300 group-hover:text-white"}`}>
+                <span className={`text-sm sm:text-base md:text-lg font-medium pr-2 transition-colors ${openIndex === index ? "text-primary" : "text-foreground group-hover:text-primary"}`}>
                   {faq.question}
                 </span>
-                <div className={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full border flex items-center justify-center transition-all ${openIndex === index ? "bg-white text-black border-white" : "border-zinc-700 text-zinc-400 group-hover:border-zinc-500 group-hover:text-zinc-300"}`}>
+                <div className={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full border flex items-center justify-center transition-all ${openIndex === index ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground group-hover:border-primary/50 group-hover:text-primary"}`}>
                   {openIndex === index ? <Minus size={12} className="sm:w-[14px] sm:h-[14px]" /> : <Plus size={12} className="sm:w-[14px] sm:h-[14px]" />}
                 </div>
               </button>
@@ -94,7 +95,7 @@ export function FAQ() {
                     transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     className="overflow-hidden"
                   >
-                    <p className="text-zinc-400 leading-relaxed pb-5 sm:pb-6 text-sm sm:text-base font-light max-w-2xl">
+                    <p className="text-muted-foreground leading-relaxed pb-5 sm:pb-6 text-sm sm:text-base font-light max-w-2xl">
                       {faq.answer}
                     </p>
                   </motion.div>
@@ -111,14 +112,16 @@ export function FAQ() {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="mt-10 sm:mt-12 md:mt-14 text-center"
         >
-          <p className="text-zinc-400 text-xs sm:text-sm mb-3 sm:mb-4">Still have questions?</p>
-          <button
-            onClick={() => scrollToSection("contact")}
-            className="h-11 sm:h-12 px-6 sm:px-8 rounded-full bg-zinc-900 border border-zinc-800 text-white text-xs sm:text-sm font-medium hover:bg-zinc-800 transition-colors inline-flex items-center gap-2"
-          >
-            Let's Talk — No Commitment
-            <span className="text-zinc-400">→</span>
-          </button>
+          <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4">Still have questions?</p>
+          <Magnetic>
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="h-11 sm:h-12 px-6 sm:px-8 rounded-full bg-card border border-border text-foreground text-xs sm:text-sm font-medium hover:bg-secondary transition-colors inline-flex items-center gap-2"
+            >
+              Let's Talk — No Commitment
+              <span className="text-primary">→</span>
+            </button>
+          </Magnetic>
         </motion.div>
       </div>
     </section>

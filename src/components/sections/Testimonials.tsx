@@ -76,26 +76,26 @@ export function Testimonials() {
   ];
 
   return (
-    <section className="py-20 sm:py-24 md:py-32 bg-zinc-950 border-t border-zinc-900 overflow-hidden relative">
+    <section className="py-20 sm:py-24 md:py-32 bg-background border-t border-border overflow-hidden relative">
       {/* Decorative gradient glow bubbles */}
-      <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-purple-500/[0.03] rounded-full blur-[100px] pointer-events-none animate-pulse-slow" />
-      <div className="absolute top-1/3 right-1/4 translate-x-1/2 -translate-y-1/2 w-[250px] sm:w-[450px] h-[250px] sm:h-[450px] bg-indigo-500/[0.03] rounded-full blur-[100px] pointer-events-none animate-pulse-slow-delayed" />
+      <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-primary/[0.03] rounded-full blur-[100px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute top-1/3 right-1/4 translate-x-1/2 -translate-y-1/2 w-[250px] sm:w-[450px] h-[250px] sm:h-[450px] bg-accent/[0.03] rounded-full blur-[100px] pointer-events-none animate-pulse-slow-delayed" />
 
       {/* Header */}
       <div className="container px-5 sm:px-6 mx-auto mb-12 sm:mb-16 text-center relative z-10">
-        <span className="text-zinc-400 font-mono text-xs sm:text-sm block mb-3 sm:mb-4">/ Client Testimonials</span>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-3 px-2">
-          Trusted by 350+ teams worldwide.
+        <span className="text-muted-foreground font-mono text-xs sm:text-sm block mb-3 sm:mb-4">/ Client Testimonials</span>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-3 px-2">
+          Trusted by <span className="text-primary">350+ teams</span> worldwide.
         </h2>
-        <p className="text-zinc-400 text-base sm:text-lg font-light max-w-lg mx-auto px-2">
+        <p className="text-muted-foreground text-base sm:text-lg font-light max-w-lg mx-auto px-2">
           Real results. Real clients. Real impact on their businesses.
         </p>
       </div>
 
       {/* Row 1 — scrolls left */}
       <div className="relative mb-4 sm:mb-6 z-10">
-        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-zinc-950 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-zinc-950 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
         <motion.div
           className="flex flex-row w-max py-4"
           animate={{ x: ["0%", "-50%"] }}
@@ -120,8 +120,8 @@ export function Testimonials() {
 
       {/* Row 2 — scrolls right */}
       <div className="relative z-10">
-        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-zinc-950 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-zinc-950 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
         <motion.div
           className="flex flex-row w-max py-4"
           animate={{ x: ["-50%", "0%"] }}
@@ -150,17 +150,17 @@ export function Testimonials() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 0.2, duration: 0.6 }}
-        className="container px-5 sm:px-6 mx-auto mt-12 sm:mt-16 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-zinc-400 text-[10px] sm:text-xs font-medium"
+        className="container px-5 sm:px-6 mx-auto mt-12 sm:mt-16 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-muted-foreground text-[10px] sm:text-xs font-medium"
       >
         <span className="flex items-center gap-1.5">
-          <Star size={11} className="text-yellow-400 fill-yellow-400 sm:w-3 sm:h-3" />
+          <Star size={11} className="text-accent fill-accent sm:w-3 sm:h-3" />
           <span>4.9/5 avg. rating</span>
         </span>
-        <span className="text-zinc-800">·</span>
+        <span className="text-border">·</span>
         <span>350+ happy clients</span>
-        <span className="text-zinc-800">·</span>
+        <span className="text-border">·</span>
         <span>5+ years in business</span>
-        <span className="text-zinc-800">·</span>
+        <span className="text-border">·</span>
         <span>NDA-ready on every project</span>
       </motion.div>
     </section>
@@ -169,27 +169,27 @@ export function Testimonials() {
 
 function TestimonialCard({ testimonial }: { testimonial: typeof TESTIMONIALS[number] }) {
   return (
-    <div className="w-[280px] sm:w-[340px] md:w-[380px] flex-shrink-0 p-5 sm:p-6 md:p-7 rounded-xl sm:rounded-2xl bg-zinc-900/40 border border-zinc-800/50 hover:border-zinc-700/50 whitespace-normal transition-colors cursor-default group">
+    <div className="w-[280px] sm:w-[340px] md:w-[380px] flex-shrink-0 p-5 sm:p-6 md:p-7 rounded-xl sm:rounded-2xl bg-card border border-border hover:border-primary/20 whitespace-normal transition-colors cursor-default group">
       {/* Stars */}
       <div className="flex gap-0.5 mb-3 sm:mb-5">
         {Array.from({ length: testimonial.rating }).map((_, si) => (
-          <Star key={si} size={11} className="text-yellow-400 fill-yellow-400 sm:w-[13px] sm:h-[13px]" />
+          <Star key={si} size={11} className="text-accent fill-accent sm:w-[13px] sm:h-[13px]" />
         ))}
       </div>
 
-      <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed mb-4 sm:mb-6 line-clamp-5">
+      <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed mb-4 sm:mb-6 line-clamp-5">
         "{testimonial.quote}"
       </p>
 
-      <div className="flex items-center gap-2.5 sm:gap-3 pt-3 sm:pt-4 border-t border-zinc-800/50">
-        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-zinc-800 flex items-center justify-center text-[10px] sm:text-xs font-bold text-zinc-300 group-hover:bg-white group-hover:text-black transition-colors flex-shrink-0">
+      <div className="flex items-center gap-2.5 sm:gap-3 pt-3 sm:pt-4 border-t border-border">
+        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary/10 flex items-center justify-center text-[10px] sm:text-xs font-bold text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors flex-shrink-0">
           {testimonial.initials}
         </div>
         <div className="min-w-0">
-          <p className="text-white font-medium text-xs sm:text-sm truncate">
+          <p className="text-foreground font-medium text-xs sm:text-sm truncate">
             {testimonial.author}
           </p>
-          <p className="text-zinc-400 text-[10px] sm:text-xs truncate">
+          <p className="text-muted-foreground text-[10px] sm:text-xs truncate">
             {testimonial.role}
           </p>
         </div>

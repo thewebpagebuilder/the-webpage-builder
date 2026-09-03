@@ -13,21 +13,21 @@ function ShiftingLights() {
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
     
-    // Light 1 orbits
+    // Light 1 — Emerald Teal orbit
     if (light1Ref.current) {
       light1Ref.current.position.x = Math.sin(time * 0.7) * 4;
       light1Ref.current.position.y = Math.cos(time * 0.8) * 4;
       light1Ref.current.position.z = Math.sin(time * 0.5) * 3 + 2;
     }
 
-    // Light 2 orbits
+    // Light 2 — Warm Gold orbit
     if (light2Ref.current) {
       light2Ref.current.position.x = Math.cos(time * 0.6) * -4;
       light2Ref.current.position.y = Math.sin(time * 0.9) * 4;
       light2Ref.current.position.z = Math.cos(time * 0.4) * 3 + 2;
     }
 
-    // Light 3 orbits
+    // Light 3 — Cool blue accent orbit
     if (light3Ref.current) {
       light3Ref.current.position.x = Math.sin(time * 0.5) * 4;
       light3Ref.current.position.y = Math.sin(time * 0.7) * -4;
@@ -37,9 +37,9 @@ function ShiftingLights() {
 
   return (
     <>
-      <pointLight ref={light1Ref} color="#06b6d4" intensity={12} distance={12} decay={1.5} />
-      <pointLight ref={light2Ref} color="#8b5cf6" intensity={12} distance={12} decay={1.5} />
-      <pointLight ref={light3Ref} color="#ec4899" intensity={8} distance={10} decay={1.5} />
+      <pointLight ref={light1Ref} color="#2dd4a8" intensity={12} distance={12} decay={1.5} />
+      <pointLight ref={light2Ref} color="#d4a82d" intensity={12} distance={12} decay={1.5} />
+      <pointLight ref={light3Ref} color="#6b8cce" intensity={8} distance={10} decay={1.5} />
     </>
   );
 }
@@ -65,7 +65,7 @@ function MorphingObject() {
       >
         <icosahedronGeometry args={[2, 64]} />
         <MeshDistortMaterial
-          color={hovered ? "#3f3f46" : "#18181b"}
+          color={hovered ? "#1a2a3a" : "#0d1520"}
           envMapIntensity={0.5}
           clearcoat={1}
           clearcoatRoughness={0.05}
@@ -87,20 +87,20 @@ function MobileFallback() {
         <div
           className="absolute inset-0 rounded-full opacity-50 blur-3xl animate-pulse"
           style={{
-            background: "radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)",
+            background: "radial-gradient(circle, hsl(168 76% 42% / 0.3) 0%, transparent 70%)",
             animationDuration: "4s",
           }}
         />
         <div
           className="absolute inset-8 rounded-full opacity-30 blur-2xl"
           style={{
-            background: "radial-gradient(circle, rgba(161,161,170,0.4) 0%, transparent 70%)",
+            background: "radial-gradient(circle, hsl(42 85% 55% / 0.3) 0%, transparent 70%)",
             transform: "scale(1)",
             animation: "pulse 6s ease-in-out infinite",
           }}
         />
         <div
-          className="absolute inset-0 rounded-full border border-zinc-700/30"
+          className="absolute inset-0 rounded-full border border-border/30"
           style={{
             animation: "spin 20s linear infinite",
           }}

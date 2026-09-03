@@ -1,65 +1,102 @@
 "use client";
-
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-  const cursorRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState({ x: -100, y: -100 });
+  const [trailPos, setTrailPos] = useState({ x: -100, y: -100 });
+  const [hovered, setHovered] = useState(false);
+  const [clicking, setClicking] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Only run on desktop
-    if (window.matchMedia("(max-width: 768px)").matches) return;
+    setMounted(true);
 
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+    // Only show on non-touch
+    if (window.matchMedia("(hover: none)").matches) return;
+
+    let animId: number;
+    let targetX = -100;
+    let targetY = -100;
+
+    const onMove = (e: MouseEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      setPos({ x: e.clientX, y: e.clientY });
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.tagName.toLowerCase() === "a" ||
-        target.tagName.toLowerCase() === "button" ||
-        target.closest("a") ||
-        target.closest("button") ||
-        target.dataset.cursor === "hover"
-      ) {
-        setIsHovered(true);
-      } else {
-        setIsHovered(false);
-      }
+    // Smooth trail via RAF
+    const animateTrail = () => {
+      setTrailPos(prev => ({
+        x: prev.x + (targetX - prev.x) * 0.12,
+        y: prev.y + (targetY - prev.y) * 0.12,
+      }));
+      animId = requestAnimationFrame(animateTrail);
+    };
+    animId = requestAnimationFrame(animateTrail);
+
+    const onOver = (e: MouseEvent) => {
+      const el = e.target as HTMLElement;
+      setHovered(!!(
+        el.tagName === "A" || el.tagName === "BUTTON" ||
+        el.closest("a") || el.closest("button") ||
+        el.dataset.cursor === "hover"
+      ));
     };
 
-    window.addEventListener("mousemove", updateMousePosition);
-    window.addEventListener("mouseover", handleMouseOver);
+    const onDown = () => setClicking(true);
+    const onUp = () => setClicking(false);
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mouseover", onOver, { passive: true });
+    window.addEventListener("mousedown", onDown);
+    window.addEventListener("mouseup", onUp);
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
-      window.removeEventListener("mouseover", handleMouseOver);
+      cancelAnimationFrame(animId);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseover", onOver);
+      window.removeEventListener("mousedown", onDown);
+      window.removeEventListener("mouseup", onUp);
     };
   }, []);
 
-  if (typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches) {
-    return null; // Don't render on mobile
-  }
+  if (!mounted) return null;
 
   return (
-    <motion.div
-      ref={cursorRef}
-      className="fixed top-0 left-0 w-4 h-4 bg-primary rounded-full pointer-events-none z-[9999] mix-blend-difference hidden md:block"
-      animate={{
-        x: mousePosition.x - (isHovered ? 24 : 8),
-        y: mousePosition.y - (isHovered ? 24 : 8),
-        scale: isHovered ? 3 : 1,
-        backgroundColor: isHovered ? "var(--color-primary)" : "var(--color-primary)",
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 150,
-        damping: 15,
-        mass: 0.1,
-      }}
-    />
+    <>
+      {/* Dot cursor — snaps immediately */}
+      <div
+        className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:block mix-blend-difference"
+        style={{ transform: `translate(${pos.x - 4}px, ${pos.y - 4}px)` }}
+      >
+        <div
+          className="rounded-full bg-foreground transition-all duration-100"
+          style={{
+            width: clicking ? "6px" : "8px",
+            height: clicking ? "6px" : "8px",
+          }}
+        />
+      </div>
+
+      {/* Ring cursor — trails behind */}
+      <div
+        className="fixed top-0 left-0 pointer-events-none z-[9998] hidden md:block"
+        style={{
+          transform: `translate(${trailPos.x - (hovered ? 20 : 16)}px, ${trailPos.y - (hovered ? 20 : 16)}px)`,
+        }}
+      >
+        <div
+          className="rounded-full border transition-all duration-200"
+          style={{
+            width: hovered ? "40px" : "32px",
+            height: hovered ? "40px" : "32px",
+            borderColor: "hsl(168 76% 42%)",
+            opacity: hovered ? 0.8 : 0.5,
+            backgroundColor: hovered ? "hsl(168 76% 42% / 0.1)" : "transparent",
+          }}
+        />
+      </div>
+    </>
   );
 }

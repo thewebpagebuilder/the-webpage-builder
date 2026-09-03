@@ -9,10 +9,10 @@ import { scrollToSection } from "@/lib/scroll";
 export function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
-      {/* Ambient background glow bubbles */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] bg-cyan-500/[0.04] rounded-full blur-[120px] pointer-events-none animate-float-glow" />
-      <div className="absolute bottom-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-purple-500/[0.04] rounded-full blur-[100px] pointer-events-none animate-float-glow-alt" />
-      <div className="absolute top-1/2 right-1/4 translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[450px] h-[280px] sm:h-[450px] bg-indigo-500/[0.03] rounded-full blur-[100px] pointer-events-none animate-pulse-slow" />
+      {/* Ambient background glow bubbles — new teal/gold palette */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] bg-[hsl(168_76%_42%/0.04)] rounded-full blur-[120px] pointer-events-none animate-float-glow" />
+      <div className="absolute bottom-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-[hsl(42_85%_55%/0.04)] rounded-full blur-[100px] pointer-events-none animate-float-glow-alt" />
+      <div className="absolute top-1/2 right-1/4 translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[450px] h-[280px] sm:h-[450px] bg-[hsl(220_60%_50%/0.03)] rounded-full blur-[100px] pointer-events-none animate-pulse-slow" />
 
       <Hero3D />
 
@@ -38,7 +38,7 @@ export function Hero() {
                 }}
                 className="overflow-hidden mb-6"
               >
-                <span className="inline-block py-2 px-4 border border-border text-foreground text-xs sm:text-sm font-bold uppercase tracking-[0.2em]">
+                <span className="inline-block py-2 px-4 border border-border text-muted-foreground text-xs sm:text-sm font-bold uppercase tracking-[0.2em]">
                   The Webpage Builder
                 </span>
               </motion.div>
@@ -84,13 +84,12 @@ export function Hero() {
                 <Magnetic>
                   <button
                     onClick={() => scrollToSection("contact")}
-                    className="group relative h-14 px-8 bg-foreground text-background text-sm font-bold tracking-wider uppercase overflow-hidden"
+                    className="group relative h-14 px-8 bg-primary text-primary-foreground text-sm font-bold tracking-wider uppercase overflow-hidden animate-glow-pulse"
                   >
                     <span className="relative z-10 flex items-center gap-2">
                       Start a Project
                       <span className="group-hover:translate-x-1 transition-transform">→</span>
                     </span>
-                    <div className="absolute inset-0 bg-primary translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
                   </button>
                 </Magnetic>
                 <Magnetic>
@@ -136,7 +135,7 @@ export function Hero() {
                 </span>
               </div>
               <div className="flex flex-col col-span-2 mt-4 lg:mt-8 pt-4 lg:pt-8 border-t border-border">
-                <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground tabular-nums mb-2">
+                <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-accent tabular-nums mb-2">
                   24/7
                 </span>
                 <span className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
@@ -149,7 +148,7 @@ export function Hero() {
       </div>
 
       {/* Marquee sections */}
-      <div className="w-full relative z-10 border-y border-zinc-900 bg-zinc-950/80 backdrop-blur-sm">
+      <div className="w-full relative z-10 border-y border-border bg-card/80 backdrop-blur-sm">
         <Marquee
           items={[
             "Web Development",
@@ -165,7 +164,7 @@ export function Hero() {
           direction="left"
           variant="hollow"
         />
-        <div className="h-px w-full bg-zinc-900" />
+        <div className="h-px w-full bg-border" />
         <Marquee
           items={[
             "React",

@@ -1,110 +1,128 @@
 "use client";
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowUpRight, Github, Twitter, Linkedin, Instagram } from "lucide-react";
+import { scrollToSection } from "@/lib/scroll";
+
+const SOCIAL_LINKS = [
+  { icon: Twitter, href: "#", label: "Twitter" },
+  { icon: Linkedin, href: "#", label: "LinkedIn" },
+  { icon: Github, href: "#", label: "GitHub" },
+  { icon: Instagram, href: "#", label: "Instagram" },
+];
 
 export function Footer() {
-  const currentYear = new Date().getFullYear();
+  const scrollToTop = () => {
+    const lenis = (window as any).lenis;
+    if (lenis && typeof lenis.scrollTo === "function") {
+      lenis.scrollTo(0, { duration: 1.5 });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   return (
-    <footer className="bg-zinc-950 border-t border-zinc-900 relative overflow-hidden">
-      {/* Top CTA strip */}
-      <div className="border-b border-zinc-900">
-        <div className="container px-5 sm:px-6 mx-auto py-6 sm:py-8 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 text-center md:text-left">
-          <div>
-            <h3 className="text-base sm:text-lg font-bold text-white mb-1">
-              Still thinking about it?
-            </h3>
-            <p className="text-zinc-400 text-xs sm:text-sm">
-              Your competitors are already building. Let's talk.
-            </p>
-          </div>
-          <Link
-            href="/contact"
-            className="h-10 sm:h-11 px-6 sm:px-8 rounded-full bg-white text-black text-xs sm:text-sm font-semibold flex items-center gap-2 hover:bg-zinc-200 transition-all hover:scale-105 active:scale-95 flex-shrink-0"
-          >
-            Book a Call
-            <ArrowRight size={12} className="sm:w-[14px] sm:h-[14px]" />
-          </Link>
-        </div>
+    <footer className="bg-background border-t border-border pt-16 sm:pt-20 md:pt-32 pb-8 sm:pb-10 relative overflow-hidden">
+      {/* Decorative text */}
+      <div className="absolute top-10 left-0 right-0 overflow-hidden flex justify-center opacity-[0.02] pointer-events-none select-none">
+        <h2 className="text-[15vw] font-bold leading-none tracking-tighter whitespace-nowrap text-foreground">
+          DIGITAL FUTURES
+        </h2>
       </div>
 
-      {/* Main footer */}
-      <div className="container px-5 sm:px-6 mx-auto py-12 sm:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-8 mb-12 sm:mb-16">
-          <div className="sm:col-span-2 lg:col-span-2">
-            <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <img src="/logo.webp" alt="Logo" className="w-6 h-6 object-contain" />
-              <h3 className="text-lg sm:text-xl font-bold tracking-tighter text-white">
-                The Webpage Builder<span className="text-zinc-400">.</span>
-              </h3>
-            </div>
-            <p className="text-zinc-400 text-xs sm:text-sm max-w-sm leading-relaxed mb-5 sm:mb-6">
-              Building digital solutions that scale. From AI-powered websites to custom software, mobile apps, and UI/UX design. We build the technology that grows your business.
+      <div className="container px-5 sm:px-6 mx-auto relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16 sm:mb-20 md:mb-32">
+          {/* Brand Col */}
+          <div className="lg:col-span-5">
+            <Link
+              href="/"
+              onClick={(e) => { e.preventDefault(); scrollToTop(); }}
+              className="text-2xl sm:text-3xl font-bold tracking-tighter text-foreground mb-4 sm:mb-6 block"
+            >
+              The Webpage Builder<span className="text-primary">.</span>
+            </Link>
+            <p className="text-muted-foreground text-sm sm:text-base font-light max-w-sm mb-6 sm:mb-8 leading-relaxed">
+              We engineer premium digital experiences for forward-thinking brands and ambitious startups worldwide.
             </p>
-            <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
-              <Link
-                href="/contact"
-                className="text-xs sm:text-sm text-zinc-400 hover:text-white transition-colors underline underline-offset-4 decoration-zinc-700 hover:decoration-white"
-              >
-                Book a Free Call
-              </Link>
-              <span className="text-zinc-800">·</span>
-              <a
-                href="mailto:thewebpagebuilder@gmail.com?subject=Project%20Inquiry"
-                className="text-xs sm:text-sm text-zinc-400 hover:text-white transition-colors underline underline-offset-4 decoration-zinc-700 hover:decoration-white"
-              >
-                Email Us
-              </a>
+            <div className="flex gap-3 sm:gap-4">
+              {SOCIAL_LINKS.map((social, i) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={i}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-300"
+                    aria-label={social.label}
+                  >
+                    <Icon size={16} className="sm:w-[18px] sm:h-[18px]" />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
-          <div>
-            <h4 className="text-zinc-300 font-semibold text-xs sm:text-sm mb-4 sm:mb-5 uppercase tracking-wider">
-              Navigate
-            </h4>
-            <ul className="space-y-2.5 sm:space-y-3">
-              <li><Link href="/portfolio" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Portfolio</Link></li>
-              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Services</Link></li>
-              <li><Link href="/about" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">About</Link></li>
-              <li><Link href="/blog" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Blog</Link></li>
-              <li><Link href="/contact" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Contact</Link></li>
+          {/* Links Col 1 */}
+          <div className="lg:col-span-2 lg:col-start-7">
+            <h4 className="text-foreground font-semibold text-sm mb-4 sm:mb-6 uppercase tracking-wider">Navigation</h4>
+            <ul className="space-y-3 sm:space-y-4">
+              {["Work", "Services", "Process", "Pricing"].map((item) => (
+                <li key={item}>
+                  <button
+                    onClick={() => scrollToSection(item.toLowerCase())}
+                    className="text-muted-foreground text-sm hover:text-primary transition-colors flex items-center gap-1 group"
+                  >
+                    {item}
+                    <ArrowUpRight size={12} className="opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div>
-            <h4 className="text-zinc-300 font-semibold text-xs sm:text-sm mb-4 sm:mb-5 uppercase tracking-wider">
-              Services
-            </h4>
-            <ul className="space-y-2.5 sm:space-y-3">
-              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Web Development</Link></li>
-              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Mobile Apps</Link></li>
-              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">Custom Software</Link></li>
-              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">UI/UX Design</Link></li>
-              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">AI Solutions</Link></li>
-              <li><Link href="/services" className="text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm">SEO & Growth</Link></li>
+          {/* Links Col 2 */}
+          <div className="lg:col-span-2">
+            <h4 className="text-foreground font-semibold text-sm mb-4 sm:mb-6 uppercase tracking-wider">Legal</h4>
+            <ul className="space-y-3 sm:space-y-4">
+              {["Privacy Policy", "Terms of Service", "Cookie Policy", "Sitemap"].map((item) => (
+                <li key={item}>
+                  <Link href="#" className="text-muted-foreground text-sm hover:text-primary transition-colors">
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Col */}
+          <div className="lg:col-span-2 md:col-span-2">
+            <h4 className="text-foreground font-semibold text-sm mb-4 sm:mb-6 uppercase tracking-wider">Contact</h4>
+            <ul className="space-y-3 sm:space-y-4 text-sm text-muted-foreground">
+              <li>
+                <a href="mailto:thewebpagebuilder@gmail.com" className="hover:text-primary transition-colors block break-all">
+                  thewebpagebuilder@gmail.com
+                </a>
+              </li>
+              <li>New Delhi, India</li>
+              <li>Available for global projects</li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="flex flex-col lg:flex-row items-center justify-between pt-6 sm:pt-8 border-t border-zinc-900 gap-4">
-          <div className="flex flex-col md:flex-row items-center gap-3 sm:gap-4 text-center md:text-left">
-            <p className="text-zinc-650 text-[10px] sm:text-xs">
-              © {currentYear} The Webpage Builder. All rights reserved. Made with precision in India.
-            </p>
-            <span className="text-zinc-800 text-xs hidden md:inline">·</span>
-            <div className="flex items-center gap-3">
-              <Link href="/privacy" className="text-zinc-400 hover:text-white transition-colors text-[10px] sm:text-xs">Privacy</Link>
-              <span className="text-zinc-800 text-xs">·</span>
-              <Link href="/terms" className="text-zinc-400 hover:text-white transition-colors text-[10px] sm:text-xs">Terms</Link>
-              <span className="text-zinc-800 text-xs">·</span>
-              <a href="mailto:thewebpagebuilder@gmail.com?subject=Bug%20Report&body=Describe%20the%20bug%20and%20steps%2520to%2520reproduce%3A" className="text-zinc-400 hover:text-white transition-colors text-[10px] sm:text-xs">Report a Bug</a>
-            </div>
-          </div>
-          <div className="flex items-center gap-4 sm:gap-5">
-            <a href="mailto:thewebpagebuilder@gmail.com" className="text-zinc-400 hover:text-zinc-350 transition-colors text-[10px] sm:text-xs">Gmail</a>
-            <a href="https://www.instagram.com/thewebpagebuilder/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-350 transition-colors text-[10px] sm:text-xs">Instagram</a>
-            <a href="https://wa.me/919173251344" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-350 transition-colors text-[10px] sm:text-xs">WhatsApp</a>
+        {/* Bottom Bar */}
+        <div className="pt-6 sm:pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-muted-foreground text-xs sm:text-sm text-center md:text-left">
+            © {new Date().getFullYear()} The Webpage Builder. All rights reserved.
+          </p>
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground font-medium">
+            <span>Designed in</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            <span>Figma</span>
+            <span className="mx-2">·</span>
+            <span>Built with</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+            <span>Next.js</span>
           </div>
         </div>
       </div>

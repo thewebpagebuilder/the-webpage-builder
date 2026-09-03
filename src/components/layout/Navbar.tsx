@@ -78,7 +78,7 @@ export function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
           scrolled
-            ? "bg-zinc-950/90 backdrop-blur-xl border-zinc-800/50 py-3"
+            ? "bg-background/90 backdrop-blur-xl border-border py-3"
             : "bg-transparent border-transparent py-4 sm:py-5",
           !visible && !mobileMenuOpen ? "-translate-y-full" : "translate-y-0"
         )}
@@ -87,12 +87,12 @@ export function Navbar() {
           <Link
             href="/"
             onClick={scrollToTop}
-            className="text-base sm:text-lg font-bold tracking-tighter text-white flex items-center gap-2 relative z-10"
+            className="text-base sm:text-lg font-bold tracking-tighter text-foreground flex items-center gap-2 relative z-10"
           >
-            <img src="/logo.webp" alt="Logo" className="w-8 h-8 object-contain" />
+            <img src="/logo.webp" alt="Logo" className="w-8 h-8 sm:w-9 sm:h-9 object-contain brightness-110 contrast-110" />
             <span className="hidden xs:inline sm:inline">The Webpage Builder</span>
             <span className="xs:hidden sm:hidden">TWB</span>
-            <span className="text-zinc-400">.</span>
+            <span className="text-primary">.</span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8">
@@ -101,7 +101,7 @@ export function Navbar() {
                 key={link.to}
                 href={link.to}
                 onClick={isHome && link.id ? handleSectionClick(link.id) : undefined}
-                className="text-sm text-zinc-400 hover:text-white transition-colors"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 {link.label}
               </Link>
@@ -111,7 +111,7 @@ export function Navbar() {
           <div className="flex items-center gap-2 sm:gap-3 relative z-10">
             <Link
               href="/contact"
-              className="hidden sm:flex h-10 px-5 md:px-6 rounded-full items-center gap-2 text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95 bg-white text-black hover:bg-zinc-200"
+              className="hidden sm:flex h-10 px-5 md:px-6 rounded-full items-center gap-2 text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95 bg-primary text-primary-foreground hover:opacity-90"
             >
               Book a Call
               <ArrowRight size={14} />
@@ -119,7 +119,7 @@ export function Navbar() {
             {/* Mobile CTA - simplified */}
             <Link
               href="/contact"
-              className="sm:hidden h-9 px-4 rounded-full bg-white text-black text-xs font-semibold flex items-center gap-1.5 hover:bg-zinc-200 transition-colors"
+              className="sm:hidden h-9 px-4 rounded-full bg-primary text-primary-foreground text-xs font-semibold flex items-center gap-1.5 hover:opacity-90 transition-colors"
             >
               Contact
               <ArrowRight size={11} />
@@ -128,7 +128,7 @@ export function Navbar() {
             {/* Hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden w-10 h-10 rounded-full border border-zinc-800 bg-zinc-900/80 backdrop-blur-sm flex items-center justify-center text-white hover:bg-zinc-800 transition-colors"
+              className="lg:hidden w-10 h-10 rounded-full border border-border bg-card/80 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-secondary transition-colors"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
@@ -148,7 +148,7 @@ export function Navbar() {
             className="fixed inset-0 z-40 lg:hidden"
           >
             <div
-              className="absolute inset-0 bg-zinc-950/95 backdrop-blur-xl"
+              className="absolute inset-0 bg-background/95 backdrop-blur-xl"
               onClick={() => setMobileMenuOpen(false)}
             />
             <motion.nav
@@ -169,7 +169,7 @@ export function Navbar() {
                     <Link
                       href={link.to}
                       onClick={handleLinkClick}
-                      className="text-3xl sm:text-4xl font-bold text-white hover:text-zinc-400 transition-colors py-3 border-b border-zinc-900 block"
+                      className="text-3xl sm:text-4xl font-bold text-foreground hover:text-primary transition-colors py-3 border-b border-border block"
                     >
                       {link.label}
                     </Link>
@@ -183,7 +183,7 @@ export function Navbar() {
                   <Link
                     href="/contact"
                     onClick={handleLinkClick}
-                    className="text-3xl sm:text-4xl font-bold text-zinc-400 hover:text-zinc-400 transition-colors py-3 border-b border-zinc-900 block"
+                    className="text-3xl sm:text-4xl font-bold text-muted-foreground hover:text-primary transition-colors py-3 border-b border-border block"
                   >
                     Contact
                   </Link>
@@ -199,13 +199,13 @@ export function Navbar() {
                 <Link
                   href="/contact"
                   onClick={handleLinkClick}
-                  className="h-14 rounded-full bg-white text-black font-medium flex items-center justify-center gap-2 hover:bg-zinc-200 transition-colors text-base"
+                  className="h-14 rounded-full bg-primary text-primary-foreground font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-colors text-base"
                 >
                   Book a Free Call
                   <ArrowRight size={16} />
                 </Link>
-                <div className="flex flex-col gap-2 text-sm text-zinc-400">
-                  <a href="mailto:thewebpagebuilder@gmail.com" className="hover:text-white transition-colors">
+                <div className="flex flex-col gap-2 text-sm text-muted-foreground">
+                  <a href="mailto:thewebpagebuilder@gmail.com" className="hover:text-foreground transition-colors">
                     thewebpagebuilder@gmail.com
                   </a>
                   <p>24/7 Global Support · 5+ Years</p>
