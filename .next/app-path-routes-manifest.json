@@ -1,0 +1,19 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/about/page": "/about",
+  "/admin/invoice/[id]/page": "/admin/invoice/[id]",
+  "/admin/invoice/custom/page": "/admin/invoice/custom",
+  "/admin/login/page": "/admin/login",
+  "/admin/page": "/admin",
+  "/admin/reset-password/page": "/admin/reset-password",
+  "/admin/setup/page": "/admin/setup",
+  "/blog/page": "/blog",
+  "/contact/page": "/contact",
+  "/demos/page": "/demos",
+  "/page": "/",
+  "/portfolio/page": "/portfolio",
+  "/privacy/page": "/privacy",
+  "/services/page": "/services",
+  "/terms/page": "/terms"
+}

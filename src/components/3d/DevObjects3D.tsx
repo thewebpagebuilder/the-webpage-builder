@@ -1,5 +1,5 @@
 "use client";
-import { useRef, Suspense, useEffect, useState, useMemo } from "react";
+import { useRef, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
@@ -256,7 +256,7 @@ export function ScatteredDevObjects() {
 }
 
 // ===== Kept: Original concentrated section version =====
-function DevObjectsScene({ mouseX, mouseY }: { mouseX: number; mouseY: number }) {
+function DevObjectsScene() {
   return (
     <>
       <ambientLight intensity={0.3} />
@@ -282,17 +282,6 @@ function DevObjectsScene({ mouseX, mouseY }: { mouseX: number; mouseY: number })
 
 export function DevObjects3D() {
   const isMobile = useIsMobile();
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMouseX((e.clientX / window.innerWidth - 0.5) * 2);
-      setMouseY((e.clientY / window.innerHeight - 0.5) * 2);
-    };
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   if (isMobile) return null;
 
@@ -300,7 +289,7 @@ export function DevObjects3D() {
     <div className="h-[380px] sm:h-[450px] w-full">
       <Canvas camera={{ position: [0, 0, 7], fov: 50 }} dpr={[1, 1.5]}>
         <Suspense fallback={null}>
-          <DevObjectsScene mouseX={mouseX} mouseY={mouseY} />
+          <DevObjectsScene />
         </Suspense>
       </Canvas>
     </div>
