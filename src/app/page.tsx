@@ -4,7 +4,7 @@ import { FeaturedWork } from "@/components/sections/FeaturedWork";
 import { Services } from "@/components/sections/Services";
 import { FloatingCoderSection } from "@/components/3d/FloatingCoder";
 import { Process } from "@/components/sections/Process";
-import { DevObjects3D, ScatteredDevObjects } from "@/components/3d/DevObjects3D";
+import { DevObjects3D } from "@/components/3d/DevObjects3D";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { GetQuotation } from "@/components/sections/GetQuotation";
 import { FreeAudit } from "@/components/sections/FreeAudit";
@@ -19,8 +19,6 @@ import { Contact } from "@/components/sections/Contact";
 export default function HomePage() {
   return (
     <>
-      {/* 🆕 Scattered 3D dev objects floating across the ENTIRE page background */}
-      <ScatteredDevObjects />
 
       {/* 1. Hero — now with 3D Floating Coder embedded on the right */}
       <Hero />
@@ -33,6 +31,9 @@ export default function HomePage() {
 
       {/* 4. Services accordion */}
       <Services />
+
+      {/* Scattered inline 3D Dev Objects */}
+      <DevObjects3D />
 
       {/* 5. 3D Cartoon Coder — standalone section with text */}
       <FloatingCoderSection />
@@ -51,6 +52,9 @@ export default function HomePage() {
 
       {/* 10. Free Audit CTA (with form modal) */}
       <FreeAudit />
+
+      {/* Scattered inline 3D Dev Objects */}
+      <DevObjects3D />
 
       {/* 11. Testimonials marquee */}
       <Testimonials />

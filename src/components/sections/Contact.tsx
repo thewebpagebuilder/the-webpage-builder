@@ -108,9 +108,6 @@ export function Contact() {
     setFormData({});
   };
 
-  const scrollToForm = () => {
-    formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-  };
 
   const daysInMonth = getDaysInMonth(viewYear, viewMonth);
   const firstDay = getFirstDayOfMonth(viewYear, viewMonth);
@@ -226,20 +223,14 @@ export function Contact() {
                 <Mail size={12} className="sm:w-[14px] sm:h-[14px]" />
                 thewebpagebuilder@gmail.com
               </button>
-              <button
-                onClick={scrollToForm}
+              <a
+                href="tel:+919173251344"
                 className="flex items-center gap-2 text-xs sm:text-sm text-zinc-400 hover:text-white transition-colors text-left"
               >
                 <Phone size={12} className="sm:w-[14px] sm:h-[14px]" />
-                Schedule a Call
-              </button>
-              <a
-                href="/demos"
-                className="flex items-center gap-2 text-xs sm:text-sm text-zinc-400 hover:text-white transition-colors text-left"
-              >
-                <Globe size={12} className="sm:w-[14px] sm:h-[14px]" />
-                View Demo Projects
+                +91 9173251344
               </a>
+
             </div>
           </motion.div>
 

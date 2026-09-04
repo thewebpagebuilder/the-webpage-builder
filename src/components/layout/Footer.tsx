@@ -12,8 +12,8 @@ const LinkedinIcon = (props: any) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
 );
 
-const GithubIcon = (props: any) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+const WhatsappIcon = (props: any) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.06-.3-.15-1.265-.46-2.411-1.485-.893-.798-1.497-1.782-1.672-2.083-.173-.301-.018-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.098-.202.049-.379-.025-.529-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.195 2.105 3.195 5.1 4.485.714.3 1.27.48 1.704.629.714.227 1.365.195 1.88.121.574-.091 1.767-.721 2.016-1.426.255-.705.255-1.29.18-1.425-.074-.135-.273-.225-.573-.375zM12.015 20.5H12a8.5 8.5 0 1 1 8.5-8.5c0 4.7-3.8 8.5-8.485 8.5zM12 2C6.48 2 2 6.48 2 12c0 2.19.71 4.23 1.9 5.86L2.6 22l4.28-1.16C8.42 21.57 10.15 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
 );
 
 const InstagramIcon = (props: any) => (
@@ -23,7 +23,7 @@ const InstagramIcon = (props: any) => (
 const SOCIAL_LINKS = [
   { icon: TwitterIcon, href: "https://twitter.com/thewebpagebuilder", label: "Twitter" },
   { icon: LinkedinIcon, href: "https://linkedin.com/company/thewebpagebuilder", label: "LinkedIn" },
-  { icon: GithubIcon, href: "https://github.com/thewebpagebuilder", label: "GitHub" },
+  { icon: WhatsappIcon, href: "https://wa.me/919173251344", label: "WhatsApp" },
   { icon: InstagramIcon, href: "https://instagram.com/thewebpagebuilder", label: "Instagram" },
 ];
 
@@ -120,7 +120,13 @@ export function Footer() {
                   thewebpagebuilder@gmail.com
                 </a>
               </li>
-              <li>Silvassa & Nashik</li>
+              <li>
+                <a href="tel:+919173251344" className="hover:text-primary transition-colors block break-all">
+                  +91 9173251344
+                </a>
+              </li>
+              <li>Nashik, Maharashtra, India</li>
+              <li>Silvassa, Dadra and Nagar Haveli, India</li>
               <li>Available for global projects</li>
             </ul>
           </div>

@@ -10,7 +10,6 @@ import { CookieConsent } from "@/components/ui/CookieConsent";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { PageLoader } from "@/components/ui/PageLoader";
-import { PageCurtain } from "@/components/ui/PageTransition";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -50,8 +49,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-background text-foreground antialiased font-sans selection:bg-primary selection:text-primary-foreground relative min-h-screen grain-overlay`}>
         {/* Branded loading screen — only on first visit per session */}
         <PageLoader />
-        {/* Teal curtain wipe on each page navigation */}
-        <PageCurtain />
+
         <SmoothScroll>
           <ScrollProgress />
           <div className="print:hidden">
