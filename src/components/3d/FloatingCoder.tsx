@@ -61,6 +61,18 @@ function CoderCharacter({ mouseX, mouseY }: { mouseX: number; mouseY: number }) 
         </mesh>
       ))}
 
+      {/* Coder Legs */}
+      <group position={[0, -0.75, 0.15]}>
+        {/* Left leg */}
+        <RoundedBox args={[0.22, 0.22, 0.5]} radius={0.04} smoothness={4} position={[-0.18, 0, 0.25]}>
+          <meshStandardMaterial color="#111827" />
+        </RoundedBox>
+        {/* Right leg */}
+        <RoundedBox args={[0.22, 0.22, 0.5]} radius={0.04} smoothness={4} position={[0.18, 0, 0.25]}>
+          <meshStandardMaterial color="#111827" />
+        </RoundedBox>
+      </group>
+
       {/* Body / Hoodie */}
       <RoundedBox args={[0.75, 1.0, 0.5]} radius={0.04} smoothness={4} position={[0, -0.45, 0]}>
   <meshStandardMaterial color="#162033" metalness={0.2} roughness={0.7} />
@@ -177,8 +189,13 @@ function CoderCharacter({ mouseX, mouseY }: { mouseX: number; mouseY: number }) 
 </RoundedBox>
       </group>
 
+      {/* Desk */}
+      <RoundedBox args={[3.2, 0.05, 1.2]} radius={0.01} smoothness={4} position={[0, -0.875, 0.5]}>
+        <meshStandardMaterial color="#2d2d2d" metalness={0.1} roughness={0.9} />
+      </RoundedBox>
+
       {/* Laptop */}
-      <group position={[0, -0.8, 0.55]}>
+      <group position={[0, -0.83, 0.55]} rotation={[0, Math.PI, 0]}>
         {/* Laptop base */}
         <RoundedBox args={[1.0, 0.04, 0.65]} radius={0.04} smoothness={4} rotation={[-0.15, 0, 0]}>
   <meshStandardMaterial color="#1a1a2e" metalness={0.9} roughness={0.1} />
@@ -224,7 +241,7 @@ function CoderCharacter({ mouseX, mouseY }: { mouseX: number; mouseY: number }) 
       </group>
 
       {/* Coffee mug */}
-      <group position={[0.75, -0.85, 0.55]}>
+      <group position={[0.75, -0.77, 0.55]}>
         <mesh>
           <cylinderGeometry args={[0.07, 0.06, 0.16, 8]} />
           <meshStandardMaterial color="#e8e2d8" roughness={0.9} />
@@ -241,7 +258,7 @@ function CoderCharacter({ mouseX, mouseY }: { mouseX: number; mouseY: number }) 
       </group>
 
       {/* Plant pot */}
-      <group position={[-0.8, -0.85, 0.5]}>
+      <group position={[-0.8, -0.78, 0.5]}>
         <mesh>
           <cylinderGeometry args={[0.08, 0.06, 0.14, 8]} />
           <meshStandardMaterial color="#d4a574" roughness={0.9} />
