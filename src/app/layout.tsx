@@ -14,11 +14,11 @@ import { PageLoader } from "@/components/ui/PageLoader";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Premium 3D Web Development & Custom AI Software Agency | The Webpage Builder",
+  title: "The Webpage Builder",
   description: "Global agency specializing in premium 3D web experiences, Three.js, React applications, and enterprise AI software. We engineer digital solutions that scale worldwide.",
   keywords: "premium 3D web development, custom AI software agency, React development company, Three.js agency, enterprise web apps, top web development agency",
   openGraph: {
-    title: "The Webpage Builder — Premium 3D Web & AI Software Agency",
+    title: "The Webpage Builder",
     description: "We engineer extraordinary digital experiences. Three.js, React, AI/ML, mobile. 350+ clients. 500+ projects.",
     type: "website",
     locale: "en_IN",
@@ -33,9 +33,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Webpage Builder — Premium 3D Web & AI Agency",
+    title: "The Webpage Builder",
     description: "We engineer extraordinary digital experiences. 350+ clients worldwide.",
     images: ["/og-image.png"],
+  },
+  icons: {
+    icon: "/logo.webp",
   },
 };
 
