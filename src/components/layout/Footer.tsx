@@ -21,10 +21,10 @@ const InstagramIcon = (props: any) => (
 );
 
 const SOCIAL_LINKS = [
-  { icon: TwitterIcon, href: "#", label: "Twitter" },
-  { icon: LinkedinIcon, href: "#", label: "LinkedIn" },
-  { icon: GithubIcon, href: "#", label: "GitHub" },
-  { icon: InstagramIcon, href: "#", label: "Instagram" },
+  { icon: TwitterIcon, href: "https://twitter.com/thewebpagebuilder", label: "Twitter" },
+  { icon: LinkedinIcon, href: "https://linkedin.com/company/thewebpagebuilder", label: "LinkedIn" },
+  { icon: GithubIcon, href: "https://github.com/thewebpagebuilder", label: "GitHub" },
+  { icon: InstagramIcon, href: "https://instagram.com/thewebpagebuilder", label: "Instagram" },
 ];
 
 export function Footer() {
@@ -120,7 +120,7 @@ export function Footer() {
                   thewebpagebuilder@gmail.com
                 </a>
               </li>
-              <li>New Delhi, India</li>
+              <li>Nashik</li>
               <li>Available for global projects</li>
             </ul>
           </div>
@@ -131,15 +131,7 @@ export function Footer() {
           <p className="text-muted-foreground text-xs sm:text-sm text-center md:text-left">
             © {new Date().getFullYear()} The Webpage Builder. All rights reserved.
           </p>
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground font-medium">
-            <span>Designed in</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-            <span>Figma</span>
-            <span className="mx-2">·</span>
-            <span>Built with</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span>Next.js</span>
-          </div>
+
         </div>
       </div>
     </footer>
