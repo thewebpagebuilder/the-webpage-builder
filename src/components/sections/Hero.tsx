@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Hero3D } from "../3d/Hero3D";
+import { HeroFloatingCoder } from "../3d/FloatingCoder";
 import { AnimatedCounter } from "../ui/AnimatedCounter";
 import { Marquee } from "../ui/Marquee";
 import { Magnetic } from "../ui/Magnetic";
@@ -18,9 +19,10 @@ export function Hero() {
 
       <div className="container relative z-10 px-5 sm:px-6 mx-auto flex-1 flex items-center justify-center py-16 sm:py-20">
         <div className="max-w-7xl mx-auto w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* Left: Hero text + stats */}
             <motion.div
-              className="lg:col-span-8"
+              className="order-2 lg:order-1"
               initial="hidden"
               animate="visible"
               variants={{
@@ -79,7 +81,7 @@ export function Hero() {
                   hidden: { opacity: 0, y: 30 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
                 }}
-                className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
+                className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-12"
               >
                 <Magnetic>
                   <button
@@ -102,46 +104,37 @@ export function Hero() {
                   </button>
                 </Magnetic>
               </motion.div>
+
+              {/* Stats row under CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 1 }}
+                className="grid grid-cols-3 gap-6 border-t border-border pt-8"
+              >
+                <div>
+                  <AnimatedCounter target={500} suffix="+" className="text-2xl sm:text-3xl font-bold text-foreground mb-1" label="" duration={2} />
+                  <span className="text-muted-foreground text-[10px] sm:text-xs font-bold tracking-widest uppercase">Projects</span>
+                </div>
+                <div>
+                  <AnimatedCounter target={350} suffix="+" className="text-2xl sm:text-3xl font-bold text-primary mb-1" label="" duration={2.2} />
+                  <span className="text-muted-foreground text-[10px] sm:text-xs font-bold tracking-widest uppercase">Clients</span>
+                </div>
+                <div>
+                  <span className="text-2xl sm:text-3xl font-bold text-accent tabular-nums mb-1 block">24/7</span>
+                  <span className="text-muted-foreground text-[10px] sm:text-xs font-bold tracking-widest uppercase">Support</span>
+                </div>
+              </motion.div>
             </motion.div>
 
+            {/* Right: 3D Floating Coder — BIG, visible on landing */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, delay: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="lg:col-span-4 grid grid-cols-2 gap-4 lg:gap-8 border-l border-border pl-0 lg:pl-8 mt-12 lg:mt-0"
+              transition={{ duration: 1.2, delay: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
+              className="order-1 lg:order-2 h-[350px] sm:h-[450px] md:h-[500px] lg:h-[600px] w-full relative"
             >
-              <div className="flex flex-col">
-                <AnimatedCounter
-                  target={500}
-                  suffix="+"
-                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-2"
-                  label=""
-                  duration={2}
-                />
-                <span className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
-                  Projects Completed
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <AnimatedCounter
-                  target={350}
-                  suffix="+"
-                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-2"
-                  label=""
-                  duration={2.2}
-                />
-                <span className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
-                  Happy Clients
-                </span>
-              </div>
-              <div className="flex flex-col col-span-2 mt-4 lg:mt-8 pt-4 lg:pt-8 border-t border-border">
-                <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-accent tabular-nums mb-2">
-                  24/7
-                </span>
-                <span className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
-                  Global Support
-                </span>
-              </div>
+              <HeroFloatingCoder />
             </motion.div>
           </div>
         </div>

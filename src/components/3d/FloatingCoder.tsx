@@ -1,9 +1,7 @@
 "use client";
 import { useRef, useState, Suspense, useEffect, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-
 import * as THREE from "three";
-import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 
 // ----- Coder Character (made from Three.js primitives) -----
@@ -12,7 +10,6 @@ function CoderCharacter({ mouseX, mouseY }: { mouseX: number; mouseY: number }) 
   const headRef = useRef<THREE.Group>(null);
   const rightArmRef = useRef<THREE.Group>(null);
   const leftArmRef = useRef<THREE.Group>(null);
-  const screenRef = useRef<THREE.Mesh>(null);
 
   // Subtle screen flicker
   const [screenBrightness, setScreenBrightness] = useState(0.7);
@@ -48,222 +45,240 @@ function CoderCharacter({ mouseX, mouseY }: { mouseX: number; mouseY: number }) 
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
       {/* Chair */}
-      <mesh position={[0, -2.1, 0.1]}>
-        <cylinderGeometry args={[0.5, 0.5, 0.12, 16]} />
-        <meshStandardMaterial color="#1a1a2e" metalness={0.4} roughness={0.6} />
+      <mesh position={[0, -1.2, -0.2]}>
+        <boxGeometry args={[0.9, 0.08, 0.7]} />
+        <meshStandardMaterial color="#1a1a2e" metalness={0.5} roughness={0.4} />
       </mesh>
-      <mesh position={[0, -1.65, -0.45]}>
-        <boxGeometry args={[1, 1.2, 0.1]} />
-        <meshStandardMaterial color="#16213e" metalness={0.2} roughness={0.7} />
+      {/* Chair back */}
+      <mesh position={[0, -0.5, -0.5]}>
+        <boxGeometry args={[0.85, 1.3, 0.06]} />
+        <meshStandardMaterial color="#1a1a2e" metalness={0.5} roughness={0.4} />
+      </mesh>
+      {/* Chair legs */}
+      {[[-0.35, -1.6, -0.25], [0.35, -1.6, -0.25], [-0.35, -1.6, 0.15], [0.35, -1.6, 0.15]].map((pos, i) => (
+        <mesh key={`leg-${i}`} position={pos as [number, number, number]}>
+          <cylinderGeometry args={[0.03, 0.03, 0.7, 6]} />
+          <meshStandardMaterial color="#0d0d1a" metalness={0.8} roughness={0.2} />
+        </mesh>
+      ))}
+
+      {/* Body / Hoodie */}
+      <mesh position={[0, -0.45, 0]}>
+        <boxGeometry args={[0.75, 1.0, 0.5]} />
+        <meshStandardMaterial color="#162033" metalness={0.2} roughness={0.7} />
+      </mesh>
+      {/* Hoodie hood (behind head) */}
+      <mesh position={[0, 0.25, -0.15]}>
+        <sphereGeometry args={[0.38, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2]} />
+        <meshStandardMaterial color="#162033" metalness={0.2} roughness={0.7} />
+      </mesh>
+      {/* Hoodie pocket */}
+      <mesh position={[0, -0.7, 0.26]}>
+        <boxGeometry args={[0.35, 0.18, 0.01]} />
+        <meshStandardMaterial color="#1a2740" />
+      </mesh>
+      {/* Hoodie logo (TWB dot) */}
+      <mesh position={[0.15, -0.2, 0.26]}>
+        <sphereGeometry args={[0.04, 8, 8]} />
+        <meshStandardMaterial color="#2dd4a8" emissive="#2dd4a8" emissiveIntensity={0.5} />
       </mesh>
 
-      {/* Desk */}
-      <mesh position={[0, -0.85, 0.3]}>
-        <boxGeometry args={[2.8, 0.08, 1.2]} />
-        <meshStandardMaterial color="#0f3460" metalness={0.1} roughness={0.8} />
-      </mesh>
-      {/* Desk leg */}
-      <mesh position={[0, -1.6, 0.4]}>
-        <boxGeometry args={[0.08, 1.5, 0.08]} />
-        <meshStandardMaterial color="#0f3460" metalness={0.1} roughness={0.8} />
-      </mesh>
-
-      {/* Laptop base */}
-      <mesh position={[0, -0.77, 0.2]} rotation={[-0.1, 0, 0]}>
-        <boxGeometry args={[1.2, 0.06, 0.8]} />
-        <meshStandardMaterial color="#1a1a2e" metalness={0.7} roughness={0.2} />
-      </mesh>
-
-      {/* Laptop screen */}
-      <group position={[0, -0.5, -0.2]} rotation={[-1.0, 0, 0]}>
-        {/* Screen bezel */}
+      {/* HEAD GROUP (tracks mouse) */}
+      <group ref={headRef} position={[0, 0.55, 0.05]}>
+        {/* Head */}
         <mesh>
-          <boxGeometry args={[1.2, 0.75, 0.04]} />
-          <meshStandardMaterial color="#111111" metalness={0.7} roughness={0.2} />
+          <boxGeometry args={[0.5, 0.55, 0.45]} />
+          <meshStandardMaterial color="#d4a574" roughness={0.8} />
         </mesh>
-        {/* Screen glass */}
-        <mesh ref={screenRef} position={[0, 0, 0.03]}>
-          <boxGeometry args={[1.1, 0.65, 0.01]} />
-          <meshStandardMaterial
-            color={new THREE.Color(0.08, 0.55, 0.45).multiplyScalar(screenBrightness)}
-            emissive={new THREE.Color(0.05, 0.4, 0.35)}
-            emissiveIntensity={screenBrightness}
-            roughness={0.0}
-            metalness={0.0}
-          />
+        {/* Hair */}
+        <mesh position={[0, 0.2, -0.05]}>
+          <boxGeometry args={[0.53, 0.3, 0.5]} />
+          <meshStandardMaterial color="#1a1a1a" roughness={0.9} />
         </mesh>
-        {/* Code lines on screen */}
-        {[-0.22, -0.1, 0.02, 0.14, 0.25].map((y, i) => (
-          <mesh key={i} position={[-0.1 + Math.sin(i * 1.5) * 0.1, y, 0.04]}>
-            <boxGeometry args={[0.3 + Math.cos(i) * 0.2, 0.025, 0.001]} />
+        {/* Hair top */}
+        <mesh position={[0, 0.32, 0.03]}>
+          <boxGeometry args={[0.5, 0.12, 0.4]} />
+          <meshStandardMaterial color="#1a1a1a" roughness={0.9} />
+        </mesh>
+        {/* Glasses frame */}
+        <group position={[0, 0.02, 0.23]}>
+          {/* Left lens */}
+          <mesh position={[-0.12, 0, 0]}>
+            <boxGeometry args={[0.17, 0.12, 0.02]} />
+            <meshStandardMaterial color="#0d1520" metalness={0.8} roughness={0.1} transparent opacity={0.7} />
+          </mesh>
+          {/* Right lens */}
+          <mesh position={[0.12, 0, 0]}>
+            <boxGeometry args={[0.17, 0.12, 0.02]} />
+            <meshStandardMaterial color="#0d1520" metalness={0.8} roughness={0.1} transparent opacity={0.7} />
+          </mesh>
+          {/* Bridge */}
+          <mesh position={[0, 0, 0]}>
+            <boxGeometry args={[0.06, 0.02, 0.02]} />
+            <meshStandardMaterial color="#333" metalness={0.8} roughness={0.2} />
+          </mesh>
+          {/* Lens shine */}
+          <mesh position={[-0.12, 0.02, 0.015]}>
+            <boxGeometry args={[0.05, 0.03, 0.001]} />
+            <meshStandardMaterial color="#2dd4a8" emissive="#2dd4a8" emissiveIntensity={0.3} transparent opacity={0.4} />
+          </mesh>
+        </group>
+        {/* Eyes */}
+        <mesh position={[-0.11, 0.02, 0.23]}>
+          <sphereGeometry args={[0.025, 8, 8]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        <mesh position={[0.11, 0.02, 0.23]}>
+          <sphereGeometry args={[0.025, 8, 8]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        {/* Pupils */}
+        <mesh position={[-0.11, 0.02, 0.255]}>
+          <sphereGeometry args={[0.012, 8, 8]} />
+          <meshStandardMaterial color="#1a1a1a" />
+        </mesh>
+        <mesh position={[0.11, 0.02, 0.255]}>
+          <sphereGeometry args={[0.012, 8, 8]} />
+          <meshStandardMaterial color="#1a1a1a" />
+        </mesh>
+        {/* Mouth (slight smile) */}
+        <mesh position={[0, -0.12, 0.22]}>
+          <boxGeometry args={[0.12, 0.025, 0.01]} />
+          <meshStandardMaterial color="#c4856a" />
+        </mesh>
+        {/* Headphones */}
+        <mesh position={[0, 0.15, 0]}>
+          <torusGeometry args={[0.32, 0.025, 8, 16, Math.PI]} />
+          <meshStandardMaterial color="#333" metalness={0.9} roughness={0.1} />
+        </mesh>
+        {/* Earcups */}
+        <mesh position={[-0.31, 0, 0]}>
+          <boxGeometry args={[0.06, 0.14, 0.1]} />
+          <meshStandardMaterial color="#222" metalness={0.7} roughness={0.3} />
+        </mesh>
+        <mesh position={[0.31, 0, 0]}>
+          <boxGeometry args={[0.06, 0.14, 0.1]} />
+          <meshStandardMaterial color="#222" metalness={0.7} roughness={0.3} />
+        </mesh>
+        {/* Earcup pads (teal accent) */}
+        <mesh position={[-0.28, 0, 0]}>
+          <boxGeometry args={[0.01, 0.1, 0.07]} />
+          <meshStandardMaterial color="#2dd4a8" emissive="#2dd4a8" emissiveIntensity={0.3} />
+        </mesh>
+        <mesh position={[0.28, 0, 0]}>
+          <boxGeometry args={[0.01, 0.1, 0.07]} />
+          <meshStandardMaterial color="#2dd4a8" emissive="#2dd4a8" emissiveIntensity={0.3} />
+        </mesh>
+      </group>
+
+      {/* Arms */}
+      <group ref={rightArmRef} position={[0.55, -0.35, 0.15]}>
+        <mesh>
+          <boxGeometry args={[0.2, 0.7, 0.2]} />
+          <meshStandardMaterial color="#162033" metalness={0.2} roughness={0.7} />
+        </mesh>
+        {/* Hand */}
+        <mesh position={[0, -0.4, 0.05]}>
+          <boxGeometry args={[0.14, 0.14, 0.12]} />
+          <meshStandardMaterial color="#d4a574" roughness={0.8} />
+        </mesh>
+      </group>
+
+      <group ref={leftArmRef} position={[-0.55, -0.35, 0.15]}>
+        <mesh>
+          <boxGeometry args={[0.2, 0.7, 0.2]} />
+          <meshStandardMaterial color="#162033" metalness={0.2} roughness={0.7} />
+        </mesh>
+        {/* Hand */}
+        <mesh position={[0, -0.4, 0.05]}>
+          <boxGeometry args={[0.14, 0.14, 0.12]} />
+          <meshStandardMaterial color="#d4a574" roughness={0.8} />
+        </mesh>
+      </group>
+
+      {/* Laptop */}
+      <group position={[0, -0.8, 0.55]}>
+        {/* Laptop base */}
+        <mesh rotation={[-0.15, 0, 0]}>
+          <boxGeometry args={[1.0, 0.04, 0.65]} />
+          <meshStandardMaterial color="#1a1a2e" metalness={0.9} roughness={0.1} />
+        </mesh>
+        {/* Keyboard area */}
+        <mesh position={[0, 0.025, 0]} rotation={[-0.15, 0, 0]}>
+          <boxGeometry args={[0.85, 0.005, 0.5]} />
+          <meshStandardMaterial color="#111" />
+        </mesh>
+        {/* Key rows */}
+        {[0.12, 0.04, -0.04, -0.12].map((z, ri) =>
+          Array.from({ length: 10 }).map((_, ci) => (
+            <mesh key={`key-${ri}-${ci}`} position={[-0.36 + ci * 0.08, 0.03, z]} rotation={[-0.15, 0, 0]}>
+              <boxGeometry args={[0.055, 0.008, 0.055]} />
+              <meshStandardMaterial color="#222" metalness={0.5} roughness={0.5} />
+            </mesh>
+          ))
+        )}
+        {/* Laptop screen */}
+        <group position={[0, 0.5, -0.3]} rotation={[-0.2, 0, 0]}>
+          <mesh>
+            <boxGeometry args={[1.0, 0.68, 0.03]} />
+            <meshStandardMaterial color="#1a1a2e" metalness={0.9} roughness={0.1} />
+          </mesh>
+          {/* Screen display */}
+          <mesh position={[0, 0.01, 0.02]}>
+            <boxGeometry args={[0.88, 0.56, 0.005]} />
             <meshStandardMaterial
-              color={i % 2 === 0 ? "#2dd4a8" : "#d4a82d"}
-              emissive={i % 2 === 0 ? "#2dd4a8" : "#d4a82d"}
-              emissiveIntensity={0.6}
+              color="#0a1628"
+              emissive="#2dd4a8"
+              emissiveIntensity={screenBrightness * 0.15}
             />
+          </mesh>
+          {/* Code lines on screen */}
+          {[0.2, 0.13, 0.06, -0.01, -0.08, -0.15, -0.22].map((y, i) => (
+            <mesh key={`code-${i}`} position={[-0.1 + (i % 3) * 0.05, y, 0.025]}>
+              <boxGeometry args={[0.25 + Math.sin(i * 1.7) * 0.15, 0.018, 0.001]} />
+              <meshStandardMaterial
+                color={i % 3 === 0 ? "#2dd4a8" : i % 3 === 1 ? "#d4a82d" : "#6b8cce"}
+                emissive={i % 3 === 0 ? "#2dd4a8" : i % 3 === 1 ? "#d4a82d" : "#6b8cce"}
+                emissiveIntensity={0.6}
+              />
+            </mesh>
+          ))}
+          {/* Screen glow */}
+          <pointLight position={[0, 0, 0.8]} color="#2dd4a8" intensity={3} distance={3} decay={2} />
+        </group>
+      </group>
+
+      {/* Coffee mug */}
+      <group position={[0.75, -0.85, 0.55]}>
+        <mesh>
+          <cylinderGeometry args={[0.07, 0.06, 0.16, 8]} />
+          <meshStandardMaterial color="#e8e2d8" roughness={0.9} />
+        </mesh>
+        <mesh position={[0.08, 0.02, 0]}>
+          <torusGeometry args={[0.04, 0.012, 8, 12, Math.PI]} />
+          <meshStandardMaterial color="#e8e2d8" roughness={0.9} />
+        </mesh>
+        {/* Steam */}
+        <mesh position={[0, 0.15, 0]}>
+          <sphereGeometry args={[0.03, 6, 6]} />
+          <meshStandardMaterial color="#ffffff" transparent opacity={0.15} />
+        </mesh>
+      </group>
+
+      {/* Plant pot */}
+      <group position={[-0.8, -0.85, 0.5]}>
+        <mesh>
+          <cylinderGeometry args={[0.08, 0.06, 0.14, 8]} />
+          <meshStandardMaterial color="#d4a574" roughness={0.9} />
+        </mesh>
+        {/* Plant leaves */}
+        {[0, 0.7, 1.4, 2.1, 2.8].map((angle, i) => (
+          <mesh key={`leaf-${i}`} position={[Math.cos(angle) * 0.04, 0.12 + i * 0.03, Math.sin(angle) * 0.04]} rotation={[Math.sin(angle) * 0.4, angle, 0]}>
+            <boxGeometry args={[0.08, 0.02, 0.04]} />
+            <meshStandardMaterial color={i % 2 === 0 ? "#2dd4a8" : "#1fb88c"} />
           </mesh>
         ))}
       </group>
-
-      {/* Body */}
-      <mesh position={[0, -0.3, 0]}>
-        <boxGeometry args={[0.85, 0.9, 0.45]} />
-        <meshStandardMaterial color="#1e3a5f" metalness={0.1} roughness={0.8} />
-      </mesh>
-
-      {/* Hoodie detail */}
-      <mesh position={[0, 0.1, 0.21]}>
-        <boxGeometry args={[0.4, 0.3, 0.02]} />
-        <meshStandardMaterial color="#152a44" metalness={0.05} roughness={0.9} />
-      </mesh>
-
-      {/* Left arm */}
-      <group ref={leftArmRef} position={[-0.55, -0.15, 0.1]} rotation={[0.3, 0, 0.1]}>
-        <mesh position={[0, -0.3, 0.1]}>
-          <boxGeometry args={[0.22, 0.6, 0.22]} />
-          <meshStandardMaterial color="#1e3a5f" metalness={0.1} roughness={0.8} />
-        </mesh>
-        {/* Hand */}
-        <mesh position={[0, -0.65, 0.2]}>
-          <sphereGeometry args={[0.12, 8, 8]} />
-          <meshStandardMaterial color="#c9a87c" metalness={0.0} roughness={0.9} />
-        </mesh>
-      </group>
-
-      {/* Right arm */}
-      <group ref={rightArmRef} position={[0.55, -0.15, 0.1]} rotation={[0.3, 0, -0.1]}>
-        <mesh position={[0, -0.3, 0.1]}>
-          <boxGeometry args={[0.22, 0.6, 0.22]} />
-          <meshStandardMaterial color="#1e3a5f" metalness={0.1} roughness={0.8} />
-        </mesh>
-        {/* Hand */}
-        <mesh position={[0, -0.65, 0.2]}>
-          <sphereGeometry args={[0.12, 8, 8]} />
-          <meshStandardMaterial color="#c9a87c" metalness={0.0} roughness={0.9} />
-        </mesh>
-      </group>
-
-      {/* Neck */}
-      <mesh position={[0, 0.28, 0.05]}>
-        <cylinderGeometry args={[0.14, 0.16, 0.25, 12]} />
-        <meshStandardMaterial color="#c9a87c" metalness={0.0} roughness={0.9} />
-      </mesh>
-
-      {/* Head group — tracks mouse */}
-      <group ref={headRef} position={[0, 0.72, 0]}>
-        {/* Head */}
-        <mesh>
-          <boxGeometry args={[0.6, 0.65, 0.55]} />
-          <meshStandardMaterial color="#c9a87c" metalness={0.0} roughness={0.85} />
-        </mesh>
-
-        {/* Hair */}
-        <mesh position={[0, 0.3, -0.05]}>
-          <boxGeometry args={[0.63, 0.18, 0.58]} />
-          <meshStandardMaterial color="#1a0a00" metalness={0.0} roughness={0.9} />
-        </mesh>
-        <mesh position={[-0.3, 0.22, 0]}>
-          <boxGeometry args={[0.08, 0.25, 0.55]} />
-          <meshStandardMaterial color="#1a0a00" metalness={0.0} roughness={0.9} />
-        </mesh>
-        <mesh position={[0.3, 0.22, 0]}>
-          <boxGeometry args={[0.08, 0.25, 0.55]} />
-          <meshStandardMaterial color="#1a0a00" metalness={0.0} roughness={0.9} />
-        </mesh>
-
-        {/* Eyes */}
-        <mesh position={[-0.15, 0.05, 0.28]}>
-          <boxGeometry args={[0.13, 0.09, 0.02]} />
-          <meshStandardMaterial color="#111" />
-        </mesh>
-        <mesh position={[0.15, 0.05, 0.28]}>
-          <boxGeometry args={[0.13, 0.09, 0.02]} />
-          <meshStandardMaterial color="#111" />
-        </mesh>
-
-        {/* Glasses */}
-        <mesh position={[-0.15, 0.05, 0.29]}>
-          <torusGeometry args={[0.085, 0.015, 8, 16]} />
-          <meshStandardMaterial color="#2dd4a8" metalness={0.9} roughness={0.1} />
-        </mesh>
-        <mesh position={[0.15, 0.05, 0.29]}>
-          <torusGeometry args={[0.085, 0.015, 8, 16]} />
-          <meshStandardMaterial color="#2dd4a8" metalness={0.9} roughness={0.1} />
-        </mesh>
-        {/* Glasses bridge */}
-        <mesh position={[0, 0.05, 0.29]}>
-          <boxGeometry args={[0.13, 0.015, 0.01]} />
-          <meshStandardMaterial color="#2dd4a8" metalness={0.9} roughness={0.1} />
-        </mesh>
-
-        {/* Mouth / tiny smile */}
-        <mesh position={[0, -0.15, 0.28]}>
-          <boxGeometry args={[0.18, 0.025, 0.01]} />
-          <meshStandardMaterial color="#a07050" />
-        </mesh>
-
-        {/* Ears */}
-        <mesh position={[-0.31, 0, 0]}>
-          <sphereGeometry args={[0.09, 8, 8]} />
-          <meshStandardMaterial color="#c9a87c" metalness={0.0} roughness={0.9} />
-        </mesh>
-        <mesh position={[0.31, 0, 0]}>
-          <sphereGeometry args={[0.09, 8, 8]} />
-          <meshStandardMaterial color="#c9a87c" metalness={0.0} roughness={0.9} />
-        </mesh>
-
-        {/* Headphones */}
-        <mesh position={[0, 0.28, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <torusGeometry args={[0.37, 0.04, 8, 24, Math.PI]} />
-          <meshStandardMaterial color="#0d1520" metalness={0.8} roughness={0.2} />
-        </mesh>
-        <mesh position={[-0.37, 0.08, 0]}>
-          <boxGeometry args={[0.12, 0.18, 0.1]} />
-          <meshStandardMaterial color="#0d1520" metalness={0.7} roughness={0.3} />
-        </mesh>
-        <mesh position={[0.37, 0.08, 0]}>
-          <boxGeometry args={[0.12, 0.18, 0.1]} />
-          <meshStandardMaterial color="#0d1520" metalness={0.7} roughness={0.3} />
-        </mesh>
-      </group>
-
-      {/* Coffee mug on desk */}
-      <group position={[0.9, -0.78, 0.3]}>
-        <mesh>
-          <cylinderGeometry args={[0.1, 0.08, 0.22, 12]} />
-          <meshStandardMaterial color="#e74c3c" metalness={0.1} roughness={0.7} />
-        </mesh>
-        <mesh position={[0, 0.1, 0]}>
-          <cylinderGeometry args={[0.095, 0.095, 0.02, 12]} />
-          <meshStandardMaterial color="#5c1a1a" />
-        </mesh>
-        {/* Handle */}
-        <mesh position={[0.13, -0.02, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <torusGeometry args={[0.06, 0.015, 8, 12, Math.PI]} />
-          <meshStandardMaterial color="#e74c3c" metalness={0.1} roughness={0.7} />
-        </mesh>
-      </group>
-
-      {/* Potted plant on desk */}
-      <group position={[-0.95, -0.72, 0.25]}>
-        <mesh>
-          <cylinderGeometry args={[0.1, 0.08, 0.2, 8]} />
-          <meshStandardMaterial color="#5c2d0a" />
-        </mesh>
-        <mesh position={[0, 0.18, 0]}>
-          <sphereGeometry args={[0.16, 8, 8]} />
-          <meshStandardMaterial color="#2d7a20" metalness={0.0} roughness={0.9} />
-        </mesh>
-      </group>
-
-      {/* Screen glow light */}
-      <pointLight
-        position={[0, -0.4, 0.5]}
-        color="#2dd4a8"
-        intensity={screenBrightness * 4}
-        distance={3}
-        decay={2}
-      />
     </group>
   );
 }
@@ -298,7 +313,57 @@ function FloatingParticles() {
   );
 }
 
-// ----- Main exported section -----
+// ----- Hero-embedded version (no section wrapper, just the 3D canvas) -----
+export function HeroFloatingCoder() {
+  const isMobile = useIsMobile();
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMouseX((e.clientX / window.innerWidth - 0.5) * 2);
+      setMouseY((e.clientY / window.innerHeight - 0.5) * 2);
+    };
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="relative w-32 h-32">
+          <div
+            className="absolute inset-0 rounded-full bg-primary/10 animate-ping"
+            style={{ animationDuration: "3s" }}
+          />
+          <div className="absolute inset-4 rounded-full bg-primary/20 flex items-center justify-center text-5xl">
+            👨‍💻
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <Canvas
+      camera={{ position: [0, 0, 4.5], fov: 42 }}
+      dpr={[1, 1.5]}
+      gl={{ antialias: true, powerPreference: "high-performance" }}
+      style={{ width: "100%", height: "100%" }}
+    >
+      <Suspense fallback={null}>
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[5, 5, 5]} intensity={0.8} color="#ffffff" />
+        <pointLight position={[-4, 3, 2]} intensity={6} color="#d4a82d" distance={10} decay={2} />
+        <pointLight position={[4, -2, 2]} intensity={4} color="#6b8cce" distance={8} decay={2} />
+        <FloatingParticles />
+        <CoderCharacter mouseX={mouseX} mouseY={mouseY} />
+      </Suspense>
+    </Canvas>
+  );
+}
+
+// ----- Standalone section version (kept for re-use) -----
 export function FloatingCoderSection() {
   const isMobile = useIsMobile();
   const [mouseX, setMouseX] = useState(0);
@@ -323,13 +388,7 @@ export function FloatingCoderSection() {
       <div className="container px-5 sm:px-6 mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-0 items-center min-h-[550px] sm:min-h-[600px] md:min-h-[700px]">
           {/* Left: Text */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="py-16 sm:py-20 lg:py-0"
-          >
+          <div className="py-16 sm:py-20 lg:py-0">
             <span className="inline-block text-[10px] uppercase tracking-widest font-medium text-primary bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-full mb-5 sm:mb-6">
               👾 Meet the Team
             </span>
@@ -350,21 +409,15 @@ export function FloatingCoderSection() {
                 </span>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Right: 3D Canvas */}
           <div className="h-[400px] sm:h-[500px] md:h-[600px] lg:h-full w-full relative">
             {isMobile ? (
-              // CSS fallback for mobile
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative w-32 h-32">
-                  <div
-                    className="absolute inset-0 rounded-full bg-primary/10 animate-ping"
-                    style={{ animationDuration: "3s" }}
-                  />
-                  <div className="absolute inset-4 rounded-full bg-primary/20 flex items-center justify-center text-5xl">
-                    👨‍💻
-                  </div>
+                  <div className="absolute inset-0 rounded-full bg-primary/10 animate-ping" style={{ animationDuration: "3s" }} />
+                  <div className="absolute inset-4 rounded-full bg-primary/20 flex items-center justify-center text-5xl">👨‍💻</div>
                 </div>
               </div>
             ) : (
