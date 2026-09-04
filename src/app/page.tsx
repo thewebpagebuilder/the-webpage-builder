@@ -41,8 +41,6 @@ export default function HomePage() {
       {/* 6. Process timeline with scroll-linked line */}
       <Process />
 
-      {/* 7. 3D Dev Objects — concentrated browser/phones/brackets */}
-      <DevObjects3D />
 
       {/* 8. Why Choose Us */}
       <WhyChooseUs />
@@ -53,8 +51,6 @@ export default function HomePage() {
       {/* 10. Free Audit CTA (with form modal) */}
       <FreeAudit />
 
-      {/* Scattered inline 3D Dev Objects */}
-      <DevObjects3D />
 
       {/* 11. Testimonials marquee */}
       <Testimonials />
