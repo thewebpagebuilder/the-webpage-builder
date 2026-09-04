@@ -120,7 +120,7 @@ export function Footer() {
                   thewebpagebuilder@gmail.com
                 </a>
               </li>
-              <li>Nashik</li>
+              <li>Silvassa & Nashik</li>
               <li>Available for global projects</li>
             </ul>
           </div>
