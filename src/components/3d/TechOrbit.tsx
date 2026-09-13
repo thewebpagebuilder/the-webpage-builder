@@ -1,24 +1,53 @@
 "use client";
 import { useRef, Suspense, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float } from "@react-three/drei";
+import { Float, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 
 const TECH_NODES = [
-  { label: "React", color: "#61dafb", phi: 0.5, theta: 0.5 },
-  { label: "Next.js", color: "#ffffff", phi: 1.2, theta: 1.8 },
-  { label: "Three.js", color: "#2dd4a8", phi: 0.8, theta: 3.5 },
-  { label: "TypeScript", color: "#3178c6", phi: 1.5, theta: 0.8 },
-  { label: "Node.js", color: "#68a063", phi: 0.3, theta: 2.4 },
-  { label: "Python", color: "#f7c542", phi: 2.1, theta: 1.2 },
-  { label: "Rust", color: "#e74c3c", phi: 1.0, theta: 4.5 },
-  { label: "GSAP", color: "#88ce02", phi: 2.5, theta: 3.0 },
-  { label: "Docker", color: "#2496ed", phi: 1.8, theta: 5.2 },
-  { label: "AWS", color: "#f59e0b", phi: 0.6, theta: 1.0 },
-  { label: "Go", color: "#00acd7", phi: 1.3, theta: 2.8 },
-  { label: "Swift", color: "#f05138", phi: 2.3, theta: 4.0 },
+  { label: "React", icon: "react", color: "#61DAFB", phi: 0.5, theta: 0.5 },
+  { label: "Next.js", icon: "nextdotjs", color: "#ffffff", phi: 1.2, theta: 1.8 },
+  { label: "Three.js", icon: "threedotjs", color: "#ffffff", phi: 0.8, theta: 3.5 },
+  { label: "TypeScript", icon: "typescript", color: "#3178C6", phi: 1.5, theta: 0.8 },
+  { label: "Node.js", icon: "nodedotjs", color: "#339933", phi: 0.3, theta: 2.4 },
+  { label: "Python", icon: "python", color: "#3776AB", phi: 2.1, theta: 1.2 },
+  { label: "Rust", icon: "rust", color: "#ffffff", phi: 1.0, theta: 4.5 },
+  { label: "Docker", icon: "docker", color: "#2496ED", phi: 1.8, theta: 5.2 },
+  { label: "AWS", icon: "amazonaws", color: "#ffffff", phi: 0.6, theta: 1.0 },
+  { label: "Go", icon: "go", color: "#00ADD8", phi: 1.3, theta: 2.8 },
+  { label: "Swift", icon: "swift", color: "#F05138", phi: 2.3, theta: 4.0 },
+  { label: "Firebase", icon: "firebase", color: "#FFCA28", phi: 0.9, theta: 5.8 },
+  { label: "Supabase", icon: "supabase", color: "#3ECF8E", phi: 1.7, theta: 3.2 },
+  { label: "TailwindCSS", icon: "tailwindcss", color: "#06B6D4", phi: 2.6, theta: 1.5 },
+  { label: "PostgreSQL", icon: "postgresql", color: "#4169E1", phi: 0.4, theta: 4.2 },
+  { label: "MongoDB", icon: "mongodb", color: "#47A248", phi: 1.1, theta: 6.0 },
+  { label: "Redis", icon: "redis", color: "#DC382D", phi: 2.2, theta: 2.1 },
+  { label: "GraphQL", icon: "graphql", color: "#E10098", phi: 1.4, theta: 5.5 },
+  { label: "Vercel", icon: "vercel", color: "#ffffff", phi: 0.7, theta: 2.2 },
+  { label: "Figma", icon: "figma", color: "#F24E1E", phi: 1.9, theta: 0.5 },
+  { label: "Framer", icon: "framer", color: "#0055FF", phi: 2.5, theta: 4.8 },
+  { label: "Git", icon: "git", color: "#F05032", phi: 0.2, theta: 1.6 },
+  { label: "GitHub", icon: "github", color: "#ffffff", phi: 1.6, theta: 1.1 },
+  { label: "GitLab", icon: "gitlab", color: "#FC6D26", phi: 2.4, theta: 2.9 },
+  { label: "Linux", icon: "linux", color: "#FCC624", phi: 0.5, theta: 3.9 },
+  { label: "Ubuntu", icon: "ubuntu", color: "#E95420", phi: 1.2, theta: 4.9 },
+  { label: "Kubernetes", icon: "kubernetes", color: "#326CE5", phi: 2.0, theta: 5.7 },
+  { label: "Terraform", icon: "terraform", color: "#844FBA", phi: 0.8, theta: 0.3 },
+  { label: "Stripe", icon: "stripe", color: "#008CDD", phi: 1.5, theta: 2.5 },
+  { label: "WebGL", icon: "webgl", color: "#990000", phi: 2.7, theta: 3.8 },
+  { label: "WebAssembly", icon: "webassembly", color: "#654FF0", phi: 0.6, theta: 5.1 },
+  { label: "Svelte", icon: "svelte", color: "#FF3E00", phi: 1.3, theta: 0.9 },
+  { label: "Vue.js", icon: "vuedotjs", color: "#4FC08D", phi: 2.1, theta: 3.6 },
+  { label: "Angular", icon: "angular", color: "#DD0031", phi: 0.4, theta: 2.7 },
+  { label: "Django", icon: "django", color: "#ffffff", phi: 1.1, theta: 1.4 },
+  { label: "Flask", icon: "flask", color: "#ffffff", phi: 1.8, theta: 4.4 },
+  { label: "FastAPI", icon: "fastapi", color: "#009688", phi: 2.5, theta: 1.9 },
+  { label: "Spring", icon: "spring", color: "#6DB33F", phi: 0.9, theta: 0.7 },
+  { label: "Laravel", icon: "laravel", color: "#FF2D20", phi: 1.7, theta: 5.0 },
+  { label: "Ruby", icon: "ruby", color: "#CC342D", phi: 2.3, theta: 0.2 },
+  { label: "Elixir", icon: "elixir", color: "#4E2A8E", phi: 1.0, theta: 2.0 },
 ];
 
 // Convert spherical to cartesian
@@ -31,36 +60,34 @@ function sphericalToCartesian(phi: number, theta: number, radius: number): [numb
 }
 
 // Single orbiting tech node
-function TechNode({ phi, theta, color, time }: {
+function TechNode({ phi, theta, color, time, icon, label }: {
   phi: number;
   theta: number;
   color: string;
   time: number;
+  icon: string;
+  label: string;
 }) {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const animTheta = theta + time * 0.25;
+  const meshRef = useRef<THREE.Group>(null);
+  const animTheta = theta + time * 0.15;
   const pos = sphericalToCartesian(phi, animTheta, 2.4);
 
-  useFrame(() => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += 0.02;
-      meshRef.current.rotation.x += 0.01;
-    }
-  });
-
   return (
-    <group position={pos}>
-      <mesh ref={meshRef}>
-        <icosahedronGeometry args={[0.13, 0]} />
-        <meshStandardMaterial
-          color={color}
-          emissive={color}
-          emissiveIntensity={0.7}
-          metalness={0.8}
-          roughness={0.2}
-        />
-      </mesh>
-      <pointLight color={color} intensity={1.5} distance={1.5} decay={2} />
+    <group position={pos} ref={meshRef}>
+      <Html center transform={false}>
+        <div 
+          className="flex items-center justify-center bg-background/80 backdrop-blur-sm border border-border rounded-full shadow-lg shadow-black/20"
+          style={{ width: '36px', height: '36px' }}
+          title={label}
+        >
+          <img 
+            src={`https://cdn.simpleicons.org/${icon}/${color.replace('#', '')}`} 
+            alt={label} 
+            style={{ width: '20px', height: '20px', objectFit: 'contain' }} 
+            draggable={false}
+          />
+        </div>
+      </Html>
     </group>
   );
 }
