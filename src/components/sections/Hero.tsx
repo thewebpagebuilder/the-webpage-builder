@@ -1,7 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
-import { Hero3D } from "../3d/Hero3D";
-import { HeroFloatingCoder } from "../3d/FloatingCoder";
+import dynamic from "next/dynamic";
+
+const Hero3D = dynamic(() => import("../3d/Hero3D").then((mod) => mod.Hero3D), { ssr: false });
+const HeroFloatingCoder = dynamic(() => import("../3d/FloatingCoder").then((mod) => mod.HeroFloatingCoder), { ssr: false });
 import { AnimatedCounter } from "../ui/AnimatedCounter";
 import { Marquee } from "../ui/Marquee";
 import { Magnetic } from "../ui/Magnetic";

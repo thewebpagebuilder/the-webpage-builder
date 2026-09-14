@@ -2,19 +2,20 @@ import { Hero } from "@/components/sections/Hero";
 import { ClientLogos } from "@/components/sections/ClientLogos";
 import { FeaturedWork } from "@/components/sections/FeaturedWork";
 import { Services } from "@/components/sections/Services";
-import { FloatingCoderSection } from "@/components/3d/FloatingCoder";
-import { Process } from "@/components/sections/Process";
-import { DevObjects3D } from "@/components/3d/DevObjects3D";
+import dynamic from 'next/dynamic';
+
+const FloatingCoderSection = dynamic(() => import("@/components/3d/FloatingCoder").then(mod => mod.FloatingCoderSection), { ssr: false });
+const DevObjects3D = dynamic(() => import("@/components/3d/DevObjects3D").then(mod => mod.DevObjects3D), { ssr: false });
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { GetQuotation } from "@/components/sections/GetQuotation";
 import { FreeAudit } from "@/components/sections/FreeAudit";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { TechStack } from "@/components/sections/TechStack";
-import { TechOrbit } from "@/components/3d/TechOrbit";
-import { InteractiveTerminal3D } from "@/components/3d/InteractiveTerminal3D";
+const TechOrbit = dynamic(() => import("@/components/3d/TechOrbit").then(mod => mod.TechOrbit), { ssr: false });
+const InteractiveTerminal3D = dynamic(() => import("@/components/3d/InteractiveTerminal3D").then(mod => mod.InteractiveTerminal3D), { ssr: false });
 import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";
-
+import { Process } from "@/components/sections/Process";
 
 export default function HomePage() {
   return (

@@ -44,7 +44,7 @@ function ShiftingLights() {
   );
 }
 
-function MorphingObject() {
+function MorphingObject({ isMobile }: { isMobile: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
@@ -63,7 +63,7 @@ function MorphingObject() {
         onPointerOut={() => setHovered(false)}
         scale={hovered ? 1.05 : 1}
       >
-        <icosahedronGeometry args={[2, 64]} />
+        <icosahedronGeometry args={isMobile ? [2, 16] : [2, 64]} />
         <MeshDistortMaterial
           color={hovered ? "#1a2a3a" : "#0d1520"}
           envMapIntensity={0.5}
@@ -79,50 +79,14 @@ function MorphingObject() {
   );
 }
 
-function MobileFallback() {
-  // Beautiful CSS gradient fallback for mobile
-  return (
-    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <div className="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px]">
-        <div
-          className="absolute inset-0 rounded-full opacity-50 blur-3xl animate-pulse"
-          style={{
-            background: "radial-gradient(circle, hsl(168 76% 42% / 0.3) 0%, transparent 70%)",
-            animationDuration: "4s",
-          }}
-        />
-        <div
-          className="absolute inset-8 rounded-full opacity-30 blur-2xl"
-          style={{
-            background: "radial-gradient(circle, hsl(42 85% 55% / 0.3) 0%, transparent 70%)",
-            transform: "scale(1)",
-            animation: "pulse 6s ease-in-out infinite",
-          }}
-        />
-        <div
-          className="absolute inset-0 rounded-full border border-border/30"
-          style={{
-            animation: "spin 20s linear infinite",
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
 export function Hero3D() {
   const isMobile = useIsMobile();
-
-  // Use lighter CSS animation on mobile for performance
-  if (isMobile) {
-    return <MobileFallback />;
-  }
 
   return (
     <div className="absolute inset-0 z-0 opacity-60 pointer-events-none sm:pointer-events-auto mix-blend-screen">
       <Canvas
         camera={{ position: [0, 0, 6], fov: 45 }}
-        dpr={[1, 1.5]}
+        dpr={isMobile ? [1, 1] : [1, 1.5]}
         gl={{ antialias: true, powerPreference: "high-performance" }}
       >
         <Suspense fallback={null}>
@@ -130,7 +94,7 @@ export function Hero3D() {
           <directionalLight position={[10, 10, 5]} intensity={0.5} />
           <ShiftingLights />
           <Environment preset="city" />
-          <MorphingObject />
+          <MorphingObject isMobile={isMobile} />
         </Suspense>
       </Canvas>
     </div>
