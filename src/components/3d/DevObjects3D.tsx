@@ -103,11 +103,15 @@ function ScrollTracker({ setScrollY }: { setScrollY: (y: number) => void }) {
 
 export function DevObjects3D() {
   const isMobile = useIsMobile();
-  const [, setScrollY] = useState(0); // force rerenders if strictly needed, but camera mutates directly
+  const [, setScrollY] = useState(0);
+
+  // Disable this completely on mobile to prevent extreme CPU/RAM usage 
+  // from syncing 30 HTML elements with WebGL coordinates on scroll.
+  if (isMobile) return null;
 
   const logoInstances = useMemo(() => {
     const instances = [];
-    const count = isMobile ? 30 : 60; // Total logos to spread across page
+    const count = 60; // Always 60 since it only runs on desktop now
     
     // Spread them over a Y range that corresponds to the page height scroll
     // A typical page might be 10000px tall. 10000 * 0.015 = 150 units in Y.
@@ -118,16 +122,16 @@ export function DevObjects3D() {
         id: i,
         url: randomLogo,
         position: [
-          (Math.random() - 0.5) * (isMobile ? 12 : 25), // Spread wider
-          10 - (Math.random() * 170), // Spread vertically over 170 units downwards
-          (Math.random() - 0.5) * 10 - 4 // Depth
+          (Math.random() - 0.5) * 25,
+          10 - (Math.random() * 170),
+          (Math.random() - 0.5) * 10 - 4
         ] as [number, number, number],
         scale: 0.6 + Math.random() * 0.6,
         speed: 1.5 + Math.random() * 2
       });
     }
     return instances;
-  }, [isMobile]);
+  }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[1] opacity-70">
