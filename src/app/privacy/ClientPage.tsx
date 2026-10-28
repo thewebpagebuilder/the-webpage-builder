@@ -65,7 +65,7 @@ export default function ClientPage() {
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-white mb-4">3. Data Retention & Protection</h2>
               <p className="mb-4">
-                Your personal details and project specs are stored securely via Supabase database infrastructure. We apply strict security protocols to prevent unauthorized access, alteration, disclosure, or destruction of your personal data.
+                Your personal details and project specs are stored securely via Google Firebase database infrastructure. We apply strict security protocols to prevent unauthorized access, alteration, disclosure, or destruction of your personal data.
               </p>
               <p className="mb-4">
                 We will retain your personal information only for as long as is necessary for the purposes set out in this Privacy Policy.
@@ -78,7 +78,7 @@ export default function ClientPage() {
                 We do not sell, rent, trade, or share your personal information with third parties for their marketing purposes. We may share information only:
               </p>
               <ul className="list-disc pl-5 space-y-2 mb-4">
-                <li>With trusted backend database providers (such as Supabase) to store and protect your data.</li>
+                <li>With trusted backend database providers (such as Google Firebase) to store and protect your data.</li>
                 <li>If required to do so by law or in response to valid requests by public authorities.</li>
                 <li>To protect and defend the rights or property of The Webpage Builder.</li>
               </ul>

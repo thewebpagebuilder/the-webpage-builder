@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Lock, Mail, Eye, EyeOff, ArrowRight, ShieldCheck, AlertCircle, ArrowLeft } from "lucide-react";
-import { signIn, isAuthenticated } from "@/lib/auth";
-import { supabase } from "@/lib/supabase";
+import { signIn, isAuthenticated, resetPassword } from "@/lib/auth";
 
 export default function AdminLogin() {
   const navigate = useRouter();
@@ -57,11 +56,9 @@ export default function AdminLogin() {
     setForgotError("");
     setForgotSubmitting(true);
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
-        redirectTo: `${window.location.origin}/admin/reset-password`,
-      });
-      if (error) {
-        setForgotError(error.message);
+      const result = await resetPassword(forgotEmail);
+      if (!result.success) {
+        setForgotError(result.error || "Failed to send reset link.");
       } else {
         setForgotSuccess(true);
       }
@@ -107,7 +104,7 @@ export default function AdminLogin() {
               <div className="text-center mb-7 sm:mb-8">
                 <h1 className="text-xl sm:text-2xl font-bold text-white mb-2">Admin Sign In</h1>
                 <p className="text-zinc-400 text-xs sm:text-sm">
-                  Enter your Supabase credentials to access the dashboard
+                  Enter your credentials to access the dashboard
                 </p>
               </div>
 
@@ -310,7 +307,7 @@ export default function AdminLogin() {
           {/* Footer */}
           <div className="mt-6 pt-5 border-t border-zinc-800/50 text-center">
             <p className="text-zinc-400 text-[10px] sm:text-[11px] leading-relaxed">
-              Authorized personnel only. All logins verified via Supabase.
+              Authorized personnel only. All logins verified via Firebase Auth.
             </p>
           </div>
         </div>

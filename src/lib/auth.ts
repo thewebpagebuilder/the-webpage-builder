@@ -1,29 +1,56 @@
 "use client";
-import { supabase } from "./supabase";
+import {
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  updateEmail,
+  updatePassword,
+  sendPasswordResetEmail,
+  onAuthStateChanged,
+  User,
+} from "firebase/auth";
+import { auth } from "./firebase";
+
+/**
+ * Ensures Firebase has finished loading persistent credentials from storage
+ */
+async function waitForAuthInit(): Promise<User | null> {
+  if (typeof auth.authStateReady === "function") {
+    await auth.authStateReady();
+    return auth.currentUser;
+  }
+  return new Promise((resolve) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      resolve(user);
+    });
+  });
+}
 
 export async function signIn(
   email: string,
   password: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      return { success: false, error: error.message };
-    }
+    await signInWithEmailAndPassword(auth, email, password);
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message || "An unexpected error occurred during sign in." };
+    let message = "Invalid email or password. Please try again.";
+    if (err.code === "auth/user-not-found" || err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
+      message = "Invalid email or password. Please verify your credentials.";
+    } else if (err.code === "auth/too-many-requests") {
+      message = "Too many failed attempts. Please try again in a few minutes.";
+    } else if (err.message) {
+      message = err.message;
+    }
+    return { success: false, error: message };
   }
 }
 
 export async function signOut(): Promise<void> {
   try {
-    await supabase.auth.signOut();
+    await firebaseSignOut(auth);
   } catch (err) {
-    console.error("Failed to sign out from Supabase:", err);
+    console.error("Failed to sign out from Firebase:", err);
   }
 }
 
@@ -31,14 +58,16 @@ export const logout = signOut;
 
 export async function getSession() {
   try {
-    const { data: { session }, error } = await supabase.auth.getSession();
-    if (error) {
-      console.error("Error getting session from Supabase:", error);
-      return null;
-    }
-    return session;
+    const user = await waitForAuthInit();
+    if (!user) return null;
+    return {
+      user: {
+        id: user.uid,
+        email: user.email,
+      },
+    };
   } catch (err) {
-    console.error("Failed to retrieve session:", err);
+    console.error("Failed to retrieve session from Firebase:", err);
     return null;
   }
 }
@@ -53,22 +82,47 @@ export async function getUserEmail(): Promise<string | null> {
   return session?.user?.email || null;
 }
 
+export async function resetPassword(email: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    return { success: true };
+  } catch (err: any) {
+    let message = "Failed to send password reset email.";
+    if (err.code === "auth/user-not-found") {
+      message = "No account found with this email address.";
+    } else if (err.message) {
+      message = err.message;
+    }
+    return { success: false, error: message };
+  }
+}
+
 export async function updateCredentials(
   newEmail?: string,
   newPassword?: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const updates: any = {};
-    if (newEmail) updates.email = newEmail;
-    if (newPassword) updates.password = newPassword;
-
-    const { error } = await supabase.auth.updateUser(updates);
-    if (error) {
-      return { success: false, error: error.message };
+    const user = auth.currentUser;
+    if (!user) {
+      return { success: false, error: "No active admin session found. Please sign in again." };
     }
+
+    if (newEmail && newEmail !== user.email) {
+      await updateEmail(user, newEmail);
+    }
+    if (newPassword) {
+      await updatePassword(user, newPassword);
+    }
+
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message || "Failed to update user profile in Supabase." };
+    let message = "Failed to update profile.";
+    if (err.code === "auth/requires-recent-login") {
+      message = "This operation requires recent authentication. Please log out and log in again before changing credentials.";
+    } else if (err.message) {
+      message = err.message;
+    }
+    return { success: false, error: message };
   }
 }
 

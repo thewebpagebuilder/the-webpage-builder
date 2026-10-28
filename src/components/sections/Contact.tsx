@@ -96,7 +96,7 @@ export function Contact() {
       setSubmitting(false);
       setSubmitted(true);
     } catch (error) {
-      console.error("Failed to book strategy call with Supabase:", error);
+      console.error("Failed to book strategy call:", error);
       setSubmitting(false);
     }
   };

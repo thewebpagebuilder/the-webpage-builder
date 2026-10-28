@@ -1,5 +1,17 @@
 "use client";
-import { supabase } from "./supabase";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+  query,
+  orderBy,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "./firebase";
 
 export type LeadStatus = "new" | "contacted" | "confirmed" | "declined" | "done";
 export type LeadSource = "audit" | "demo" | "contact" | "call" | "quotation";
@@ -31,71 +43,112 @@ export interface Lead {
   gstApplicable?: boolean;
 }
 
+/**
+ * Removes undefined fields to prevent Firestore serialization errors
+ */
+function sanitizeForFirestore<T extends Record<string, any>>(data: T): Partial<T> {
+  const result: Record<string, any> = {};
+  for (const [key, value] of Object.entries(data)) {
+    if (value !== undefined) {
+      result[key] = value;
+    }
+  }
+  return result as Partial<T>;
+}
+
 export async function getLeads(): Promise<Lead[]> {
   try {
-    const { data, error } = await supabase
-      .from("leads")
-      .select("*")
-      .order("createdAt", { ascending: false });
-
-    if (error) {
-      console.error("Error fetching leads from Supabase:", error);
-      return [];
+    const leadsRef = collection(db, "leads");
+    // Attempt sorted query first
+    try {
+      const q = query(leadsRef, orderBy("createdAt", "desc"));
+      const snapshot = await getDocs(q);
+      return snapshot.docs.map((docSnap) => ({
+        id: docSnap.id,
+        ...(docSnap.data() as Omit<Lead, "id">),
+      })) as Lead[];
+    } catch {
+      // Fallback in case index is building or createdAt field missing
+      const snapshot = await getDocs(leadsRef);
+      const leads = snapshot.docs.map((docSnap) => ({
+        id: docSnap.id,
+        ...(docSnap.data() as Omit<Lead, "id">),
+      })) as Lead[];
+      return leads.sort(
+        (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+      );
     }
-    return (data || []) as Lead[];
   } catch (err) {
-    console.error("Failed to get leads:", err);
+    console.error("Failed to fetch leads from Firestore:", err);
     return [];
   }
 }
 
-export async function saveLead(lead: Omit<Lead, "id" | "createdAt" | "updatedAt" | "status"> & { status?: LeadStatus }): Promise<Lead> {
-  const newLead = {
-    ...lead,
-    status: lead.status || "new",
-  };
+export async function saveLead(
+  lead: Omit<Lead, "id" | "createdAt" | "updatedAt" | "status"> & { status?: LeadStatus }
+): Promise<Lead> {
+  try {
+    const now = new Date().toISOString();
+    const newLeadData = {
+      ...lead,
+      status: lead.status || "new",
+      createdAt: now,
+      updatedAt: now,
+    };
 
-  const { data, error } = await supabase
-    .from("leads")
-    .insert([newLead])
-    .select()
-    .single();
+    const sanitized = sanitizeForFirestore({
+      ...newLeadData,
+      _serverTimestamp: serverTimestamp(),
+    });
 
-  if (error) {
-    console.error("Error saving lead to Supabase:", error);
+    const leadsRef = collection(db, "leads");
+    const docRef = await addDoc(leadsRef, sanitized);
+
+    return {
+      id: docRef.id,
+      ...newLeadData,
+    } as Lead;
+  } catch (error) {
+    console.error("Error saving lead to Firestore:", error);
     throw error;
   }
-  return data as Lead;
 }
 
-export async function updateLead(id: string, updates: Partial<Omit<Lead, "id" | "createdAt">>): Promise<Lead | null> {
-  const updatedData = {
-    ...updates,
-    updatedAt: new Date().toISOString(),
-  };
+export async function updateLead(
+  id: string,
+  updates: Partial<Omit<Lead, "id" | "createdAt">>
+): Promise<Lead | null> {
+  try {
+    const now = new Date().toISOString();
+    const updatedData = sanitizeForFirestore({
+      ...updates,
+      updatedAt: now,
+    });
 
-  const { data, error } = await supabase
-    .from("leads")
-    .update(updatedData)
-    .eq("id", id)
-    .select()
-    .single();
+    const leadDocRef = doc(db, "leads", id);
+    await updateDoc(leadDocRef, updatedData);
 
-  if (error) {
-    console.error("Error updating lead in Supabase:", error);
+    const updatedDoc = await getDoc(leadDocRef);
+    if (!updatedDoc.exists()) {
+      return null;
+    }
+
+    return {
+      id: updatedDoc.id,
+      ...(updatedDoc.data() as Omit<Lead, "id">),
+    } as Lead;
+  } catch (error) {
+    console.error("Error updating lead in Firestore:", error);
     return null;
   }
-  return data as Lead;
 }
 
 export async function deleteLead(id: string): Promise<void> {
-  const { error } = await supabase
-    .from("leads")
-    .delete()
-    .eq("id", id);
-
-  if (error) {
-    console.error("Error deleting lead from Supabase:", error);
+  try {
+    const leadDocRef = doc(db, "leads", id);
+    await deleteDoc(leadDocRef);
+  } catch (error) {
+    console.error("Error deleting lead from Firestore:", error);
     throw error;
   }
 }

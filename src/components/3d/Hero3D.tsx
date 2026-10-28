@@ -82,12 +82,16 @@ function MorphingObject({ isMobile }: { isMobile: boolean }) {
 export function Hero3D() {
   const isMobile = useIsMobile();
 
+  if (isMobile) {
+    return null;
+  }
+
   return (
-    <div className="absolute inset-0 z-0 opacity-60 pointer-events-none sm:pointer-events-auto mix-blend-screen">
+    <div className="hidden sm:block absolute inset-0 z-0 opacity-60 pointer-events-none sm:pointer-events-auto mix-blend-screen">
       <Canvas
         camera={{ position: [0, 0, 6], fov: 45 }}
-        dpr={isMobile ? [1, 1] : [1, 1.5]}
-        gl={{ antialias: true, powerPreference: "high-performance" }}
+        dpr={[1, 1.5]}
+        gl={{ antialias: false, powerPreference: "high-performance" }}
       >
         <Suspense fallback={null}>
           <ambientLight intensity={0.2} />

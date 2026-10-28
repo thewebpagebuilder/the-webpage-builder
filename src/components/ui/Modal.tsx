@@ -150,7 +150,7 @@ export function LeadFormModal({ open, onClose, variant }: LeadFormModalProps) {
       setSubmitting(false);
       setSubmitted(true);
     } catch (error) {
-      console.error("Failed to submit lead to Supabase:", error);
+      console.error("Failed to submit lead:", error);
       setSubmitting(false);
     }
   };

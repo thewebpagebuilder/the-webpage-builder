@@ -1,22 +1,13 @@
 "use client";
-import { createClient } from "@supabase/supabase-js";
+import { submitLead as firebaseSubmitLead } from "./firebase";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL || "https://placeholder.supabase.co";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "placeholder";
+// Exported for backward compatibility
+export const submitLead = firebaseSubmitLead;
 
-// Initialize the Supabase client
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-export async function submitLead(data: any) {
-  if (supabaseAnonKey === "placeholder") {
-    console.warn("Supabase is not configured. Mocking lead submission.");
-    return new Promise(resolve => setTimeout(resolve, 1000));
-  }
-  
-  const { error } = await supabase
-    .from("leads")
-    .insert([data]);
-    
-  if (error) throw error;
-  return true;
-}
+export const supabase = {
+  auth: {
+    resetPasswordForEmail: async () => ({
+      error: new Error("Please use resetPassword from @/lib/auth (migrated to Firebase)."),
+    }),
+  },
+};

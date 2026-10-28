@@ -185,7 +185,7 @@ export default function AdminResetPassword() {
           {/* Footer */}
           <div className="mt-6 pt-5 border-t border-zinc-800/50 text-center">
             <p className="text-zinc-400 text-[10px] sm:text-[11px] leading-relaxed">
-              Logins and credentials are automatically synchronized and secured via Supabase Auth.
+              Logins and credentials are automatically synchronized and secured via Firebase Auth.
             </p>
           </div>
         </div>

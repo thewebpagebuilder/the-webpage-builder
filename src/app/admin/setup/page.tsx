@@ -109,7 +109,7 @@ export default function AdminSetup() {
           </motion.div>
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">Profile Updated!</h2>
           <p className="text-zinc-400 text-sm sm:text-base font-light">
-            Your Supabase admin credentials have been updated. Redirecting to dashboard...
+            Your admin credentials have been updated. Redirecting to dashboard...
           </p>
         </motion.div>
       </div>
@@ -149,7 +149,7 @@ export default function AdminSetup() {
               Update Admin Profile
             </h1>
             <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
-              Modify your Supabase admin login email or password.
+              Modify your admin login email or password.
             </p>
           </div>
 
@@ -157,7 +157,7 @@ export default function AdminSetup() {
           <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-xl border border-yellow-400/20 bg-yellow-400/[0.04] flex items-start gap-2.5">
             <AlertCircle size={14} className="text-yellow-400 flex-shrink-0 mt-0.5 sm:w-4 sm:h-4" />
             <p className="text-yellow-400/90 text-[11px] sm:text-xs leading-relaxed">
-              <span className="font-semibold">Important:</span> Make sure you save your new credentials. If you change your email, you may need to confirm it depending on your Supabase settings.
+              <span className="font-semibold">Important:</span> Make sure you save your new credentials.
             </p>
           </div>
 

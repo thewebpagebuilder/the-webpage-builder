@@ -111,11 +111,8 @@ export function DevObjects3D() {
 
   const logoInstances = useMemo(() => {
     const instances = [];
-    const count = 60; // Always 60 since it only runs on desktop now
+    const count = 20; // Lightweight count for subtle background effect on desktop
     
-    // Spread them over a Y range that corresponds to the page height scroll
-    // A typical page might be 10000px tall. 10000 * 0.015 = 150 units in Y.
-    // So we spread them from Y=10 to Y=-160
     for (let i = 0; i < count; i++) {
       const randomLogo = TECH_LOGOS[Math.floor(Math.random() * TECH_LOGOS.length)];
       instances.push({
@@ -126,19 +123,19 @@ export function DevObjects3D() {
           10 - (Math.random() * 170),
           (Math.random() - 0.5) * 10 - 4
         ] as [number, number, number],
-        scale: 0.6 + Math.random() * 0.6,
-        speed: 1.5 + Math.random() * 2
+        scale: 0.6 + Math.random() * 0.5,
+        speed: 1.2 + Math.random() * 1.5
       });
     }
     return instances;
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[1] opacity-70">
+    <div className="hidden lg:block fixed inset-0 pointer-events-none z-[1] opacity-60">
       <Canvas
         camera={{ position: [0, 0, 10], fov: 45 }}
-        gl={{ alpha: true, antialias: true }}
-        dpr={[1, 2]}
+        gl={{ alpha: true, antialias: false, powerPreference: "low-power" }}
+        dpr={[1, 1.25]}
       >
         <ambientLight intensity={0.5} />
         <ScrollTracker setScrollY={setScrollY} />

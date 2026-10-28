@@ -244,7 +244,7 @@ export default function AdminDashboard() {
         <div className="container px-5 sm:px-6 mx-auto py-4 sm:py-5 flex items-center justify-between gap-3">
           <div className="min-w-0">
             <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white truncate">Admin Dashboard</h1>
-            <p className="text-zinc-400 text-[10px] sm:text-xs hidden sm:block">Lead & Financial Manager (Supabase Connected)</p>
+            <p className="text-zinc-400 text-[10px] sm:text-xs hidden sm:block">Lead & Financial Manager (Firebase Connected)</p>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             <Link
@@ -690,7 +690,7 @@ export default function AdminDashboard() {
                     <td colSpan={10} className="px-4 sm:px-6 py-12 sm:py-16 text-center">
                       <div className="flex flex-col items-center justify-center gap-3">
                         <div className="w-8 h-8 border-2 border-zinc-800 border-t-white rounded-full animate-spin" />
-                        <span className="text-zinc-400 text-xs sm:text-sm font-medium">Fetching from Supabase...</span>
+                        <span className="text-zinc-400 text-xs sm:text-sm font-medium">Fetching from Firestore...</span>
                       </div>
                     </td>
                   </tr>
@@ -839,7 +839,7 @@ export default function AdminDashboard() {
 
         {/* Footer note */}
         <p className="text-zinc-700 text-[10px] sm:text-xs text-center mt-6 sm:mt-8">
-          Data stored securely in your Supabase backend database.
+          Data stored securely in your Google Firebase backend database.
         </p>
       </div>
 
