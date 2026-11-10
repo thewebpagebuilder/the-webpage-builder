@@ -13,6 +13,7 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, requireSetup = true }: ProtectedRouteProps) {
+  const router = useRouter();
   const [checked, setChecked] = useState(false);
   const [authed, setAuthed] = useState(false);
   const [needsSetup, setNeedsSetup] = useState(false);
@@ -20,37 +21,39 @@ export function ProtectedRoute({ children, requireSetup = true }: ProtectedRoute
   useEffect(() => {
     let active = true;
     async function checkAuth() {
-      const isAuth = await isAuthenticated();
-      if (!active) return;
-      setAuthed(isAuth);
-      setNeedsSetup(isUsingDefaults());
-      setChecked(true);
+      try {
+        const isAuth = await isAuthenticated();
+        if (!active) return;
+        const defaults = isUsingDefaults();
+        setAuthed(isAuth);
+        setNeedsSetup(defaults);
+        setChecked(true);
+
+        if (!isAuth) {
+          router.replace("/admin/login");
+        } else if (requireSetup && defaults) {
+          router.replace("/admin/setup");
+        }
+      } catch {
+        if (!active) return;
+        setAuthed(false);
+        setChecked(true);
+        router.replace("/admin/login");
+      }
     }
     checkAuth();
     return () => {
       active = false;
     };
-  }, []);
+  }, [requireSetup, router]);
 
-  const router = useRouter();
-
-  // Avoid flicker — render nothing until we've checked
-  if (!checked) {
+  // Avoid flicker or rendering protected UI before auth check / redirect finishes
+  if (!checked || !authed || (requireSetup && needsSetup)) {
     return (
       <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-zinc-700 border-t-white rounded-full animate-spin" />
       </div>
     );
-  }
-
-  if (!authed) {
-    router.replace("/admin/login");
-    return null;
-  }
-
-  if (requireSetup && needsSetup) {
-    router.replace("/admin/setup");
-    return null;
   }
 
   return <>{children}</>;

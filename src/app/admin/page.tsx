@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   getLeads, updateLead, deleteLead, exportLeadsCSV, getLeadStats, formatCurrency, parseBudget,
+  getFirestoreErrorMessage,
   type Lead, type LeadStatus, type LeadSource
 } from "@/lib/leads";
 import { getUserEmail, logout } from "@/lib/auth";
+import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
 import {
   Users, TrendingUp, Download, Trash2, Edit2, Save, X, Search, DollarSign, BarChart3,
-  Phone, Sparkles, Calculator, FileText, Eye, ChevronRight, LogOut, Settings, ArrowLeft
+  Phone, Sparkles, Calculator, FileText, Eye, ChevronRight, LogOut, Settings, ArrowLeft, AlertCircle, RefreshCw
 } from "lucide-react";
 
 const STATUS_COLORS: Record<LeadStatus, string> = {
@@ -46,8 +48,17 @@ const SOURCE_TABS: SourceTab[] = [
 ];
 
 export default function AdminDashboard() {
+  return (
+    <ProtectedRoute>
+      <AdminDashboardContent />
+    </ProtectedRoute>
+  );
+}
+
+function AdminDashboardContent() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<LeadSource | "all">("all");
   const [filterStatus, setFilterStatus] = useState<LeadStatus | "all">("all");
   const [search, setSearch] = useState("");
@@ -58,10 +69,17 @@ export default function AdminDashboard() {
   const [username, setUsername] = useState("admin");
   const navigate = useRouter();
 
+  const refreshLeads = async () => {
+    setError(null);
+    const fetchedLeads = await getLeads();
+    setLeads(fetchedLeads);
+  };
+
   useEffect(() => {
     async function loadInitialData() {
       try {
         setLoading(true);
+        setError(null);
         const [email, fetchedLeads] = await Promise.all([
           getUserEmail(),
           getLeads()
@@ -72,6 +90,7 @@ export default function AdminDashboard() {
         setLeads(fetchedLeads);
       } catch (err) {
         console.error("Failed to load initial admin dashboard data:", err);
+        setError(getFirestoreErrorMessage(err, "Failed to load leads from Firestore."));
       } finally {
         setLoading(false);
       }
@@ -188,16 +207,17 @@ export default function AdminDashboard() {
 
   const handleStatusChange = async (id: string, status: LeadStatus) => {
     try {
+      setError(null);
       const updated = await updateLead(id, { status });
       if (updated) {
-        const freshLeads = await getLeads();
-        setLeads(freshLeads);
+        await refreshLeads();
         if (viewingLead?.id === id) {
           setViewingLead({ ...viewingLead, status });
         }
       }
     } catch (err) {
       console.error("Failed to update status:", err);
+      setError(getFirestoreErrorMessage(err, "Failed to update lead status."));
     }
   };
 
@@ -208,25 +228,27 @@ export default function AdminDashboard() {
 
   const handleSave = async (id: string) => {
     try {
+      setError(null);
       await updateLead(id, editData);
-      const freshLeads = await getLeads();
-      setLeads(freshLeads);
+      await refreshLeads();
       setEditingId(null);
       setEditData({});
     } catch (err) {
       console.error("Failed to save lead updates:", err);
+      setError(getFirestoreErrorMessage(err, "Failed to save lead changes."));
     }
   };
 
   const handleDelete = async (id: string) => {
     if (confirm("Delete this lead permanently?")) {
       try {
+        setError(null);
         await deleteLead(id);
-        const freshLeads = await getLeads();
-        setLeads(freshLeads);
+        await refreshLeads();
         if (viewingLead?.id === id) setViewingLead(null);
       } catch (err) {
         console.error("Failed to delete lead:", err);
+        setError(getFirestoreErrorMessage(err, "Failed to delete lead."));
       }
     }
   };
@@ -329,6 +351,31 @@ export default function AdminDashboard() {
       </header>
 
       <div className="container px-5 sm:px-6 mx-auto py-8 sm:py-10">
+        {error && (
+          <div className="mb-6 p-4 rounded-xl border border-red-500/30 bg-red-500/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-start gap-2.5 text-red-300 text-xs sm:text-sm">
+              <AlertCircle size={16} className="text-red-400 flex-shrink-0 mt-0.5" />
+              <span>{error}</span>
+            </div>
+            <button
+              onClick={async () => {
+                setLoading(true);
+                try {
+                  await refreshLeads();
+                } catch (err) {
+                  setError(getFirestoreErrorMessage(err, "Failed to load leads from Firestore."));
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              className="self-start sm:self-auto px-3.5 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-200 text-xs font-semibold flex items-center gap-1.5 transition-colors flex-shrink-0"
+            >
+              <RefreshCw size={12} />
+              Retry
+            </button>
+          </div>
+        )}
+
         {/* Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mb-8 sm:mb-10">
           {[
@@ -852,11 +899,16 @@ export default function AdminDashboard() {
             onStatusChange={(status) => handleStatusChange(viewingLead.id, status)}
             onDelete={() => handleDelete(viewingLead.id)}
             onUpdate={async (id, updates) => {
-              const updated = await updateLead(id, updates);
-              if (updated) {
-                const freshLeads = await getLeads();
-                setLeads(freshLeads);
-                setViewingLead(updated);
+              try {
+                setError(null);
+                const updated = await updateLead(id, updates);
+                if (updated) {
+                  await refreshLeads();
+                  setViewingLead(updated);
+                }
+              } catch (err) {
+                setError(getFirestoreErrorMessage(err, "Failed to save lead updates."));
+                throw err;
               }
             }}
           />
@@ -874,7 +926,7 @@ function SourceBadge({ source }: { source: LeadSource }) {
     demo: { label: "Demo", color: "text-purple-400 bg-purple-400/10 border-purple-400/20", icon: FileText },
     contact: { label: "Contact", color: "text-zinc-400 bg-zinc-800 border-zinc-700", icon: Users },
   };
-  const cfg = config[source];
+  const cfg = config[source] || config.contact;
   const Icon = cfg.icon;
   return (
     <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium border ${cfg.color}`}>
@@ -1252,9 +1304,14 @@ function LeadDetailDrawer({ lead, onClose, onStatusChange, onDelete, onUpdate }:
                       <button
                         onClick={async () => {
                           setSubmitting(true);
-                          await onUpdate(lead.id, { paymentReference: paymentForm.ref, gstApplicable: paymentForm.gst, paymentDate: new Date().toISOString() });
-                          setShowPaymentForm(false);
-                          setSubmitting(false);
+                          try {
+                            await onUpdate(lead.id, { paymentReference: paymentForm.ref, gstApplicable: paymentForm.gst, paymentDate: new Date().toISOString() });
+                            setShowPaymentForm(false);
+                          } catch {
+                            // Parent error banner already displays the error
+                          } finally {
+                            setSubmitting(false);
+                          }
                         }}
                         disabled={submitting || !paymentForm.ref}
                         className="flex-1 h-8 rounded-md bg-white text-black text-[11px] font-semibold flex items-center justify-center disabled:opacity-50 hover:bg-zinc-200"

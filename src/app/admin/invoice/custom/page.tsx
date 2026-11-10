@@ -1,5 +1,6 @@
 "use client";
 import InvoiceLayout, { InvoiceData } from "@/components/admin/InvoiceLayout";
+import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
 
 export default function CustomInvoicePage() {
   const initialData: InvoiceData = {
@@ -24,5 +25,9 @@ export default function CustomInvoicePage() {
     currency: "INR",
   };
 
-  return <InvoiceLayout initialData={initialData} />;
+  return (
+    <ProtectedRoute>
+      <InvoiceLayout initialData={initialData} />
+    </ProtectedRoute>
+  );
 }

@@ -1,31 +1,39 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { getLeads, type Lead } from "@/lib/leads";
-import { parseBudget } from "@/lib/leads";
+import { getLeadById, getFirestoreErrorMessage, parseBudget, type Lead } from "@/lib/leads";
 import InvoiceLayout, { InvoiceData } from "@/components/admin/InvoiceLayout";
+import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
 
-export default function InvoicePage() {
+function InvoiceContent() {
   const { id } = useParams();
   const [lead, setLead] = useState<Lead | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function loadLead() {
       try {
-        const leads = await getLeads();
-        const found = leads.find((l) => l.id === id);
+        const leadId = Array.isArray(id) ? id[0] : id;
+        if (!leadId) {
+          setLoading(false);
+          return;
+        }
+        const found = await getLeadById(leadId);
         if (found) {
           setLead(found);
         }
       } catch (err) {
         console.error("Failed to load lead for invoice:", err);
+        setError(getFirestoreErrorMessage(err, "Failed to load lead details from Firestore."));
       } finally {
         setLoading(false);
       }
     }
     if (id) {
       loadLead();
+    } else {
+      setLoading(false);
     }
   }, [id]);
 
@@ -33,6 +41,14 @@ export default function InvoicePage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-white">
         <div className="animate-spin w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-red-400 p-6 text-center">
+        <p className="max-w-md text-sm">{error}</p>
       </div>
     );
   }
@@ -68,4 +84,12 @@ export default function InvoicePage() {
   };
 
   return <InvoiceLayout initialData={initialData} />;
+}
+
+export default function InvoicePage() {
+  return (
+    <ProtectedRoute>
+      <InvoiceContent />
+    </ProtectedRoute>
+  );
 }

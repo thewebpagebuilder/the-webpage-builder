@@ -15,6 +15,7 @@ export default function AdminSetup() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("Your admin credentials have been updated. Redirecting to dashboard...");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -74,10 +75,13 @@ export default function AdminSetup() {
 
       const result = await updateCredentials(updateEmail, updatePassword);
       if (result.success) {
+        if (result.message) {
+          setSuccessMessage(result.message);
+        }
         setSuccess(true);
         setTimeout(() => {
           navigate.replace("/admin");
-        }, 1500);
+        }, result.emailVerificationPending ? 3500 : 1500);
       } else {
         setError(result.error || "Failed to update profile.");
         setSubmitting(false);
@@ -109,7 +113,7 @@ export default function AdminSetup() {
           </motion.div>
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">Profile Updated!</h2>
           <p className="text-zinc-400 text-sm sm:text-base font-light">
-            Your admin credentials have been updated. Redirecting to dashboard...
+            {successMessage}
           </p>
         </motion.div>
       </div>

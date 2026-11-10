@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /leads/{leadId} {
+      // Allow public website visitors to submit contact, audit, demo, and quotation forms
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.email is string
+                    && request.resource.data.email.size() > 0;
+
+      // Only the authorized admin user (thewebpagebuilder@gmail.com) can read, update, or delete leads.
+      // Add additional admin UIDs to the list if you create more admin accounts in Firebase Auth.
+      allow read, update, delete: if request.auth != null
+                                  && request.auth.uid in ["jOByf3rAACddt52lX2gG1cA5H7M2"];
+    }
+
+    // Deny access to all other collections by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

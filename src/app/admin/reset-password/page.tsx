@@ -1,18 +1,59 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Lock, Eye, EyeOff, ArrowRight, ShieldCheck, AlertCircle, CheckCircle2 } from "lucide-react";
-import { updateCredentials } from "@/lib/auth";
+import { completePasswordReset, isAuthenticated, updateCredentials, verifyResetCode } from "@/lib/auth";
 
-export default function AdminResetPassword() {
+function ResetPasswordContent() {
   const navigate = useRouter();
+  const searchParams = useSearchParams();
+  const oobCode = searchParams?.get("oobCode") || "";
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [checkingCode, setCheckingCode] = useState(true);
+  const [canReset, setCanReset] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    async function validateResetAccess() {
+      if (oobCode) {
+        const check = await verifyResetCode(oobCode);
+        if (!active) return;
+        if (check.valid) {
+          setCanReset(true);
+          if (check.email) setResetEmail(check.email);
+        } else {
+          setError(check.error || "Invalid or expired password reset link.");
+          setCanReset(false);
+        }
+        setCheckingCode(false);
+        return;
+      }
+
+      const authed = await isAuthenticated();
+      if (!active) return;
+      if (authed) {
+        setCanReset(true);
+      } else {
+        setError("No active reset link or admin session found. Request a new reset link from the login page.");
+        setCanReset(false);
+      }
+      setCheckingCode(false);
+    }
+
+    validateResetAccess();
+    return () => {
+      active = false;
+    };
+  }, [oobCode]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,14 +72,17 @@ export default function AdminResetPassword() {
     setSubmitting(true);
 
     try {
-      const result = await updateCredentials(undefined, password);
+      const result = oobCode
+        ? await completePasswordReset(oobCode, password)
+        : await updateCredentials(undefined, password);
+
       if (result.success) {
         setSuccess(true);
         setTimeout(() => {
-          navigate.replace("/admin");
-        }, 3000);
+          navigate.replace(oobCode ? "/admin/login" : "/admin");
+        }, 2500);
       } else {
-        setError(result.error || "Failed to update password. Session may have expired.");
+        setError(result.error || "Failed to update password. Session or link may have expired.");
         setSubmitting(false);
       }
     } catch (err) {
@@ -62,10 +106,10 @@ export default function AdminResetPassword() {
       >
         {/* Brand */}
         <div className="text-center mb-8 sm:mb-10">
-          <a href="/" className="inline-flex items-center gap-1.5 text-lg sm:text-xl font-bold tracking-tighter text-white">
+          <Link href="/" className="inline-flex items-center gap-1.5 text-lg sm:text-xl font-bold tracking-tighter text-white">
             The Webpage Builder
             <span className="text-zinc-400">.</span>
-          </a>
+          </Link>
           <p className="text-zinc-400 text-xs sm:text-sm mt-1">Admin Security Portal</p>
         </div>
 
@@ -78,12 +122,19 @@ export default function AdminResetPassword() {
             </div>
           </div>
 
-          {!success ? (
+          {checkingCode ? (
+            <div className="py-8 flex flex-col items-center gap-3 text-zinc-400 text-xs sm:text-sm">
+              <div className="w-7 h-7 border-2 border-zinc-700 border-t-white rounded-full animate-spin" />
+              <span>Verifying reset authorization...</span>
+            </div>
+          ) : !success ? (
             <>
               <div className="text-center mb-7 sm:mb-8">
                 <h1 className="text-xl sm:text-2xl font-bold text-white mb-2">Set New Password</h1>
                 <p className="text-zinc-400 text-xs sm:text-sm">
-                  Please enter your new administrator password.
+                  {resetEmail
+                    ? `Resetting password for ${resetEmail}`
+                    : "Please enter your new administrator password."}
                 </p>
               </div>
 
@@ -99,76 +150,87 @@ export default function AdminResetPassword() {
                 </motion.div>
               )}
 
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
-                {/* New Password */}
-                <div>
-                  <label className="block text-[10px] sm:text-xs uppercase tracking-wider text-zinc-400 font-medium mb-2">
-                    New Password (min 8 chars)
-                  </label>
-                  <div className="relative">
-                    <Lock size={14} className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none sm:w-4 sm:h-4" />
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      required
-                      autoFocus
-                      className="w-full h-11 sm:h-12 pl-10 sm:pl-11 pr-11 sm:pr-12 rounded-lg sm:rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-zinc-600 transition-colors"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 sm:right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors p-1"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                    >
-                      {showPassword ? <EyeOff size={14} className="sm:w-4 sm:h-4" /> : <Eye size={14} className="sm:w-4 sm:h-4" />}
-                    </button>
+              {canReset ? (
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+                  {/* New Password */}
+                  <div>
+                    <label className="block text-[10px] sm:text-xs uppercase tracking-wider text-zinc-400 font-medium mb-2">
+                      New Password (min 8 chars)
+                    </label>
+                    <div className="relative">
+                      <Lock size={14} className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none sm:w-4 sm:h-4" />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        required
+                        autoFocus
+                        className="w-full h-11 sm:h-12 pl-10 sm:pl-11 pr-11 sm:pr-12 rounded-lg sm:rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-zinc-600 transition-colors"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 sm:right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors p-1"
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                      >
+                        {showPassword ? <EyeOff size={14} className="sm:w-4 sm:h-4" /> : <Eye size={14} className="sm:w-4 sm:h-4" />}
+                      </button>
+                    </div>
                   </div>
-                </div>
 
-                {/* Confirm Password */}
-                <div>
-                  <label className="block text-[10px] sm:text-xs uppercase tracking-wider text-zinc-400 font-medium mb-2">
-                    Confirm Password
-                  </label>
-                  <div className="relative">
-                    <Lock size={14} className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none sm:w-4 sm:h-4" />
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="••••••••"
-                      required
-                      className="w-full h-11 sm:h-12 pl-10 sm:pl-11 pr-11 sm:pr-12 rounded-lg sm:rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-zinc-600 transition-colors"
-                    />
+                  {/* Confirm Password */}
+                  <div>
+                    <label className="block text-[10px] sm:text-xs uppercase tracking-wider text-zinc-400 font-medium mb-2">
+                      Confirm Password
+                    </label>
+                    <div className="relative">
+                      <Lock size={14} className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none sm:w-4 sm:h-4" />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="••••••••"
+                        required
+                        className="w-full h-11 sm:h-12 pl-10 sm:pl-11 pr-11 sm:pr-12 rounded-lg sm:rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-zinc-600 transition-colors"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Submit */}
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full h-12 rounded-full bg-white text-black text-sm font-semibold flex items-center justify-center gap-2 hover:bg-zinc-200 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 mt-2"
-                >
-                  {submitting ? (
-                    <>
-                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                      </svg>
-                      Updating...
-                    </>
-                  ) : (
-                    <>
-                      <ShieldCheck size={14} />
-                      Save Password
-                      <ArrowRight size={14} />
-                    </>
-                  )}
-                </button>
-              </form>
+                  {/* Submit */}
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full h-12 rounded-full bg-white text-black text-sm font-semibold flex items-center justify-center gap-2 hover:bg-zinc-200 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 mt-2"
+                  >
+                    {submitting ? (
+                      <>
+                        <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                        </svg>
+                        Updating...
+                      </>
+                    ) : (
+                      <>
+                        <ShieldCheck size={14} />
+                        Save Password
+                        <ArrowRight size={14} />
+                      </>
+                    )}
+                  </button>
+                </form>
+              ) : (
+                <div className="text-center pt-2">
+                  <Link
+                    href="/admin/login"
+                    className="inline-flex items-center justify-center gap-2 px-6 h-11 rounded-full bg-white text-black text-xs sm:text-sm font-semibold hover:bg-zinc-200 transition-colors"
+                  >
+                    Go to Admin Login
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+              )}
             </>
           ) : (
             <div className="text-center py-6">
@@ -177,7 +239,7 @@ export default function AdminResetPassword() {
               </div>
               <h1 className="text-xl sm:text-2xl font-bold text-white mb-2">Password Updated!</h1>
               <p className="text-zinc-400 text-xs sm:text-sm">
-                Your credentials have been successfully updated. Redirecting to admin dashboard...
+                Your credentials have been successfully updated. Redirecting...
               </p>
             </div>
           )}
@@ -191,5 +253,19 @@ export default function AdminResetPassword() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function AdminResetPassword() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-zinc-700 border-t-white rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

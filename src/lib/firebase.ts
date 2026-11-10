@@ -21,15 +21,23 @@ export const db = getFirestore(app);
 export const auth = getAuth(app);
 
 // Direct submission helper for backward compatibility
-export async function submitLead(data: any) {
+export async function submitLead(data: Record<string, unknown>) {
   try {
+    const now = new Date().toISOString();
+    const payload: Record<string, unknown> = {
+      status: "new",
+      createdAt: now,
+      updatedAt: now,
+      _serverTimestamp: serverTimestamp(),
+    };
+    for (const [key, value] of Object.entries(data)) {
+      if (value !== undefined) {
+        payload[key] = value;
+      }
+    }
+
     const leadsRef = collection(db, "leads");
-    const docRef = await addDoc(leadsRef, {
-      ...data,
-      createdAt: data.createdAt || new Date().toISOString(),
-      updatedAt: data.updatedAt || new Date().toISOString(),
-      serverTimestamp: serverTimestamp(),
-    });
+    const docRef = await addDoc(leadsRef, payload);
     return { success: true, id: docRef.id };
   } catch (error) {
     console.error("Error submitting lead to Firebase Firestore:", error);

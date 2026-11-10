@@ -3,10 +3,10 @@ import { useState, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight, CheckCircle2, Clock, Calendar, Sparkles, Phone, Mail,
-  ChevronLeft, ChevronRight, User, Globe, MessageSquare
+  ChevronLeft, ChevronRight, User, Globe, MessageSquare, AlertCircle
 } from "lucide-react";
 import { openMail } from "@/lib/scroll";
-import { saveLead } from "@/lib/leads";
+import { saveLead, getFirestoreErrorMessage } from "@/lib/leads";
 import { trackEvent } from "@/utils/analytics";
 
 const TIME_SLOTS = [
@@ -62,8 +62,10 @@ export function Contact() {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleField = (name: string, value: string) => {
+    if (submitError) setSubmitError("");
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -72,6 +74,7 @@ export function Contact() {
     if (!selectedDate || !selectedTime) return;
     if (!formData.name || !formData.email || !formData.phone) return;
     setSubmitting(true);
+    setSubmitError("");
     
     try {
       await saveLead({
@@ -97,6 +100,7 @@ export function Contact() {
       setSubmitted(true);
     } catch (error) {
       console.error("Failed to book strategy call:", error);
+      setSubmitError(getFirestoreErrorMessage(error, "Unable to book your call right now. Please try again or email us directly."));
       setSubmitting(false);
     }
   };
@@ -414,6 +418,13 @@ export function Contact() {
                         />
                       </div>
                     </motion.div>
+                  )}
+
+                  {submitError && (
+                    <div className="mb-4 p-3 rounded-xl border border-red-500/25 bg-red-500/[0.06] flex items-start gap-2.5">
+                      <AlertCircle size={14} className="text-red-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-red-300 text-xs leading-relaxed">{submitError}</p>
+                    </div>
                   )}
 
                   <button

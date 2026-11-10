@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, CheckCircle2, ArrowRight, Sparkles, Mail, User, Globe, MessageSquare, Building2, Phone, FileText, Calculator } from "lucide-react";
-import { saveLead } from "@/lib/leads";
+import { X, CheckCircle2, ArrowRight, Sparkles, Mail, User, Globe, MessageSquare, Building2, Phone, FileText, Calculator, AlertCircle } from "lucide-react";
+import { saveLead, getFirestoreErrorMessage } from "@/lib/leads";
 import { trackEvent } from "@/utils/analytics";
 
 interface FormField {
@@ -86,6 +86,7 @@ export function LeadFormModal({ open, onClose, variant }: LeadFormModalProps) {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   // Lock body scroll when open
   useEffect(() => {
@@ -97,6 +98,7 @@ export function LeadFormModal({ open, onClose, variant }: LeadFormModalProps) {
         setFormData({});
         setSubmitted(false);
         setSubmitting(false);
+        setSubmitError("");
       }, 300);
     }
     return () => {
@@ -114,12 +116,14 @@ export function LeadFormModal({ open, onClose, variant }: LeadFormModalProps) {
   }, [open, onClose]);
 
   const handleChange = (name: string, value: string) => {
+    if (submitError) setSubmitError("");
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setSubmitError("");
 
     const leadData: any = {
       name: formData.name || "",
@@ -151,6 +155,7 @@ export function LeadFormModal({ open, onClose, variant }: LeadFormModalProps) {
       setSubmitted(true);
     } catch (error) {
       console.error("Failed to submit lead:", error);
+      setSubmitError(getFirestoreErrorMessage(error, "Unable to submit your request right now. Please try again."));
       setSubmitting(false);
     }
   };
@@ -377,6 +382,13 @@ export function LeadFormModal({ open, onClose, variant }: LeadFormModalProps) {
                       </div>
                     );
                   })}
+
+                  {submitError && (
+                    <div className="p-3 rounded-xl border border-red-500/25 bg-red-500/[0.06] flex items-start gap-2.5">
+                      <AlertCircle size={14} className="text-red-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-red-300 text-xs leading-relaxed">{submitError}</p>
+                    </div>
+                  )}
 
                   <button
                     type="submit"

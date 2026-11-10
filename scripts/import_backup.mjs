@@ -1,17 +1,21 @@
 import { initializeApp } from "firebase/app";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
+import readline from "node:readline/promises";
+import { stdin as input, stdout as output } from "node:process";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAuaf4HhY6nHzeo9z3GASNOhthsS3tRaOc",
-  authDomain: "the-webpage-builder.firebaseapp.com",
-  projectId: "the-webpage-builder",
-  storageBucket: "the-webpage-builder.firebasestorage.app",
-  messagingSenderId: "1027718157138",
-  appId: "1:1027718157138:web:6771f8eff6e91b4ca7608b",
-  measurementId: "G-1FMB50MSKC"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyAuaf4HhY6nHzeo9z3GASNOhthsS3tRaOc",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "the-webpage-builder.firebaseapp.com",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "the-webpage-builder",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "the-webpage-builder.firebasestorage.app",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "1027718157138",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:1027718157138:web:6771f8eff6e91b4ca7608b",
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-1FMB50MSKC",
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
 // Data extracted directly from C:\Users\lokha\OneDrive\Desktop\db_cluster-24-10-2026@04-07-25.backup
@@ -88,8 +92,32 @@ const backupLeads = [
   }
 ];
 
+async function authenticateIfProvided() {
+  let email = process.env.FIREBASE_ADMIN_EMAIL;
+  let password = process.env.FIREBASE_ADMIN_PASSWORD;
+
+  if ((!email || !password) && process.stdin.isTTY) {
+    const rl = readline.createInterface({ input, output });
+    try {
+      email = email || (await rl.question("Admin email (leave blank to skip auth): ")).trim();
+      if (email && !password) {
+        password = await rl.question("Admin password: ");
+      }
+    } finally {
+      rl.close();
+    }
+  }
+
+  if (email && password) {
+    await signInWithEmailAndPassword(auth, email, password);
+    console.log(`Authenticated as ${email}`);
+  }
+}
+
 async function runImport() {
   console.log("Starting import of backup records to Firebase Firestore...");
+  await authenticateIfProvided();
+
   for (const item of backupLeads) {
     const { id, ...data } = item;
     // Clean undefined or null fields
@@ -107,6 +135,9 @@ async function runImport() {
 }
 
 runImport().catch((err) => {
-  console.error("Import failed:", err);
+  console.error("Import failed:", err.code || err.message || err);
+  if (err.code === "permission-denied") {
+    console.error("Tip: Publish firestore.rules first, then set FIREBASE_ADMIN_EMAIL and FIREBASE_ADMIN_PASSWORD or enter them when prompted.");
+  }
   process.exit(1);
 });

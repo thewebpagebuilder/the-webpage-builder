@@ -43,11 +43,76 @@ export interface Lead {
   gstApplicable?: boolean;
 }
 
+const VALID_STATUSES: ReadonlySet<string> = new Set([
+  "new",
+  "contacted",
+  "confirmed",
+  "declined",
+  "done",
+]);
+
+const VALID_SOURCES: ReadonlySet<string> = new Set([
+  "audit",
+  "demo",
+  "contact",
+  "call",
+  "quotation",
+]);
+
+/**
+ * Converts a Firestore Timestamp, Date, number, or string into an ISO date string.
+ */
+function toIsoString(value: unknown, fallback = new Date(0).toISOString()): string {
+  if (!value) return fallback;
+  if (typeof value === "string") return value;
+  if (value instanceof Date) return value.toISOString();
+  if (typeof value === "number") return new Date(value).toISOString();
+  if (typeof value === "object" && value !== null) {
+    const maybeTimestamp = value as { toDate?: () => Date; seconds?: number };
+    if (typeof maybeTimestamp.toDate === "function") {
+      return maybeTimestamp.toDate().toISOString();
+    }
+    if (typeof maybeTimestamp.seconds === "number") {
+      return new Date(maybeTimestamp.seconds * 1000).toISOString();
+    }
+  }
+  return fallback;
+}
+
+/**
+ * Normalizes a Firestore document into a safe Lead object so missing fields or
+ * Firestore Timestamp values do not crash client components.
+ */
+function normalizeLead(id: string, raw: Record<string, unknown>): Lead {
+  const status = typeof raw.status === "string" && VALID_STATUSES.has(raw.status)
+    ? (raw.status as LeadStatus)
+    : "new";
+  const source = typeof raw.source === "string" && VALID_SOURCES.has(raw.source)
+    ? (raw.source as LeadSource)
+    : "contact";
+
+  const createdAt = toIsoString(raw.createdAt ?? raw._serverTimestamp ?? raw.serverTimestamp);
+  const updatedAt = toIsoString(raw.updatedAt, createdAt);
+
+  return {
+    ...(raw as Partial<Lead>),
+    id,
+    name: typeof raw.name === "string" ? raw.name : "Unnamed Lead",
+    email: typeof raw.email === "string" ? raw.email : "",
+    status,
+    source,
+    createdAt,
+    updatedAt,
+    paymentDate: raw.paymentDate ? toIsoString(raw.paymentDate) : undefined,
+    scheduledDate: raw.scheduledDate ? toIsoString(raw.scheduledDate) : undefined,
+  };
+}
+
 /**
  * Removes undefined fields to prevent Firestore serialization errors
  */
-function sanitizeForFirestore<T extends Record<string, any>>(data: T): Partial<T> {
-  const result: Record<string, any> = {};
+function sanitizeForFirestore<T extends Record<string, unknown>>(data: T): Partial<T> {
+  const result: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(data)) {
     if (value !== undefined) {
       result[key] = value;
@@ -56,31 +121,73 @@ function sanitizeForFirestore<T extends Record<string, any>>(data: T): Partial<T
   return result as Partial<T>;
 }
 
+/**
+ * Formats Firebase/Firestore errors into actionable messages for UI feedback.
+ */
+export function getFirestoreErrorMessage(error: unknown, fallback = "Database request failed."): string {
+  const err = error as { code?: string; message?: string } | null;
+  if (!err) return fallback;
+
+  switch (err.code) {
+    case "permission-denied":
+      return "Firestore permission denied. Verify your Firestore Security Rules allow public lead creation and authenticated admin access, and ensure you are signed in.";
+    case "unauthenticated":
+      return "Your admin session has expired. Please sign in again.";
+    case "unavailable":
+      return "Unable to reach Firebase right now. Please check your internet connection and try again.";
+    case "not-found":
+      return "Firestore database or requested record was not found in this Firebase project.";
+    default:
+      return err.message || fallback;
+  }
+}
+
 export async function getLeads(): Promise<Lead[]> {
   try {
     const leadsRef = collection(db, "leads");
-    // Attempt sorted query first
     try {
       const q = query(leadsRef, orderBy("createdAt", "desc"));
       const snapshot = await getDocs(q);
-      return snapshot.docs.map((docSnap) => ({
-        id: docSnap.id,
-        ...(docSnap.data() as Omit<Lead, "id">),
-      })) as Lead[];
-    } catch {
-      // Fallback in case index is building or createdAt field missing
+      const orderedLeads = snapshot.docs.map((docSnap) =>
+        normalizeLead(docSnap.id, docSnap.data() as Record<string, unknown>)
+      );
+
+      // If any documents lack `createdAt`, Firestore's orderBy excludes them.
+      // Check total count only when needed, or fall back on index errors below.
+      return orderedLeads;
+    } catch (innerErr: unknown) {
+      const code = (innerErr as { code?: string } | null)?.code;
+      // Do not retry if the error is permission/auth/network related
+      if (code === "permission-denied" || code === "unauthenticated" || code === "unavailable") {
+        throw innerErr;
+      }
+
+      // Fallback in case index is missing/building or createdAt field types vary
       const snapshot = await getDocs(leadsRef);
-      const leads = snapshot.docs.map((docSnap) => ({
-        id: docSnap.id,
-        ...(docSnap.data() as Omit<Lead, "id">),
-      })) as Lead[];
+      const leads = snapshot.docs.map((docSnap) =>
+        normalizeLead(docSnap.id, docSnap.data() as Record<string, unknown>)
+      );
       return leads.sort(
         (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
       );
     }
   } catch (err) {
     console.error("Failed to fetch leads from Firestore:", err);
-    return [];
+    throw err;
+  }
+}
+
+export async function getLeadById(id: string): Promise<Lead | null> {
+  try {
+    const leadDocRef = doc(db, "leads", id);
+    const snapshot = await getDoc(leadDocRef);
+    if (!snapshot.exists()) {
+      return null;
+    }
+    return normalizeLead(snapshot.id, snapshot.data() as Record<string, unknown>);
+  } catch (err) {
+    console.error(`Failed to fetch lead ${id} from Firestore:`, err);
+    throw err;
   }
 }
 
@@ -133,13 +240,10 @@ export async function updateLead(
       return null;
     }
 
-    return {
-      id: updatedDoc.id,
-      ...(updatedDoc.data() as Omit<Lead, "id">),
-    } as Lead;
+    return normalizeLead(updatedDoc.id, updatedDoc.data() as Record<string, unknown>);
   } catch (error) {
     console.error("Error updating lead in Firestore:", error);
-    return null;
+    throw error;
   }
 }
 
